@@ -5,22 +5,22 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
- 
+
 /**
- * Cette classe fait l'interface avec la base de données.
+ * Cette classe fait l'interface avec la base de donnÃ©es.
  * @author CA Team
  * @versio 0.1
  */
 public class Database
- 
+
 {
     private String      dbName;
     public  Connection  connexion;
     private Statement   requete;
-     
+
     /**
      * Constructeur de la classe Database
-     * @param dbName Le nom de la base de données
+     * @param dbName Le nom de la base de donnÃ©es
      */
     public Database (String dbName){
         // Charge le driver sqlite JDBC en utilisant le class loader actuel
@@ -32,17 +32,18 @@ public class Database
         this.dbName     = dbName;
         this.connexion = null;
     }
-     
+
     /**
-     * Ouvre la base de données spécifiée
-     * @return True si la connection à été réussie. False sinon.
+     * Ouvre la base de donnÃ©es spÃ©cifiÃ©e
+     * @return True si la connection Ã  Ã©tÃ© rÃ©ussie. False sinon.
      */
     public boolean connexion (){
         try{
             // Etabli la connection
             connexion = DriverManager.getConnection("jdbc:sqlite:"+this.dbName);
-            // Déclare l'objet qui permet de faire les requêtes
-            requete = connexion.createStatement();             
+            // DÃ©clare l'objet qui permet de faire les requÃªtes
+            requete = connexion.createStatement();
+            creationTables();
             requete.executeUpdate("PRAGMA synchronous = OFF;");
             requete.setQueryTimeout(30);
             return true;
@@ -51,10 +52,10 @@ public class Database
             return false;
         }
     }
-     
+
     /**
-     * Ferme la connection à la base de données
-     * @return True si la connection a bien été fermée. False sinon.
+     * Ferme la connection Ã  la base de donnÃ©es
+     * @return True si la connection a bien Ã©tÃ© fermÃ©e. False sinon.
      */
     public boolean deconnexion (){
         try{
@@ -67,11 +68,11 @@ public class Database
             return false;
         }
     }
-     
+
     /**
-     * Permet de faire une requête SQL
-     * @param requete La requête SQL (avec un ";" à la fin)
-     * @return Un ResultSet contenant le résultat de la requête
+     * Permet de faire une requÃªte SQL
+     * @param requete La requÃªte SQL (avec un ";" Ã  la fin)
+     * @return Un ResultSet contenant le rÃ©sultat de la requÃªte
      */
     public ResultSet getResultatRequete (String requete){
         try{
@@ -79,12 +80,12 @@ public class Database
         }
         catch (SQLException e){
             e.printStackTrace();
-        } 
+        }
         return null;
     }
- 
+
     /**
-     * Permet de modifier une entrée de la base de données.</br>
+     * Permet de modifier une entrÃ©e de la base de donnÃ©es.</br>
      * @param requete La requete SQL de modification
      */
     public void setValeur (String requete){
@@ -94,4 +95,35 @@ public class Database
             e.printStackTrace();
         }
     }
+
+    /**
+     * Permet de créer les tables si elles n'existent pas
+     */
+    public void creationTables() throws SQLException{
+    	requete = connexion.createStatement();
+    	String sqlCreationTableGroupe =  "CREATE TABLE IF NOT EXISTS GROUPE " +
+                "(IDROUPE INT PRIMARY KEY     NOT NULL," +
+                " NOM           CHAR(50) NOT NULL)";
+        requete.executeUpdate(sqlCreationTableGroupe);
+
+
+        String sqlCreationTableContact = "CREATE TABLE IF NOT EXISTS CONTACT " +
+                "(ID INT PRIMARY KEY     NOT NULL," +
+                " NOM           CHAR(50)  NOT NULL, " +
+                " PRENOM        CHAR(50)      , " +
+                " DDN			DATE, " +
+                " ADRESSE       CHAR(50), " +
+                " TELEPHONE     CHAR(50), " +
+                " FAX      		CHAR(50), " +
+                " MAIL       	CHAR(50), " +
+                " GROUPE        CHAR(50) CONSTRAINT fk_contact_groupe REFERENCES GROUPE (idGroupe), " +
+                " FAVORIS       BOOLEAN, " +
+                " PHOTO         BLOB)";
+        requete.executeUpdate(sqlCreationTableContact);
+    }
+
+    public static void main(String[] args) {
+		Database db = new Database("Database.db");
+		db.connexion();
+	}
 }
