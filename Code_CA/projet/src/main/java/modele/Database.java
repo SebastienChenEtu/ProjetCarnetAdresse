@@ -1,13 +1,15 @@
 package modele;
 
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 
 /**
- * Cette classe fait l'interface avec la base de donnÃ©es.
+ * Cette classe fait l'interface avec la base de donnÃƒÂ©es.
  * @author CA Team
  * @versio 0.1
  */
@@ -20,7 +22,7 @@ public class Database
 
     /**
      * Constructeur de la classe Database
-     * @param dbName Le nom de la base de donnÃ©es
+     * @param dbName Le nom de la base de donnÃƒÂ©es
      */
     public Database (String dbName){
         // Charge le driver sqlite JDBC en utilisant le class loader actuel
@@ -34,14 +36,14 @@ public class Database
     }
 
     /**
-     * Ouvre la base de donnÃ©es spÃ©cifiÃ©e
-     * @return True si la connection Ã  Ã©tÃ© rÃ©ussie. False sinon.
+     * Ouvre la base de donnÃƒÂ©es spÃƒÂ©cifiÃƒÂ©e
+     * @return True si la connection ÃƒÂ  ÃƒÂ©tÃƒÂ© rÃƒÂ©ussie. False sinon.
      */
     public boolean connexion (){
         try{
             // Etabli la connection
             connexion = DriverManager.getConnection("jdbc:sqlite:"+this.dbName);
-            // DÃ©clare l'objet qui permet de faire les requÃªtes
+            // DÃƒÂ©clare l'objet qui permet de faire les requÃƒÂªtes
             requete = connexion.createStatement();
             creationTables();
             requete.executeUpdate("PRAGMA synchronous = OFF;");
@@ -54,8 +56,8 @@ public class Database
     }
 
     /**
-     * Ferme la connection Ã  la base de donnÃ©es
-     * @return True si la connection a bien Ã©tÃ© fermÃ©e. False sinon.
+     * Ferme la connection ÃƒÂ  la base de donnÃƒÂ©es
+     * @return True si la connection a bien ÃƒÂ©tÃƒÂ© fermÃƒÂ©e. False sinon.
      */
     public boolean deconnexion (){
         try{
@@ -70,9 +72,9 @@ public class Database
     }
 
     /**
-     * Permet de faire une requÃªte SQL
-     * @param requete La requÃªte SQL (avec un ";" Ã  la fin)
-     * @return Un ResultSet contenant le rÃ©sultat de la requÃªte
+     * Permet de faire une requÃƒÂªte SQL
+     * @param requete La requÃƒÂªte SQL (avec un ";" ÃƒÂ  la fin)
+     * @return Un ResultSet contenant le rÃƒÂ©sultat de la requÃƒÂªte
      */
     public ResultSet getResultatRequete (String requete){
         try{
@@ -85,7 +87,7 @@ public class Database
     }
 
     /**
-     * Permet de modifier une entrÃ©e de la base de donnÃ©es.</br>
+     * Permet de modifier une entrÃƒÂ©e de la base de donnÃƒÂ©es.</br>
      * @param requete La requete SQL de modification
      */
     public void setValeur (String requete){
@@ -97,15 +99,14 @@ public class Database
     }
 
     /**
-     * Permet de créer les tables si elles n'existent pas
+     * Permet de crÃ©er les tables si elles n'existent pas
      */
     public void creationTables() throws SQLException{
     	requete = connexion.createStatement();
     	String sqlCreationTableGroupe =  "CREATE TABLE IF NOT EXISTS GROUPE " +
-                "(IDROUPE INT PRIMARY KEY     NOT NULL," +
+                "(IDGROUPE INT PRIMARY KEY     NOT NULL," +
                 " NOM           CHAR(50) NOT NULL)";
         requete.executeUpdate(sqlCreationTableGroupe);
-
 
         String sqlCreationTableContact = "CREATE TABLE IF NOT EXISTS CONTACT " +
                 "(ID INT PRIMARY KEY     NOT NULL," +
@@ -116,14 +117,23 @@ public class Database
                 " TELEPHONE     CHAR(50), " +
                 " FAX      		CHAR(50), " +
                 " MAIL       	CHAR(50), " +
-                " GROUPE        CHAR(50) CONSTRAINT fk_contact_groupe REFERENCES GROUPE (idGroupe), " +
-                " FAVORIS       BOOLEAN, " +
-                " PHOTO         BLOB)";
+                " IDGROUPE        CHAR(50) CONSTRAINT fk_contact_groupe REFERENCES GROUPE (IDGROUPE), " +
+                " PHOTO       BLOB, " +
+                " FAVORIS         BOOLEAN)";
         requete.executeUpdate(sqlCreationTableContact);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 		Database db = new Database("Database.db");
 		db.connexion();
+		DAO dao = new DAO(db);
+
+		Contact c = new Contact(1,"Contact1","", null,"","","","",1,null,false);
+
+		System.out.println(dao.CreerGroupe(new Groupe(2,"nop")));
+		System.out.println(dao.TrouverGroupe("nop").getNom());
+		System.out.println(dao.CreerContact(c));
+		System.out.println(dao.TrouverContact(1));
+//		System.out.println(dao.SupprimerContact(c));
 	}
 }
