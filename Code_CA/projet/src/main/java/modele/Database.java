@@ -103,22 +103,48 @@ public class Database
     	requete = connexion.createStatement();
     	String sqlCreationTableGroupe =  "CREATE TABLE IF NOT EXISTS GROUPE " +
                 "(IDGROUPE INT PRIMARY KEY     NOT NULL," +
-                " NOM           CHAR(50) NOT NULL)";
+                " NOM           VARCHAR2(50) NOT NULL)";
         requete.executeUpdate(sqlCreationTableGroupe);
+        
+        String sqlCreationTableAdresse =  "CREATE TABLE IF NOT EXISTS ADRESSE " +
+                "(IDADRESSE INT PRIMARY KEY     NOT NULL," +
+                " ADRESSE           VARCHAR2(50) NOT NULL)";
+        requete.executeUpdate(sqlCreationTableAdresse);
+
+        String sqlCreationTableMail =  "CREATE TABLE IF NOT EXISTS MAIL " +
+                "(IDMAIL INT PRIMARY KEY     NOT NULL," +
+                " MAIL           VARCHAR2(50) NOT NULL)"; 	// TODO transact pour vérifier que le mail est OK
+        requete.executeUpdate(sqlCreationTableMail);       
+        
+        String sqlCreationTableTypeTelephone =  "CREATE TABLE IF NOT EXISTS TYPE_TELEPHONE " +
+                "(IDTYPETELEPHONE INT PRIMARY KEY     NOT NULL," +
+                "TYPE           VARCHAR2(50) NOT NULL)"; 
+        requete.executeUpdate(sqlCreationTableTypeTelephone);  
+        
+        String sqlCreationTableTelephone =  "CREATE TABLE IF NOT EXISTS TELEPHONE " +
+                "(IDMAIL INT PRIMARY KEY     NOT NULL," +
+        		"IDTYPETELEPHONE INT CONSTRAINT fk_telephone_typetelephone references TYPE_TELEPHONE(IDTYPETELEPHONE)" +
+                "TELEPHONE           VARCHAR2(50) NOT NULL)"; 
+        requete.executeUpdate(sqlCreationTableTelephone);  
 
         String sqlCreationTableContact = "CREATE TABLE IF NOT EXISTS CONTACT " +
-                "(ID INT PRIMARY KEY     NOT NULL," +
-                " NOM           CHAR(50)  NOT NULL, " +
-                " PRENOM        CHAR(50)      , " +
+                "(IDCONTACT INT PRIMARY KEY     NOT NULL," +
+                " NOM           VARCHAR2(50)  NOT NULL, " +
+                " PRENOM        VARCHAR2(50)      , " +
                 " DDN			DATE, " +
-                " ADRESSE       CHAR(50), " +
-                " TELEPHONE     CHAR(50), " +
-                " FAX      		CHAR(50), " +
-                " MAIL       	CHAR(50), " +
-                " IDGROUPE        CHAR(50) CONSTRAINT fk_contact_groupe REFERENCES GROUPE (IDGROUPE), " +
+                " ADRESSE       VARCHAR2(50), " +
+                " TELEPHONE     VARCHAR2(50), " +
+                " FAX      		VARCHAR2(50), " +
+                " MAIL       	VARCHAR2(50), " +
+                " IDGROUPE        VARCHAR2(50) CONSTRAINT fk_contact_groupe REFERENCES GROUPE (IDGROUPE), " +
                 " PHOTO       BLOB, " +
                 " FAVORIS         BOOLEAN)";
         requete.executeUpdate(sqlCreationTableContact);
+        
+        
+        
+        
+        
     }
 
     public static void main(String[] args) throws Exception {

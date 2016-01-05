@@ -14,7 +14,7 @@ public class DAO{
 
 	public Contact TrouverContact(int id){
 		Contact contact = new Contact();
-		ResultSet rs = db.getResultatRequete("SELECT * FROM CONTACT WHERE id = " + id);
+		ResultSet rs = db.getResultatRequete("SELECT * FROM CONTACT WHERE idcontact = " + id);
 		try {
 			if(!rs.next()){
 				return null;
@@ -39,7 +39,7 @@ public class DAO{
 			{
 				isContactFavoris = 1;
 			}
-			String s = "INSERT INTO CONTACT(ID, NOM, PRENOM, DDN, ADRESSE, TELEPHONE, FAX, MAIL, IDGROUPE, PHOTO, FAVORIS) "
+			String s = "INSERT INTO CONTACT(IDCONTACT, NOM, PRENOM, DDN, ADRESSE, TELEPHONE, FAX, MAIL, IDGROUPE, PHOTO, FAVORIS) "
 					+ "VALUES(" + contact.getIdContact() + ", '"
 					+ contact.getNom() + "', '"
 					+ contact.getPrenom() + "',"
@@ -64,7 +64,7 @@ public class DAO{
 		if(TrouverContact(contact.getIdContact()) == null){
 			throw new Exception("Aucun Contact de ce nom n'existe !");
 		}
-		db.setValeur("DELETE FROM CONTACT WHERE id = " + contact.getIdContact());
+		db.setValeur("DELETE FROM CONTACT WHERE idcontact = " + contact.getIdContact());
 		return TrouverContact(contact.getIdContact()) == null;
 	}
 
@@ -101,7 +101,7 @@ public class DAO{
 		if(TrouverGroupe(groupe.getNom()) == null){
 			throw new Exception("Aucun groupe de ce nom n'existe !");
 		}
-		db.setValeur("DELETE FROM GROUPE WHERE id = " + groupe.getIdGroupe());
+		db.setValeur("DELETE FROM GROUPE WHERE idgroupe = " + groupe.getIdGroupe());
 		return TrouverGroupe(groupe.getNom()) == null;
 	}
 
