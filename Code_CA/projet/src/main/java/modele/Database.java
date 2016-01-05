@@ -110,37 +110,31 @@ public class Database
         
         String sqlCreationTableAdresse =  "CREATE TABLE IF NOT EXISTS ADRESSE " +
                 "(IDADRESSE INT PRIMARY KEY     NOT NULL," +
-                " ADRESSE           VARCHAR2(50) NOT NULL)";
+                "IDCONTACT INT CONSTRAINT fk_adresse_contact references contact(idcontact)," + 
+                "ADRESSE           VARCHAR2(50) NOT NULL)";
         requete.executeUpdate(sqlCreationTableAdresse);
 
         String sqlCreationTableMail =  "CREATE TABLE IF NOT EXISTS MAIL " +
                 "(IDMAIL INT PRIMARY KEY     NOT NULL," +
+                "IDCONTACT INT CONSTRAINT fk_mail_contact references contact(idcontact)," + 
                 " MAIL           VARCHAR2(50) NOT NULL)"; 	// TODO transact pour vérifier que le mail est OK
         requete.executeUpdate(sqlCreationTableMail);       
         
-        String sqlCreationTableTypeTelephone =  "CREATE TABLE IF NOT EXISTS TYPE_TELEPHONE " +
-                "(IDTYPETELEPHONE INT PRIMARY KEY     NOT NULL," +
-                "TYPE           VARCHAR2(50) NOT NULL)"; 
-        requete.executeUpdate(sqlCreationTableTypeTelephone);  
-        
-        String sqlCreationTableTelephone =  "CREATE TABLE IF NOT EXISTS TELEPHONE " +
-                "(IDMAIL INT PRIMARY KEY     NOT NULL," +
-        		"IDTYPETELEPHONE INT CONSTRAINT fk_telephone_typetelephone references TYPE_TELEPHONE(IDTYPETELEPHONE)" +
+        String sqlCreationTableTelephone =  "CREATE TABLE IF NOT EXISTS TELEPHONE_CONTACT " +
+                "(IDTELEPHONE INT  PRIMARY KEY   NOT NULL," +
+        		"IDCONTACT INT CONSTRAINT fk_telephonecontact_contact references contact(idcontact)," + 
                 "TELEPHONE           VARCHAR2(50) NOT NULL)"; 
         requete.executeUpdate(sqlCreationTableTelephone);  
 
         String sqlCreationTableContact = "CREATE TABLE IF NOT EXISTS CONTACT " +
                 "(IDCONTACT INT PRIMARY KEY     NOT NULL," +
-                " NOM           VARCHAR2(50)  NOT NULL, " +
-                " PRENOM        VARCHAR2(50)      , " +
-                " DDN			DATE, " +
-                " ADRESSE       VARCHAR2(50), " +
-                " TELEPHONE     VARCHAR2(50), " +
-                " FAX      		VARCHAR2(50), " +
-                " MAIL       	VARCHAR2(50), " +
                 " IDGROUPE        VARCHAR2(50) CONSTRAINT fk_contact_groupe REFERENCES GROUPE (IDGROUPE), " +
+                " NOM           VARCHAR2(50)  NOT NULL, " +
+                " FAVORIS         BOOLEAN)," +
+                " PRENOM        VARCHAR2(50), " +
+                " DDN			DATE, " +                    
                 " PHOTO       BLOB, " +
-                " FAVORIS         BOOLEAN)";
+                " FAX      		VARCHAR2(50)";
         requete.executeUpdate(sqlCreationTableContact);
         
         
@@ -152,14 +146,14 @@ public class Database
     public static void main(String[] args) throws Exception {
 		Database db = new Database("Database.db");
 		db.connexion();
-		DAO dao = new DAO(db);
-
-		Contact c = new Contact(1,"Contact1","", null,"","","","",1,null,false);
-
-		System.out.println(dao.CreerGroupe(new Groupe(2,"nop")));
-		System.out.println(dao.TrouverGroupe("nop").getNom());
-		System.out.println(dao.CreerContact(c));
-		System.out.println(dao.TrouverContact(1));
+//		DAO dao = new DAO(db);
+//
+//		Contact c = new Contact(1,"Contact1","", null,"","","","",1,null,false);
+//
+//		System.out.println(dao.CreerGroupe(new Groupe(2,"nop")));
+//		System.out.println(dao.TrouverGroupe("nop").getNom());
+//		System.out.println(dao.CreerContact(c));
+//		System.out.println(dao.TrouverContact(1));
 //		System.out.println(dao.SupprimerContact(c));
 	}
 }
