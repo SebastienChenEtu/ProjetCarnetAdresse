@@ -1,6 +1,8 @@
 package modele;
 
+import java.sql.Date;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -39,24 +41,25 @@ public class DAO{
 			{
 				isContactFavoris = 1;
 			}
-			String s = "INSERT INTO CONTACT(IDCONTACT, NOM, PRENOM, DDN, ADRESSE, TELEPHONE, FAX, MAIL, IDGROUPE, PHOTO, FAVORIS) "
-					+ "VALUES(" + contact.getIdContact() + ", '"
-					+ contact.getNom() + "', '"
-					+ contact.getPrenom() + "',"
-					+ contact.getDdn() + ", '"
-					+ contact.getAdresse() + "', '"
-					+ contact.getTelephone() + "', '"
-					+ contact.getFax() + "', '"
-					+ contact.getMail() + "',"
-					+ contact.getIdGroupe() + ","
-					+ contact.getPhoto() + ","
-					+ isContactFavoris + ")";
-			db.setValeur(s);
+			PreparedStatement ps = db.connexion.prepareStatement(" insert into contact(idcontact,idgroupe, nom,favoris, prenom, ddn, photo, fax) "
+					+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+			ps.setInt(1, contact.getIdContact());
+			ps.setInt(2, contact.getIdGroupe());
+			ps.setString(3, contact.getNom());
+			ps.setInt(4, isContactFavoris);
+			ps.setString(5, contact.getPrenom());
+			ps.setDate(6, (Date) contact.getDdn());
+			ps.setBinaryStream(7, contact.getPhoto(), 1000000);
+			// ps.setBlob(7, contact.getPhoto());
+			ps.setString(8, contact.getFax());
+
+			ps.execute();
 			return true;
 		}
 		catch (Exception e)
 		{
-			throw new Exception(e.toString());
+			e.printStackTrace();
+			throw new Exception();
 		}
 	}
 

@@ -1,5 +1,7 @@
 package modele;
 
+import java.util.List;
+
 public class Adresse {
 
 	private int idAdresse;
