@@ -49,8 +49,8 @@
 | Démarches        | Données          | Résultats  |
 | :-------------:    |:-------------:   | :-----:|
 | Tri et affichage par défaut par date de dernière modification     |  |Les notes sont affichées, par défaut, par date de dernière modification|
-| Tri par thème    |  | Les notes sont ordonnées par ordre alphabétique des titres |
-| Tri par importance    |  | Les notes importantes sont affichées en haut de la liste suivies des notes non importantes et sont toutes ordonnées par ordre alphabétique des titres|
+| Tri par thème    |  | Les notes sont ordonnées par ordre alphabétique des titres croissant ou décroissant|
+| Tri par importance    |  | Les notes importantes sont affichées en haut de la liste suivies des notes non importantes et sont toutes ordonnées par ordre alphabétique des titres croissant ou décroissant|
 
 #### Envoi de notifications
 | Démarches        | Données          | Résultats  |
