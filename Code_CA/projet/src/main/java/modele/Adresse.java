@@ -1,9 +1,9 @@
 package modele;
 
 public class Adresse {
-	
+
 	private int idAdresse;
-	
+
 	private String adresse;
 
 	public Adresse(int idAdresse, String adresse) {
