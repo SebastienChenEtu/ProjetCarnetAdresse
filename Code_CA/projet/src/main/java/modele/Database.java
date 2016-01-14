@@ -12,14 +12,15 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import org.hamcrest.core.IsSame;
-import org.omg.CORBA.Environment;
 
 /**
  * Cette classe fait l'interface avec la base de donnÃƒÂ©es.
@@ -114,6 +115,8 @@ public class Database
     /**
      * Permet de crÃ©er les tables si elles n'existent pas
      */
+
+    // il faudra mettre en place les delete on cascade
     public void creationTables() throws SQLException{
     	requete = connexion.createStatement();
     	String sqlCreationTableGroupe =  "CREATE TABLE IF NOT EXISTS GROUPE " +
@@ -161,13 +164,34 @@ public class Database
 		File monImage = new File(".\\adrien.jpg");
 		FileInputStream istreamImage = new FileInputStream(monImage);
 
-		Contact c = new Contact(1,"test","test",null,"fax",0,istreamImage, false);
+		List<Adresse> adrPourC =  new LinkedList<Adresse>();
+		adrPourC.add(new Adresse(1, "adresse C"));
+		List<Mail> mailsPourC = new LinkedList<Mail>();
+		mailsPourC.add(new Mail(1, "mail C"));
+
+		Contact c = new Contact(1,"test","test",new java.sql.Date(1),"fax",0,istreamImage, true);
+		c.setAdresses(adrPourC);
+		c.setMails(mailsPourC);
+
+		Groupe g1 = new Groupe(0,"Groupe par défaut");
+		Groupe g2 = new Groupe(2,"nop");
 
 		try {
-		System.out.println(dao.CreerGroupe(new Groupe(0,"Groupe par défaut")));
-		System.out.println(dao.CreerGroupe(new Groupe(2,"nop")));
-		System.out.println(dao.TrouverGroupe("nop").getNom());
+		System.out.println(dao.CreerGroupe(g1));
+		System.out.println(dao.CreerGroupe(g2));
+		System.out.println(dao.TrouverGroupe("nop"));
+
+
 		System.out.println(dao.CreerContact(c));
+		System.out.println(dao.TrouverContact(1));
+		Contact testAdressesC = dao.TrouverContact(1);
+		for (Adresse adresse : testAdressesC.getAdresses()) {
+			System.out.println(adresse.getAdresse());
+		}
+
+		System.out.println(dao.SupprimerContact(c));
+		System.out.println(dao.SupprimerGroupe(g1));
+		System.out.println(dao.SupprimerGroupe(g2));
 		}
 		catch(Exception e)
 		{
@@ -193,7 +217,6 @@ public class Database
 //        f.setLocation(200,200);
 //        f.setVisible(true);
 
-//		System.out.println(dao.TrouverContact(1));
-//		System.out.println(dao.SupprimerContact(c));
+
 	}
 }

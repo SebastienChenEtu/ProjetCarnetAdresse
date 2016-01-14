@@ -15,9 +15,9 @@ public class Contact {
 	private String prenom;
 	private Date ddn;
 	private List<Adresse> adresses;
-	private List<Telephone> telephone;
+	private List<Telephone> telephones;
 	private String fax;
-	private List<Mail> mail;
+	private List<Mail> mails;
 	private int idGroupe;
 	private InputStream photo;
 	private Boolean favoris;
@@ -79,12 +79,12 @@ public class Contact {
 		this.adresses = adresses;
 	}
 
-	public List<Telephone> getTelephone() {
-		return telephone;
+	public List<Telephone> getTelephones() {
+		return telephones;
 	}
 
-	public void setTelephone(List<Telephone> telephone) {
-		this.telephone = telephone;
+	public void setTelephones(List<Telephone> telephone) {
+		this.telephones = telephone;
 	}
 
 	public String getFax() {
@@ -95,12 +95,12 @@ public class Contact {
 		this.fax = fax;
 	}
 
-	public List<Mail> getMail() {
-		return mail;
+	public List<Mail> getMails() {
+		return mails;
 	}
 
-	public void setMail(List<Mail> mail) {
-		this.mail = mail;
+	public void setMails(List<Mail> mail) {
+		this.mails = mail;
 	}
 
 	public int getIdGroupe() {
