@@ -19,26 +19,6 @@ public class Contact {
 	private int idGroupe;
 	private Blob photo;
 	private Boolean favoris;
-
-	public Contact(int idContact, String nom, String prenom, Date ddn, String adresse, String telephone, String fax,
-			String mail, int idGroupe, Blob photo, Boolean favoris) {
-		super();
-		this.idContact = idContact;
-		this.nom = nom;
-		this.prenom = prenom;
-		this.ddn = ddn;
-		this.adresse = adresse;
-		this.telephone = telephone;
-		this.fax = fax;
-		this.mail = mail;
-		this.idGroupe = idGroupe;
-		this.photo = photo;
-		this.favoris = favoris;
-	}
-	public Contact()
-	{
-
-	}
 }
 
 
