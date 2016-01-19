@@ -61,6 +61,7 @@ public class Database
             requete = connexion.createStatement();
             creationTables();
             requete.executeUpdate("PRAGMA synchronous = OFF;");
+            requete.executeUpdate("PRAGMA foreign_keys = ON;");
             requete.setQueryTimeout(30);
             return true;
         }catch(SQLException e){
@@ -126,19 +127,19 @@ public class Database
 
         String sqlCreationTableAdresse =  "CREATE TABLE IF NOT EXISTS ADRESSE " +
                 "(IDADRESSE INT PRIMARY KEY     NOT NULL," +
-                "IDCONTACT INT CONSTRAINT fk_adresse_contact references contact(idcontact)," +
+                "IDCONTACT INT CONSTRAINT fk_adresse_contact references contact(idcontact)  on delete cascade," +
                 "ADRESSE           VARCHAR2(50) NOT NULL)";
         requete.executeUpdate(sqlCreationTableAdresse);
 
         String sqlCreationTableMail =  "CREATE TABLE IF NOT EXISTS MAIL " +
                 "(IDMAIL INT PRIMARY KEY     NOT NULL," +
-                "IDCONTACT INT CONSTRAINT fk_mail_contact references contact(idcontact)," +
+                "IDCONTACT INT CONSTRAINT fk_mail_contact references contact(idcontact) on delete cascade," +
                 " MAIL           VARCHAR2(50) NOT NULL)"; 	// TODO transact pour vérifier que le mail est OK
         requete.executeUpdate(sqlCreationTableMail);
 
-        String sqlCreationTableTelephone =  "CREATE TABLE IF NOT EXISTS TELEPHONE_CONTACT " +
+        String sqlCreationTableTelephone =  "CREATE TABLE IF NOT EXISTS TELEPHONE " +
                 "(IDTELEPHONE INT  PRIMARY KEY   NOT NULL," +
-        		"IDCONTACT INT CONSTRAINT fk_telephonecontact_contact references contact(idcontact)," +
+        		"IDCONTACT INT CONSTRAINT fk_telephonecontact_contact references contact(idcontact) on delete cascade," +
                 "TELEPHONE           VARCHAR2(50) NOT NULL)";
         requete.executeUpdate(sqlCreationTableTelephone);
 
@@ -165,13 +166,19 @@ public class Database
 		FileInputStream istreamImage = new FileInputStream(monImage);
 
 		List<Adresse> adrPourC =  new LinkedList<Adresse>();
-		adrPourC.add(new Adresse(1, "adresse C"));
 		List<Mail> mailsPourC = new LinkedList<Mail>();
+		List<Telephone> telsPourC = new LinkedList<Telephone>();
+
+		adrPourC.add(new Adresse(1, "adresse C"));
 		mailsPourC.add(new Mail(1, "mail C"));
+		mailsPourC.add(new Mail(2, "Mail D"));
+		telsPourC.add(new Telephone(1, "Tel C"));
+		telsPourC.add(new Telephone(2, "Tel D"));
 
 		Contact c = new Contact(1,"test","test",new java.sql.Date(1),"fax",0,istreamImage, true);
 		c.setAdresses(adrPourC);
 		c.setMails(mailsPourC);
+		c.setTelephones(telsPourC);
 
 		Groupe g1 = new Groupe(0,"Groupe par défaut");
 		Groupe g2 = new Groupe(2,"nop");

@@ -20,6 +20,8 @@ public class DAO{
 	public Contact TrouverContact(int id) throws SQLException{
 		Contact contact = new Contact();
 		List<Adresse> adresses = new LinkedList<Adresse>();
+		List<Mail> mails = new LinkedList<Mail>();
+		List<Telephone> telephones = new LinkedList<Telephone>();
 
 		PreparedStatement psSimpleContact = db.connexion.prepareStatement("SELECT * FROM CONTACT WHERE idcontact = ? ");
 		psSimpleContact.setInt(1, id);
@@ -27,8 +29,17 @@ public class DAO{
 		PreparedStatement psAdressesContact = db.connexion.prepareStatement("SELECT * FROM ADRESSE WHERE idcontact = ? ");
 		psAdressesContact.setInt(1, id);
 
+		PreparedStatement psMailsContacts = db.connexion.prepareStatement("SELECT * FROM MAIL WHERE idcontact = ? ");
+		psMailsContacts.setInt(1, id);
+
+		PreparedStatement psTelephonesContacts = db.connexion.prepareStatement("SELECT * FROM TELEPHONE WHERE idcontact = ? ");
+		psTelephonesContacts.setInt(1, id);
+
 		ResultSet rsContactSimple = psSimpleContact.executeQuery();
 		ResultSet rsAdressesContact = psAdressesContact.executeQuery();
+		ResultSet rsMailsContact = psMailsContacts.executeQuery();
+		ResultSet rsTelephonesContact = psTelephonesContacts.executeQuery();
+
 
 		try {
 			if(!rsContactSimple.next()){
@@ -47,10 +58,28 @@ public class DAO{
 				ByteArrayInputStream stream = new ByteArrayInputStream(imgData);
 				contact.setPhoto(stream);
 
+				int curseurAdresse = 1;
+				int curseurMail = 1;
+				int curseurTelephopne = 1;
+
 				while(rsAdressesContact.next()){
-					adresses.add(new Adresse(rsAdressesContact.getInt(1),rsAdressesContact.getString("adresse")));
+					adresses.add(new Adresse(rsAdressesContact.getInt(curseurAdresse),rsAdressesContact.getString("adresse")));
+					curseurAdresse++;
 				}
+
+				while(rsMailsContact.next())
+				{
+					mails.add(new Mail(rsMailsContact.getInt(curseurMail), rsMailsContact.getString("mail")));
+				}
+
+				while(rsTelephonesContact.next())
+				{
+					telephones.add(new Telephone(rsTelephonesContact.getInt(curseurTelephopne), rsTelephonesContact.getString("telephone")));
+				}
+
 				contact.setAdresses(adresses);
+				contact.setMails(mails);
+				contact.setTelephones(telephones);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -85,10 +114,17 @@ public class DAO{
 				// pour les adresses d'un contact
 				if(contact.getAdresses() != null)
 				{
-					int idAdresseTempo = 1; // à modifier .. il faut que mettre en auto_increment idadresse
+					int idAdresseTempo = 0; // par défaut le 1er idAdresse est à 0++, sinon max(idadresse) ne renvoie rien
+
+					ps = db.connexion.prepareStatement("select max(idadresse) from adresse");
+					ResultSet rs = ps.executeQuery();
+					if(rs.next())
+					{
+						idAdresseTempo = rs.getInt(1);
+					}
 					for (Adresse adr : contact.getAdresses()) {
 						ps = db.connexion.prepareStatement("insert into adresse(idadresse, idcontact, adresse) values (?, ?, ?)");
-						ps.setInt(1, idAdresseTempo);
+						ps.setInt(1, idAdresseTempo++);
 						ps.setInt(2, contact.getIdContact());
 						ps.setString(3, adr.getAdresse());
 						// on crée les adresses pour le contact
@@ -96,16 +132,45 @@ public class DAO{
 					}
 				}
 				// pour les mails d'un contact
-				// A TERMINER ICI
 				if(contact.getMails() != null)
 				{
-					int idMailTempo = 1; // à modifier .. il faut que mettre en auto_increment idadresse
-					for (Adresse adr : contact.getAdresses()) {
+					int idMailTempo = 0; // par défaut 0++ comme idAdresseTempo
+
+					ps = db.connexion.prepareStatement("select max(idmail) from mail");
+					ResultSet rs = ps.executeQuery();
+					if(rs.next())
+					{
+						idMailTempo = rs.getInt(1);
+					}
+
+					for (Mail mail : contact.getMails()) {
 						ps = db.connexion.prepareStatement("insert into mail(idmail, idcontact, mail) values (?, ?, ?)");
-						ps.setInt(1, idMailTempo);
+						ps.setInt(1, idMailTempo++);
 						ps.setInt(2, contact.getIdContact());
-						ps.setString(3, adr.getAdresse());
-						// on crée les adresses pour le contact
+						ps.setString(3, mail.getMail());
+						// on crée les mails pour le contact
+						ps.execute();
+					}
+				}
+
+				// pour les téléphones d'un contact
+				if(contact.getTelephones() != null)
+				{
+					int idTelTempo = 0; // par défaut 0++ comme idAdresseTempo
+
+					ps = db.connexion.prepareStatement("select max(idtelephone) from telephone");
+					ResultSet rs = ps.executeQuery();
+					if(rs.next())
+					{
+						idTelTempo = rs.getInt(1);
+					}
+
+					for (Telephone tel : contact.getTelephones()) {
+						ps = db.connexion.prepareStatement("insert into telephone(idtelephone, idcontact, telephone) values (?, ?, ?)");
+						ps.setInt(1, idTelTempo++);
+						ps.setInt(2, contact.getIdContact());
+						ps.setString(3, tel.getTelephone());
+						// on crée les telephones pour le contact
 						ps.execute();
 					}
 				}

@@ -2,6 +2,9 @@ package modele;
 
 import java.util.List;
 
+import lombok.Data;
+
+@Data
 public class Adresse {
 
 	private int idAdresse;
@@ -11,22 +14,6 @@ public class Adresse {
 	public Adresse(int idAdresse, String adresse) {
 		super();
 		this.idAdresse = idAdresse;
-		this.adresse = adresse;
-	}
-
-	public int getIdAdresse() {
-		return idAdresse;
-	}
-
-	public void setIdAdresse(int idAdresse) {
-		this.idAdresse = idAdresse;
-	}
-
-	public String getAdresse() {
-		return adresse;
-	}
-
-	public void setAdresse(String adresse) {
 		this.adresse = adresse;
 	}
 
