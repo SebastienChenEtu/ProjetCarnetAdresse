@@ -1,9 +1,11 @@
 package modele;
 
+import java.util.List;
+
 public class Adresse {
-	
+
 	private int idAdresse;
-	
+
 	private String adresse;
 
 	public Adresse(int idAdresse, String adresse) {

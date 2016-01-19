@@ -37,10 +37,11 @@ L'utilisateur peut choisir de supprimer toutes les notes de sa ToDo List.
 ### Trier les notes
 L’application offrira la possibilité de trier et d’afficher les notes par thème, par date de dernière modification et par importance.  
 L’affichage “par défaut” sera le tri par date de dernière modification. Le temps (heure/minutes/secondes) doit être compris dans la date de dernière modification.  
-Pour les tris par thème et importance, les titres des notes seront rangés dans l’ordre alphabétique croissant ou décroissant.
+Pour les tris par thème, les titres des notes seront rangés dans l’ordre alphabétique croissant ou décroissant.
+Pour les tris par importance, les notes importantes sont affichées en haut de la liste suivies des notes non importantes et sont toutes ordonnées dans l'ordre alphabétique croissant et décroissant.
 
 ### Notifications 
-Tous les jours à 0h00, l’utilisateur reçoit un mail lui informant les tâches importantes inscrites dans sa ToDo List.  
+L’utilisateur peut configurer l'heure à laquelle il souhaite recevoir un mail lui informant les tâches importantes inscrites dans sa ToDo List. Cette opération s'effectuera chaque jour à cette heure. 
 De plus, lors de l’ouverture de l’application, l’utilisateur est informé de ses notes qui sont éditées “importantes”.
 
 ### Changer les couleurs de fond des thèmes

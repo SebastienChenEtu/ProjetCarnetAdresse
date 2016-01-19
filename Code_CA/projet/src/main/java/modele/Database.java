@@ -1,10 +1,26 @@
 package modele;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
 
 /**
  * Cette classe fait l'interface avec la base de donnÃƒÂ©es.
@@ -99,59 +115,108 @@ public class Database
     /**
      * Permet de crÃ©er les tables si elles n'existent pas
      */
+
+    // il faudra mettre en place les delete on cascade
     public void creationTables() throws SQLException{
     	requete = connexion.createStatement();
     	String sqlCreationTableGroupe =  "CREATE TABLE IF NOT EXISTS GROUPE " +
                 "(IDGROUPE INT PRIMARY KEY     NOT NULL," +
                 " NOM           VARCHAR2(50) NOT NULL)";
         requete.executeUpdate(sqlCreationTableGroupe);
-        
+
         String sqlCreationTableAdresse =  "CREATE TABLE IF NOT EXISTS ADRESSE " +
                 "(IDADRESSE INT PRIMARY KEY     NOT NULL," +
-                "IDCONTACT INT CONSTRAINT fk_adresse_contact references contact(idcontact)," + 
+                "IDCONTACT INT CONSTRAINT fk_adresse_contact references contact(idcontact)," +
                 "ADRESSE           VARCHAR2(50) NOT NULL)";
         requete.executeUpdate(sqlCreationTableAdresse);
 
         String sqlCreationTableMail =  "CREATE TABLE IF NOT EXISTS MAIL " +
                 "(IDMAIL INT PRIMARY KEY     NOT NULL," +
-                "IDCONTACT INT CONSTRAINT fk_mail_contact references contact(idcontact)," + 
+                "IDCONTACT INT CONSTRAINT fk_mail_contact references contact(idcontact)," +
                 " MAIL           VARCHAR2(50) NOT NULL)"; 	// TODO transact pour vérifier que le mail est OK
-        requete.executeUpdate(sqlCreationTableMail);       
-        
+        requete.executeUpdate(sqlCreationTableMail);
+
         String sqlCreationTableTelephone =  "CREATE TABLE IF NOT EXISTS TELEPHONE_CONTACT " +
                 "(IDTELEPHONE INT  PRIMARY KEY   NOT NULL," +
-        		"IDCONTACT INT CONSTRAINT fk_telephonecontact_contact references contact(idcontact)," + 
-                "TELEPHONE           VARCHAR2(50) NOT NULL)"; 
-        requete.executeUpdate(sqlCreationTableTelephone);  
+        		"IDCONTACT INT CONSTRAINT fk_telephonecontact_contact references contact(idcontact)," +
+                "TELEPHONE           VARCHAR2(50) NOT NULL)";
+        requete.executeUpdate(sqlCreationTableTelephone);
 
         String sqlCreationTableContact = "CREATE TABLE IF NOT EXISTS CONTACT " +
                 "(IDCONTACT INT PRIMARY KEY     NOT NULL," +
                 " IDGROUPE        VARCHAR2(50) CONSTRAINT fk_contact_groupe REFERENCES GROUPE (IDGROUPE), " +
                 " NOM           VARCHAR2(50)  NOT NULL, " +
-                " FAVORIS         BOOLEAN)," +
+                " FAVORIS         BOOLEAN," +
                 " PRENOM        VARCHAR2(50), " +
-                " DDN			DATE, " +                    
+                " DDN			DATE, " +
                 " PHOTO       BLOB, " +
-                " FAX      		VARCHAR2(50)";
+                " FAX      		VARCHAR2(50))";
         requete.executeUpdate(sqlCreationTableContact);
-        
-        
-        
-        
-        
     }
 
     public static void main(String[] args) throws Exception {
 		Database db = new Database("Database.db");
 		db.connexion();
-//		DAO dao = new DAO(db);
-//
-//		Contact c = new Contact(1,"Contact1","", null,"","","","",1,null,false);
-//
-//		System.out.println(dao.CreerGroupe(new Groupe(2,"nop")));
-//		System.out.println(dao.TrouverGroupe("nop").getNom());
-//		System.out.println(dao.CreerContact(c));
-//		System.out.println(dao.TrouverContact(1));
-//		System.out.println(dao.SupprimerContact(c));
+		DAO dao = new DAO(db);
+
+
+// test pour importer une image locale
+		File monImage = new File(".\\adrien.jpg");
+		FileInputStream istreamImage = new FileInputStream(monImage);
+
+		List<Adresse> adrPourC =  new LinkedList<Adresse>();
+		adrPourC.add(new Adresse(1, "adresse C"));
+		List<Mail> mailsPourC = new LinkedList<Mail>();
+		mailsPourC.add(new Mail(1, "mail C"));
+
+		Contact c = new Contact(1,"test","test",new java.sql.Date(1),"fax",0,istreamImage, true);
+		c.setAdresses(adrPourC);
+		c.setMails(mailsPourC);
+
+		Groupe g1 = new Groupe(0,"Groupe par défaut");
+		Groupe g2 = new Groupe(2,"nop");
+
+		try {
+		System.out.println(dao.CreerGroupe(g1));
+		System.out.println(dao.CreerGroupe(g2));
+		System.out.println(dao.TrouverGroupe("nop"));
+
+
+		System.out.println(dao.CreerContact(c));
+		System.out.println(dao.TrouverContact(1));
+		Contact testAdressesC = dao.TrouverContact(1);
+		for (Adresse adresse : testAdressesC.getAdresses()) {
+			System.out.println(adresse.getAdresse());
+		}
+
+		System.out.println(dao.SupprimerContact(c));
+		System.out.println(dao.SupprimerGroupe(g1));
+		System.out.println(dao.SupprimerGroupe(g2));
+		}
+		catch(Exception e)
+		{
+			System.err.println(e.toString());
+		}
+
+		// test pour lire une image récupérée directement dans la BD
+//				ResultSet rs = db.requete.executeQuery("select photo from contact where idcontact = 1");
+//				byte[] imgData = null;
+//				if (rs.next()) {
+//		            imgData = rs.getBytes("photo");//Here r1.getBytes() extract byte data from resultSet
+//		        }
+//				ByteArrayInputStream stream = new ByteArrayInputStream(imgData);
+//				BufferedImage image = ImageIO.read(stream);
+
+		// pour lire l'image dans une JFrame
+//		BufferedImage image = ImageIO.read(istreamImage);
+//        JLabel label = new JLabel(new ImageIcon(image));
+//        JFrame f = new JFrame();
+//        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        f.getContentPane().add(label);
+//        f.pack();
+//        f.setLocation(200,200);
+//        f.setVisible(true);
+
+
 	}
 }

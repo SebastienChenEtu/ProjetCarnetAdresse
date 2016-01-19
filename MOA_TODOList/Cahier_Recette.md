@@ -49,14 +49,14 @@
 | Démarches        | Données          | Résultats  |
 | :-------------:    |:-------------:   | :-----:|
 | Tri et affichage par défaut par date de dernière modification     |  |Les notes sont affichées, par défaut, par date de dernière modification|
-| Tri par thème    |  | Les notes sont ordonnées par ordre alphabétique des titres |
-| Tri par importance    |  | Les notes sont également rangées par ordre alphabétique des titres|
+| Tri par thème    |  | Les notes sont ordonnées par ordre alphabétique des titres croissant ou décroissant|
+| Tri par importance    |  | Les notes importantes sont affichées en haut de la liste suivies des notes non importantes et sont toutes ordonnées par ordre alphabétique des titres croissant ou décroissant|
 
 #### Envoi de notifications
 | Démarches        | Données          | Résultats  |
 | :-------------:    |:-------------:   | :-----:|
 | Envoi d’une notification lors de sa connexion     |  | Une notification des notes « Importantes » du jour sont envoyées à l'utilisateur|
-| Envoi d’une notification par mail     |  | L’application envoie un mail tous les jours à 00:00 lui informant les notes « Importantes » de la liste|
+| Envoi d’une notification par mail     |  | L’application envoie un mail chaque jour selon l'heure configurée par l'utilisateur lui informant les notes « Importantes » de la liste|
 
 #### Changement des couleurs de fond
 | Démarches        | Données          | Résultats  |
@@ -68,6 +68,6 @@
 | Démarches        | Données          | Résultats  |
 | :-------------:    |:-------------:   | :-----:|
 | Griser et barrer les notes cochées  |  |Dans le cas d’une liste de cases à cocher, lorsque l’utilisateur cochera une case, celle-ci grisera la case et le texte et le barrera |
-| Dégriser les check-box de la note    |  |Lorsque l’utilisateur décoche une case grisée, celle-ci laissera apparaître le texte.|
+| Dégriser les check-box de la note    |  |Lorsque l’utilisateur décoche une case grisée, celle-ci laissera apparaître le texte|
 
 
