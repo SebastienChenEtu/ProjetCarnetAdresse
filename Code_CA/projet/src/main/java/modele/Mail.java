@@ -1,5 +1,8 @@
 package modele;
 
+import lombok.Data;
+
+@Data
 public class Mail {
 
 	public Mail(int idMail, String mail) {
@@ -13,19 +16,6 @@ public class Mail {
 	public Mail()
 	{
 
-	}
-
-	public int getIdMail() {
-		return idMail;
-	}
-	public void setIdMail(int idMail) {
-		this.idMail = idMail;
-	}
-	public String getMail() {
-		return Mail;
-	}
-	public void setMail(String mail) {
-		Mail = mail;
 	}
 
 }

@@ -11,6 +11,16 @@ public class Telephone {
 
 	}
 
+
+
+	public Telephone(int idTelephone, String telephone) {
+		super();
+		this.idTelephone = idTelephone;
+		this.telephone = telephone;
+	}
+
+
+
 	public int getIdTelephone() {
 		return idTelephone;
 	}
