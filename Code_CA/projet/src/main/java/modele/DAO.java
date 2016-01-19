@@ -248,7 +248,6 @@ public class DAO{
 					listeContacts.add(TrouverContact(rsContactsGroupe.getInt(curseurContact)));
 					curseurContact++;
 				}
-				System.out.println(listeContacts.size());
 				groupeRes.setListeContacts(listeContacts);
 			}
 		} catch (SQLException e) {

@@ -1,0 +1,20 @@
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# Committer: Sébastien CHEN <Sébastien CHEN>
+#
+# On branch master
+# Your branch is behind 'origin/master' by 3 commits, and can be fast-forwarded.
+#   (use "git pull" to update your local branch)
+#
+# Changes to be committed:
+#	new file:   Code_CA/projet/lib/lombok.jar
+#	modified:   Code_CA/projet/pom.xml
+#	modified:   Code_CA/projet/src/main/java/modele/Contact.java
+#	modified:   Code_CA/projet/src/main/java/modele/Database.java
+#	modified:   Code_CA/projet/src/main/java/modele/Groupe.java
+#
+-- Rajout de lombok.jar 
+-- pour l'utiliser, prenez le jar et le mettre au niveau du dossier de
+l'ide. Si votre ide est ouvert, faite le redémarrer.
