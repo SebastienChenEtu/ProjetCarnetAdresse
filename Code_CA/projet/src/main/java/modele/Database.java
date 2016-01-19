@@ -78,7 +78,7 @@ public class Database
         try{
             if(connexion != null)
                 connexion.close();
-             return true;
+             return true; //VBO Indentation qui peut prêter à confusion
         }
         catch(SQLException e){
             e.printStackTrace();

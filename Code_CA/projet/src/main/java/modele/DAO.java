@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class DAO{
+public class DAO{ //VBO Le DAO n'a pas à se trouver dans le package modele
 
 	Database db;
 
@@ -82,8 +82,8 @@ public class DAO{
 				contact.setTelephones(telephones);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// TODO Auto-generated catch block //VBO ToRemove
+			e.printStackTrace(); //VBO C'est très moche.
 		}
 		return contact;
 	}
