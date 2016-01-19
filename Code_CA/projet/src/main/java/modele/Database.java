@@ -127,25 +127,25 @@ public class Database
 
         String sqlCreationTableAdresse =  "CREATE TABLE IF NOT EXISTS ADRESSE " +
                 "(IDADRESSE INT PRIMARY KEY     NOT NULL," +
-                "IDCONTACT INT CONSTRAINT fk_adresse_contact references contact(idcontact)  on delete cascade," +
+                "IDCONTACT INT CONSTRAINT fk_adresse_contact references contact(idcontact)  on delete cascade on update cascade," +
                 "ADRESSE           VARCHAR2(50) NOT NULL)";
         requete.executeUpdate(sqlCreationTableAdresse);
 
         String sqlCreationTableMail =  "CREATE TABLE IF NOT EXISTS MAIL " +
                 "(IDMAIL INT PRIMARY KEY     NOT NULL," +
-                "IDCONTACT INT CONSTRAINT fk_mail_contact references contact(idcontact) on delete cascade," +
+                "IDCONTACT INT CONSTRAINT fk_mail_contact references contact(idcontact) on delete cascade on update cascade," +
                 " MAIL           VARCHAR2(50) NOT NULL)"; 	// TODO transact pour vérifier que le mail est OK
         requete.executeUpdate(sqlCreationTableMail);
 
         String sqlCreationTableTelephone =  "CREATE TABLE IF NOT EXISTS TELEPHONE " +
                 "(IDTELEPHONE INT  PRIMARY KEY   NOT NULL," +
-        		"IDCONTACT INT CONSTRAINT fk_telephonecontact_contact references contact(idcontact) on delete cascade," +
+        		"IDCONTACT INT CONSTRAINT fk_telephonecontact_contact references contact(idcontact) on delete cascade on update cascade," +
                 "TELEPHONE           VARCHAR2(50) NOT NULL)";
         requete.executeUpdate(sqlCreationTableTelephone);
 
         String sqlCreationTableContact = "CREATE TABLE IF NOT EXISTS CONTACT " +
                 "(IDCONTACT INT PRIMARY KEY     NOT NULL," +
-                " IDGROUPE        VARCHAR2(50) CONSTRAINT fk_contact_groupe REFERENCES GROUPE (IDGROUPE), " +
+                " IDGROUPE        VARCHAR2(50) CONSTRAINT fk_contact_groupe REFERENCES GROUPE (IDGROUPE) on update cascade, " +
                 " NOM           VARCHAR2(50)  NOT NULL, " +
                 " FAVORIS         BOOLEAN," +
                 " PRENOM        VARCHAR2(50), " +
@@ -170,23 +170,27 @@ public class Database
 		List<Telephone> telsPourC = new LinkedList<Telephone>();
 
 		adrPourC.add(new Adresse(1, "adresse C"));
+		adrPourC.add(new Adresse(2, "Adresse D"));
 		mailsPourC.add(new Mail(1, "mail C"));
 		mailsPourC.add(new Mail(2, "Mail D"));
 		telsPourC.add(new Telephone(1, "Tel C"));
 		telsPourC.add(new Telephone(2, "Tel D"));
 
-		Contact c = new Contact(1,"test","test",new java.sql.Date(1),"fax",0,istreamImage, true);
+		Contact c = new Contact(1,"test","test",new java.sql.Date(1),"fax",2,istreamImage, true);
 		c.setAdresses(adrPourC);
 		c.setMails(mailsPourC);
 		c.setTelephones(telsPourC);
 
-		Groupe g1 = new Groupe(0,"Groupe par défaut");
-		Groupe g2 = new Groupe(2,"nop");
+		Groupe g1 = new Groupe(0,"Groupe par défaut", null);
+		Groupe g2 = new Groupe(2,"nop", null);
+		Groupe g3 = new Groupe(2, "oui", null);
 
 		try {
 		System.out.println(dao.CreerGroupe(g1));
 		System.out.println(dao.CreerGroupe(g2));
-		System.out.println(dao.TrouverGroupe("nop"));
+		System.out.println(dao.TrouverGroupe(g2));
+		System.out.println(dao.ModifierGroupe(g2, g3));
+		System.out.println(dao.TrouverGroupe(g3));
 
 
 		System.out.println(dao.CreerContact(c));
@@ -195,10 +199,11 @@ public class Database
 		for (Adresse adresse : testAdressesC.getAdresses()) {
 			System.out.println(adresse.getAdresse());
 		}
+		System.out.println(dao.TrouverGroupe(g3));
 
-		System.out.println(dao.SupprimerContact(c));
-		System.out.println(dao.SupprimerGroupe(g1));
-		System.out.println(dao.SupprimerGroupe(g2));
+//		System.out.println(dao.SupprimerContact(c));
+//		System.out.println(dao.SupprimerGroupe(g1));
+//		System.out.println(dao.SupprimerGroupe(g2));
 		}
 		catch(Exception e)
 		{
