@@ -160,7 +160,7 @@ public class Database
 
 
     public static void main(String[] args) throws Exception {
-    	ServiceCarnetAdresse service = new ServiceCarnetAdresse();
+    	/*ServiceCarnetAdresse service = new ServiceCarnetAdresse();
 
 
 		File monImage = new File(".\\adrien.jpg");
@@ -187,6 +187,39 @@ public class Database
 
 		g2 = service.setNomGroupe(g2, "nouveauNom");
 		g2 = service.setNomGroupe(g2, "test");
+*/
+		Contact seb = new Contact();
+		  seb.setNom("chen");
+		  seb.setPrenom("sebastien");
+
+		  Contact adrien = new Contact();
+		  adrien.setNom("bertuzzi");
+		  adrien.setPrenom("adrien");
+
+		  Contact patrick = new Contact();
+		  patrick.setNom("chen");
+		  patrick.setPrenom("patrick");
+
+		  Groupe testGroupe = new Groupe();
+		  testGroupe.setListeContacts(new LinkedList<Contact>());
+		  testGroupe.getListeContacts().add(seb);
+		  testGroupe.getListeContacts().add(adrien);
+		  testGroupe.getListeContacts().add(patrick);
+		  Groupe asc = testGroupe;
+		  ServiceCarnetAdresse s = new ServiceCarnetAdresse();
+		  asc = s.trieContactAsc(asc);
+		   System.out.println("----filtre asc----");
+		  for(Contact contact : asc.getListeContacts()){
+		   System.out.println(contact.getNom()+" "+contact.getPrenom());
+		  }
+
+		  asc = s.trieContactDesc(asc);
+		   System.out.println("----filtre desc----");
+		  for(Contact contact : asc.getListeContacts()){
+		   System.out.println(contact.getNom()+" "+contact.getPrenom());
+		  }
+
+
 	}
     /*public static void main(String[] args) throws Exception {
 		Database db = new Database("Database.db");
@@ -248,20 +281,20 @@ public class Database
 		{
 			System.err.println(e.toString());
 		}
-		
+
 		//test de filtre
 		Contact seb = new Contact();
 		seb.setNom("chen");
 		seb.setPrenom("sebastien");
-		
+
 		Contact adrien = new Contact();
 		adrien.setNom("bertuzzi");
 		adrien.setPrenom("adrien");
-		
+
 		Contact patrick = new Contact();
 		patrick.setNom("chen");
 		patrick.setPrenom("prenom");
-		
+
 		Groupe testGroupe = new Groupe();
 		testGroupe.setListeContacts(new LinkedList<Contact>());
 		testGroupe.getListeContacts().add(seb);
@@ -274,7 +307,7 @@ public class Database
 			System.out.println("----filtre asc----");
 			System.out.println(contact.getNom()+" "+contact.getPrenom());
 		}
-		
+
 		asc = s.trieContactDesc(asc);
 		for(Contact contact : asc.getListeContacts()){
 			System.out.println("----filtre desc----");
