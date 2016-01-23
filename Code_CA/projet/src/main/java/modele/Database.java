@@ -21,6 +21,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import service.ServiceCarnetAdresse;
+
 
 /**
  * Cette classe fait l'interface avec la base de donnÃƒÂ©es.
@@ -209,7 +211,38 @@ public class Database
 		{
 			System.err.println(e.toString());
 		}
-
+		
+		//test de filtre
+		Contact seb = new Contact();
+		seb.setNom("chen");
+		seb.setPrenom("sebastien");
+		
+		Contact adrien = new Contact();
+		adrien.setNom("bertuzzi");
+		adrien.setPrenom("adrien");
+		
+		Contact patrick = new Contact();
+		patrick.setNom("chen");
+		patrick.setPrenom("prenom");
+		
+		Groupe testGroupe = new Groupe();
+		testGroupe.setListeContacts(new LinkedList<Contact>());
+		testGroupe.getListeContacts().add(seb);
+		testGroupe.getListeContacts().add(adrien);
+		testGroupe.getListeContacts().add(patrick);
+		Groupe asc = testGroupe;
+		ServiceCarnetAdresse s = new ServiceCarnetAdresse();
+		asc = s.trieContactAsc(asc);
+		for(Contact contact : asc.getListeContacts()){
+			System.out.println("----filtre asc----");
+			System.out.println(contact.getNom()+" "+contact.getPrenom());
+		}
+		
+		asc = s.trieContactDesc(asc);
+		for(Contact contact : asc.getListeContacts()){
+			System.out.println("----filtre desc----");
+			System.out.println(contact.getNom()+" "+contact.getPrenom());
+		}
 		// test pour lire une image récupérée directement dans la BD
 //				ResultSet rs = db.requete.executeQuery("select photo from contact where idcontact = 1");
 //				byte[] imgData = null;
