@@ -18,6 +18,12 @@ public class Groupe {
 
 	}
 
+	public Groupe(Groupe groupe)
+	{
+		this.nom = groupe.getNom();
+		this.idGroupe = groupe.getIdGroupe();
+		this.listeContacts = groupe.getListeContacts();
+	}
 
 
 	public Groupe(int idGroupe, String nom, List<Contact> listeContacts) {

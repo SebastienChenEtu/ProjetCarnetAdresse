@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.Blob;
@@ -20,6 +21,8 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+
+import service.ServiceCarnetAdresse;
 
 
 /**
@@ -61,7 +64,7 @@ public class Database
             requete = connexion.createStatement();
             creationTables();
             requete.executeUpdate("PRAGMA synchronous = OFF;");
-            requete.executeUpdate("PRAGMA foreign_keys = ON;");
+//            requete.executeUpdate("PRAGMA foreign_keys = ON;");
             requete.setQueryTimeout(30);
             return true;
         }catch(SQLException e){
@@ -155,7 +158,37 @@ public class Database
         requete.executeUpdate(sqlCreationTableContact);
     }
 
+
     public static void main(String[] args) throws Exception {
+    	ServiceCarnetAdresse service = new ServiceCarnetAdresse();
+
+
+		File monImage = new File(".\\adrien.jpg");
+		FileInputStream istreamImage = new FileInputStream(monImage);
+
+		Groupe g1 = new Groupe(0,"Groupe par défaut", null);
+		Groupe g2 = new Groupe(2,"nop", null);
+
+		service.CreerGroupe(g1);
+		service.CreerGroupe(g2);
+
+		Contact c = new Contact(1,"test","test",new java.sql.Date(2000,01,22),"fax",2,istreamImage, true);
+		java.sql.Date nouvelleDate = new java.sql.Date(3000,05,18);
+
+		service.CreerContact(c);
+		c = service.setNomContact(c, "nouveauNom");
+		c = service.setPrenomContact(c, "nouveauPrenom");
+		c = service.setFavoris(c, false);
+		c = service.setFax(c, "nouveauFax");
+		c = service.setDDN(c, nouvelleDate);
+		c = service.setGroupe(c, g1);
+
+		System.out.println(service.TrouverContact(c.getIdContact()));
+
+		g2 = service.setNomGroupe(g2, "nouveauNom");
+		g2 = service.setNomGroupe(g2, "test");
+	}
+    /*public static void main(String[] args) throws Exception {
 		Database db = new Database("Database.db");
 		db.connexion();
 		DAO dao = new DAO(db);
@@ -181,9 +214,12 @@ public class Database
 		c.setMails(mailsPourC);
 		c.setTelephones(telsPourC);
 
+		Contact c2 = new Contact(2,"test2","test2",new java.sql.Date(1),"fax",2,istreamImage, true);
+		Contact c3 = new Contact(3,"test3","test3",new java.sql.Date(1),"fax",0,istreamImage, true);
+
 		Groupe g1 = new Groupe(0,"Groupe par défaut", null);
 		Groupe g2 = new Groupe(2,"nop", null);
-		Groupe g3 = new Groupe(2, "oui", null);
+		Groupe g3 = new Groupe(g2.getIdGroupe(), "oui", null);
 
 		try {
 		System.out.println(dao.CreerGroupe(g1));
@@ -193,17 +229,20 @@ public class Database
 		System.out.println(dao.TrouverGroupe(g3));
 
 
-		System.out.println(dao.CreerContact(c));
+		System.out.println(dao.CreerContact(c) + " " + dao.CreerContact(c2) + " " + dao.CreerContact(c3));
 		System.out.println(dao.TrouverContact(1));
 		Contact testAdressesC = dao.TrouverContact(1);
 		for (Adresse adresse : testAdressesC.getAdresses()) {
 			System.out.println(adresse.getAdresse());
 		}
 		System.out.println(dao.TrouverGroupe(g3));
+		System.out.println(dao.TrouverGroupe(g1));
 
-//		System.out.println(dao.SupprimerContact(c));
-//		System.out.println(dao.SupprimerGroupe(g1));
-//		System.out.println(dao.SupprimerGroupe(g2));
+		// problème sur le on delete cascade ?
+
+//		System.out.println("del c : " + dao.SupprimerContact(c));
+//		System.out.println("del g1 : " + dao.SupprimerGroupe(g1));
+//		System.out.println("del g3 : " + dao.SupprimerGroupe(g3));
 		}
 		catch(Exception e)
 		{
@@ -230,5 +269,5 @@ public class Database
 //        f.setVisible(true);
 
 
-	}
+	}*/
 }

@@ -39,6 +39,18 @@ public class Contact {
 		this.photo = photo;
 		this.favoris = favoris;
 	}
+
+	public Contact(Contact contact){
+		this.idContact = contact.getIdContact();
+		this.nom = contact.getNom();
+		this.prenom = contact.getPrenom();
+		this.ddn = contact.getDdn();
+		this.fax = contact.getFax();
+		this.idGroupe = contact.getIdGroupe();
+		this.photo = contact.getPhoto();
+		this.favoris = contact.getFavoris();
+	}
 }
+
 
 

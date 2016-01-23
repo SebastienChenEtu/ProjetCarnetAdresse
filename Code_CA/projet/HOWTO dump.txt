@@ -1,0 +1,5 @@
+dump:
+> sqlite3 some.db .dump > filename.sql
+
+import : 
+> sqlite3 some.db < filename.sql

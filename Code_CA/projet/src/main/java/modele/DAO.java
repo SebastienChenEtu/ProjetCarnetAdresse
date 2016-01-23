@@ -91,7 +91,7 @@ public class DAO{
 	}
 
 	// SQL ne renvoie pas d'erreur quand je crée un contact pour un groupe qui n'existe pas ?
-	public boolean CreerContact(Contact contact) throws Exception {
+	public Contact CreerContact(Contact contact) throws Exception {
 		try {
 			int isContactFavoris = 0; // en SQLite boolean false|true devient int 0|1
 			if(contact.getFavoris())
@@ -178,7 +178,7 @@ public class DAO{
 				}
 
 			}
-			return true;
+			return TrouverContact(contact.getIdContact());
 		}
 		catch (Exception e)
 		{
@@ -204,16 +204,37 @@ public class DAO{
 	}
 
 	// TODO
-	public boolean ModifierContact(Contact contactAModifier, Contact contactSouhaite) throws Exception {
+	// ce serait bien de renvoyer le nouveau contact crée
+	// ce n'est pas grave niveau optimisation ?
+	public Contact ModifierContact(Contact contactAModifier, Contact contactSouhaite) throws Exception {
 		if(TrouverContact(contactAModifier.getIdContact()) == null){
 			throw new Exception("Aucun Contact de ce nom n'existe !");
 		}
+
+		int isContactFavoris = 0; // en SQLite boolean false|true devient int 0|1
+		if(contactSouhaite.getFavoris())
+		{
+			isContactFavoris = 1;
+		}
+
 		try {
 			PreparedStatement ps = db.connexion.prepareStatement("UPDATE CONTACT "
-					+ "SET NOM = ?"
+					+ "SET NOM = ?,"
+					+ "PRENOM = ?,"
+					+ "FAX = ?,"
+					+ "FAVORIS = ?,"
+					+ "DDN = ?,"
+					+ "IDGROUPE = ?"
 					+ "WHERE idcontact = ?");
+			ps.setString(1, contactSouhaite.getNom());
+			ps.setString(2, contactSouhaite.getPrenom());
+			ps.setString(3, contactSouhaite.getFax());
+			ps.setInt(4, isContactFavoris);
+			ps.setDate(5, (Date) contactSouhaite.getDdn());
+			ps.setInt(6, contactSouhaite.getIdGroupe());
+			ps.setInt(7, contactSouhaite.getIdContact());
 			ps.execute();
-			return true;
+			return TrouverContact(contactAModifier.getIdContact());
 		}
 		catch (Exception e)
 		{
@@ -256,7 +277,7 @@ public class DAO{
 		return groupeRes;
 	}
 
-	public boolean ModifierGroupe(Groupe groupeAModifier, Groupe groupeSouhaite) throws Exception {
+	public Groupe ModifierGroupe(Groupe groupeAModifier, Groupe groupeSouhaite) throws Exception {
 		if(TrouverGroupe(groupeAModifier) == null){
 			throw new Exception("Aucun groupe de ce nom n'existe !");
 		}
@@ -268,7 +289,7 @@ public class DAO{
 			ps.setString(1, groupeSouhaite.getNom());
 			ps.setInt(2, groupeAModifier.getIdGroupe());
 			ps.execute();
-			return true;
+			return TrouverGroupe(groupeSouhaite);
 		}
 		catch(Exception e)
 		{
@@ -292,7 +313,7 @@ public class DAO{
 		}
 	}
 
-	public boolean CreerGroupe(Groupe groupe) throws Exception {
+	public Groupe CreerGroupe(Groupe groupe) throws Exception {
 		if(TrouverGroupe(groupe) != null)
 		{
 			throw new Exception("Un groupe de ce nom existe déjà !");
@@ -302,7 +323,7 @@ public class DAO{
 			ps.setInt(1, groupe.getIdGroupe());
 			ps.setString(2, groupe.getNom());
 			ps.execute();
-			return true;
+			return TrouverGroupe(groupe);
 		}
 		catch (Exception e)
 		{
