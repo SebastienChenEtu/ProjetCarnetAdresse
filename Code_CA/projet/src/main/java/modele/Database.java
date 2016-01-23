@@ -64,7 +64,7 @@ public class Database
             requete = connexion.createStatement();
             creationTables();
             requete.executeUpdate("PRAGMA synchronous = OFF;");
-//            requete.executeUpdate("PRAGMA foreign_keys = ON;");
+            requete.executeUpdate("PRAGMA foreign_keys = ON;");
             requete.setQueryTimeout(30);
             return true;
         }catch(SQLException e){
@@ -160,17 +160,21 @@ public class Database
 
 
     public static void main(String[] args) throws Exception {
-    	/*ServiceCarnetAdresse service = new ServiceCarnetAdresse();
+    	ServiceCarnetAdresse service = new ServiceCarnetAdresse();
 
 
 		File monImage = new File(".\\adrien.jpg");
 		FileInputStream istreamImage = new FileInputStream(monImage);
 
-		Groupe g1 = new Groupe(0,"Groupe par défaut", null);
-		Groupe g2 = new Groupe(2,"nop", null);
 
-		service.CreerGroupe(g1);
-		service.CreerGroupe(g2);
+		Groupe g1 = new Groupe();
+		g1.setNom("Défaut");
+
+		Groupe g2 = new Groupe();
+		g2.setNom("nop");
+
+		g1 = service.CreerGroupe(g1);
+		g2 = service.CreerGroupe(g2);
 
 		Contact c = new Contact(1,"test","test",new java.sql.Date(2000,01,22),"fax",2,istreamImage, true);
 		java.sql.Date nouvelleDate = new java.sql.Date(3000,05,18);
@@ -185,9 +189,12 @@ public class Database
 
 		System.out.println(service.TrouverContact(c.getIdContact()));
 
-		g2 = service.setNomGroupe(g2, "nouveauNom");
-		g2 = service.setNomGroupe(g2, "test");
-*/
+		Groupe g3 = service.FusionnerGroupe(g1, g2, "fusion");
+//
+//		g2 = service.setNomGroupe(g2, "nouveauNom");
+//		g2 = service.setNomGroupe(g2, "test");
+
+/*
 		Contact seb = new Contact();
 		  seb.setNom("chen");
 		  seb.setPrenom("sebastien");
@@ -218,7 +225,7 @@ public class Database
 		  for(Contact contact : asc.getListeContacts()){
 		   System.out.println(contact.getNom()+" "+contact.getPrenom());
 		  }
-
+*/
 
 	}
     /*public static void main(String[] args) throws Exception {
