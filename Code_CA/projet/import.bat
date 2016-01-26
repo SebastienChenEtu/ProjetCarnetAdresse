@@ -1,0 +1,1 @@
+sqlite3.exe NewDatabase.db < Recovery.sql

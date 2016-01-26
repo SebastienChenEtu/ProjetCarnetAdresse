@@ -116,71 +116,48 @@ public class DAO{
 			// on crée le contact
 			ps.execute();
 
-			if(TrouverContact(contact.getIdContact()) != null){
-				// pour les adresses d'un contact
-				if(contact.getAdresses() != null)
-				{
-					int idAdresseTempo = 0; // par défaut le 1er idAdresse est à 0++, sinon max(idadresse) ne renvoie rien
+			ps = db.connexion.prepareStatement("select last_insert_rowid()");
+			rs = ps.executeQuery();
+			int idContact = 0;
 
-					ps = db.connexion.prepareStatement("select max(idadresse) from adresse");
-					rs = ps.executeQuery();
-					if(rs.next())
-					{
-						idAdresseTempo = rs.getInt(1);
-					}
-					for (Adresse adr : contact.getAdresses()) {
-						ps = db.connexion.prepareStatement("insert into adresse(idadresse, idcontact, adresse) values (?, ?, ?)");
-						ps.setInt(1, idAdresseTempo++);
-						ps.setInt(2, contact.getIdContact());
-						ps.setString(3, adr.getAdresse());
-						// on crée les adresses pour le contact
-						ps.execute();
-					}
+			if(rs.next())
+			{
+				idContact = rs.getInt(1);
+			}
+
+			// pour les adresses d'un contact
+			if(contact.getAdresses() != null)
+			{
+				for (Adresse adr : contact.getAdresses()) {
+					ps = db.connexion.prepareStatement("insert into adresse(idcontact, adresse) values (?, ?)");
+					ps.setInt(1, idContact);
+					ps.setString(2, adr.getAdresse());
+					// on crée les adresses pour le contact
+					ps.execute();
 				}
-				// pour les mails d'un contact
-				if(contact.getMails() != null)
-				{
-					int idMailTempo = 0; // par défaut 0++ comme idAdresseTempo
-
-					ps = db.connexion.prepareStatement("select max(idmail) from mail");
-					rs = ps.executeQuery();
-					if(rs.next())
-					{
-						idMailTempo = rs.getInt(1);
-					}
-
-					for (Mail mail : contact.getMails()) {
-						ps = db.connexion.prepareStatement("insert into mail(idmail, idcontact, mail) values (?, ?, ?)");
-						ps.setInt(1, idMailTempo++);
-						ps.setInt(2, contact.getIdContact());
-						ps.setString(3, mail.getMail());
-						// on crée les mails pour le contact
-						ps.execute();
-					}
+			}
+			// pour les mails d'un contact
+			if(contact.getMails() != null)
+			{
+				for (Mail mail : contact.getMails()) {
+					ps = db.connexion.prepareStatement("insert into mail(idcontact, mail) values (?, ?)");
+					ps.setInt(1, idContact);
+					ps.setString(2, mail.getMail());
+					// on crée les mails pour le contact
+					ps.execute();
 				}
+			}
 
-				// pour les téléphones d'un contact
-				if(contact.getTelephones() != null)
-				{
-					int idTelTempo = 0; // par défaut 0++ comme idAdresseTempo
-
-					ps = db.connexion.prepareStatement("select max(idtelephone) from telephone");
-					rs = ps.executeQuery();
-					if(rs.next())
-					{
-						idTelTempo = rs.getInt(1);
-					}
-
-					for (Telephone tel : contact.getTelephones()) {
-						ps = db.connexion.prepareStatement("insert into telephone(idtelephone, idcontact, telephone) values (?, ?, ?)");
-						ps.setInt(1, idTelTempo++);
-						ps.setInt(2, contact.getIdContact());
-						ps.setString(3, tel.getTelephone());
-						// on crée les telephones pour le contact
-						ps.execute();
-					}
+			// pour les téléphones d'un contact
+			if(contact.getTelephones() != null)
+			{
+				for (Telephone tel : contact.getTelephones()) {
+					ps = db.connexion.prepareStatement("insert into telephone(idcontact, telephone) values (?, ?)");
+					ps.setInt(1, idContact);
+					ps.setString(2, tel.getTelephone());
+					// on crée les telephones pour le contact
+					ps.execute();
 				}
-
 			}
 			return TrouverContact(contact.getIdContact());
 		}
@@ -191,15 +168,15 @@ public class DAO{
 		}
 	}
 
-	public boolean SupprimerContact(Contact contact) throws Exception {
-		if(TrouverContact(contact.getIdContact()) == null){
+	public boolean SupprimerContact(int idContact) throws Exception {
+		if(TrouverContact(idContact) == null){
 			throw new Exception("Aucun Contact de ce nom n'existe !");
 		}
 		try {
 			PreparedStatement ps = db.connexion.prepareStatement("DELETE FROM CONTACT WHERE idcontact = ?");
-			ps.setInt(1, contact.getIdContact());
+			ps.setInt(1, idContact);
 			ps.execute();
-			return TrouverContact(contact.getIdContact()) == null;
+			return TrouverContact(idContact) == null;
 		}
 		catch(Exception e)
 		{
@@ -210,8 +187,8 @@ public class DAO{
 	// TODO
 	// ce serait bien de renvoyer le nouveau contact crée
 	// ce n'est pas grave niveau optimisation ?
-	public Contact ModifierContact(Contact contactAModifier, Contact contactSouhaite) throws Exception {
-		if(TrouverContact(contactAModifier.getIdContact()) == null){
+	public Contact ModifierContact(int idContactAModifier, Contact contactSouhaite) throws Exception {
+		if(TrouverContact(idContactAModifier) == null){
 			throw new Exception("Aucun Contact de ce nom n'existe !");
 		}
 
@@ -238,7 +215,7 @@ public class DAO{
 			ps.setInt(6, contactSouhaite.getIdGroupe());
 			ps.setInt(7, contactSouhaite.getIdContact());
 			ps.execute();
-			return TrouverContact(contactAModifier.getIdContact());
+			return TrouverContact(idContactAModifier);
 		}
 		catch (Exception e)
 		{
@@ -326,7 +303,7 @@ public class DAO{
 		PreparedStatement ps;
 		try {
 			ps = db.connexion.prepareStatement("INSERT INTO GROUPE(NOM) VALUES(?)");
-			ps.setString(2, groupe.getNom());
+			ps.setString(1, groupe.getNom());
 			ps.execute();
 			return TrouverGroupe(groupe.getNom());
 		}
@@ -361,28 +338,28 @@ public class DAO{
 		List<Groupe> listeGroupe = new LinkedList<Groupe>();
 		PreparedStatement psGroupe = db.connexion.prepareStatement("SELECT * FROM GROUPE");
 
-//		PreparedStatement psContactsGroupe = db.connexion.prepareStatement("SELECT * FROM CONTACT WHERE idgroupe = ?");
+		//		PreparedStatement psContactsGroupe = db.connexion.prepareStatement("SELECT * FROM CONTACT WHERE idgroupe = ?");
 		ResultSet rsGroupe = psGroupe.executeQuery();
 		try {
 			if(!rsGroupe.next()){
 				return null;
 			}
 			else {
-//				int curseurContact = 1;
+				//				int curseurContact = 1;
 
 				while(rsGroupe.next()){
 					Groupe groupeRes = new Groupe();
-//					List<Contact> listeContacts = new LinkedList<Contact>();
+					//					List<Contact> listeContacts = new LinkedList<Contact>();
 					groupeRes.setIdGroupe(Integer.parseInt(rsGroupe.getString("idGroupe")));
 					groupeRes.setNom(rsGroupe.getString("nom"));
 					TrouverGroupe(groupeRes.getNom());
-//					psContactsGroupe.setInt(1, groupeRes.getIdGroupe());
-//					ResultSet rsContactsGroupe = psContactsGroupe.executeQuery();
-//					listeContacts.add(TrouverContact(rsContactsGroupe.getInt(curseurContact)));
-//					groupeRes.setListeContacts(listeContacts);
+					//					psContactsGroupe.setInt(1, groupeRes.getIdGroupe());
+					//					ResultSet rsContactsGroupe = psContactsGroupe.executeQuery();
+					//					listeContacts.add(TrouverContact(rsContactsGroupe.getInt(curseurContact)));
+					//					groupeRes.setListeContacts(listeContacts);
 					service.trieContactAsc(groupeRes);
 					listeGroupe.add(groupeRes);
-//					curseurContact++;
+					//					curseurContact++;
 				}
 			}
 		} catch (SQLException e) {

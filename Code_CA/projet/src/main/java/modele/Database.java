@@ -124,31 +124,32 @@ public class Database
     public void creationTables() throws SQLException{
     	requete = connexion.createStatement();
     	String sqlCreationTableGroupe =  "CREATE TABLE IF NOT EXISTS GROUPE " +
-                "(IDGROUPE INT PRIMARY KEY  AUTOINCREMENT   NOT NULL," +
+                "(IDGROUPE INTEGER PRIMARY KEY  AUTOINCREMENT   NOT NULL," +
                 " NOM           VARCHAR2(50) NOT NULL)";
         requete.executeUpdate(sqlCreationTableGroupe);
 
         String sqlCreationTableAdresse =  "CREATE TABLE IF NOT EXISTS ADRESSE " +
-                "(IDADRESSE INT PRIMARY KEY  AUTOINCREMENT   NOT NULL," +
-                "IDCONTACT INT CONSTRAINT fk_adresse_contact references contact(idcontact) on delete cascade on update cascade ," +
-                "ADRESSE           VARCHAR2(50) NOT NULL)";
+                "(IDADRESSE INTEGER PRIMARY KEY  AUTOINCREMENT   NOT NULL," +
+                "IDCONTACT INTEGER," +
+                "ADRESSE           VARCHAR2(50) NOT NULL, " +
+                "FOREIGN KEY(IDCONTACT) REFERENCES CONTACT(IDCONTACT) on delete cascade)";
         requete.executeUpdate(sqlCreationTableAdresse);
 
         String sqlCreationTableMail =  "CREATE TABLE IF NOT EXISTS MAIL " +
-                "(IDMAIL INT PRIMARY KEY   AUTOINCREMENT  NOT NULL," +
-                "IDCONTACT INT CONSTRAINT fk_mail_contact references contact(idcontact) on delete cascade on update cascade," +
+                "(IDMAIL INTEGER PRIMARY KEY   AUTOINCREMENT  NOT NULL," +
+                "IDCONTACT INTEGER CONSTRAINT fk_mail_contact references contact(idcontact) on delete cascade," +
                 " MAIL           VARCHAR2(50) NOT NULL)"; 	// TODO transact pour vérifier que le mail est OK
         requete.executeUpdate(sqlCreationTableMail);
 
         String sqlCreationTableTelephone =  "CREATE TABLE IF NOT EXISTS TELEPHONE " +
-                "(IDTELEPHONE INT  PRIMARY KEY  AUTOINCREMENT NOT NULL," +
-        		"IDCONTACT INT CONSTRAINT fk_telephonecontact_contact references contact(idcontact) on delete cascade on update cascade," +
+                "(IDTELEPHONE INTEGER  PRIMARY KEY  AUTOINCREMENT NOT NULL," +
+        		"IDCONTACT INTEGER CONSTRAINT fk_telephonecontact_contact references contact(idcontact) on delete cascade," +
                 "TELEPHONE           VARCHAR2(50) NOT NULL)";
         requete.executeUpdate(sqlCreationTableTelephone);
 
         String sqlCreationTableContact = "CREATE TABLE IF NOT EXISTS CONTACT " +
                 "(IDCONTACT INTEGER PRIMARY KEY    AUTOINCREMENT NOT NULL," +
-                " IDGROUPE        VARCHAR2(50) CONSTRAINT fk_contact_groupe REFERENCES GROUPE (IDGROUPE) on update cascade, " +
+                " IDGROUPE        VARCHAR2(50) CONSTRAINT fk_contact_groupe REFERENCES GROUPE (IDGROUPE), " +
                 " NOM           VARCHAR2(50)  NOT NULL, " +
                 " FAVORIS         BOOLEAN," +
                 " PRENOM        VARCHAR2(50), " +
@@ -183,18 +184,35 @@ public class Database
 		Contact c3 = new Contact("test3","test3",new java.sql.Date(2000,01,22),"fax",2,istreamImage, true);
 		Contact c4 = new Contact("test4","test4",new java.sql.Date(2000,01,22),"fax",2,istreamImage, true);
 
+		List<Adresse> adrPourC =  new LinkedList<Adresse>();
+		List<Mail> mailsPourC = new LinkedList<Mail>();
+		List<Telephone> telsPourC = new LinkedList<Telephone>();
+
+		adrPourC.add(new Adresse(1, "adresse C"));
+		adrPourC.add(new Adresse(2, "Adresse D"));
+		mailsPourC.add(new Mail(1, "mail C"));
+		mailsPourC.add(new Mail(2, "Mail D"));
+		telsPourC.add(new Telephone(1, "Tel C"));
+		telsPourC.add(new Telephone(2, "Tel D"));
+
+		c.setAdresses(adrPourC);
+		c.setMails(mailsPourC);
+		c.setTelephones(telsPourC);
+
 		service.CreerContact(c);
 		service.CreerContact(c2);
 		service.CreerContact(c3);
 		service.CreerContact(c4);
-		c = service.setNomContact(c, "nouveauNom");
-		c = service.setPrenomContact(c, "nouveauPrenom");
-		c = service.setFavoris(c, false);
-		c = service.setFax(c, "nouveauFax");
-		c = service.setDDN(c, nouvelleDate);
-		c = service.setGroupe(c, g1);
+		c = service.setNomContact(1, "nouveauNom");
+		c = service.setPrenomContact(1, "nouveauPrenom");
+		c = service.setFavoris(1, false);
+		c = service.setFax(1, "nouveauFax");
+		c = service.setDDN(1, nouvelleDate);
+		c = service.setGroupe(1, g1);
 
 		System.out.println(service.TrouverContact(1));
+
+		System.out.println("SUPPRESSION : " + service.SupprimerContact(1));
 
 //		Groupe g3 = service.FusionnerGroupe(g1, g2, "fusion");
 //

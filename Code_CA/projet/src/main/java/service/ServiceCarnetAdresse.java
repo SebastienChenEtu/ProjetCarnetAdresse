@@ -56,39 +56,39 @@ public class ServiceCarnetAdresse {
 		return this.dao.ModifierGroupe(nomAncienGroupe, nouveauGroupe);
 	}
 
-	public Contact setNomContact(Contact ancienContact, String nom) throws Exception
+	public Contact setNomContact(int idContactAModifier, String nom) throws Exception
 	{
-		Contact nouveauContact = new Contact(ancienContact);
+		Contact nouveauContact = TrouverContact(idContactAModifier);
 		nouveauContact.setNom(nom);
-		return this.dao.ModifierContact(ancienContact, nouveauContact);
+		return this.dao.ModifierContact(idContactAModifier, nouveauContact);
 	}
 
-	public Contact setPrenomContact(Contact ancienContact, String prenom) throws Exception
+	public Contact setPrenomContact(int idContactAModifier, String prenom) throws Exception
 	{
-		Contact nouveauContact = new Contact(ancienContact);
+		Contact nouveauContact = TrouverContact(idContactAModifier);
 		nouveauContact.setPrenom(prenom);
-		return this.dao.ModifierContact(ancienContact, nouveauContact);
+		return this.dao.ModifierContact(idContactAModifier, nouveauContact);
 	}
 
-	public Contact setFax(Contact ancienContact, String fax) throws Exception
+	public Contact setFax(int idContactAModifier, String fax) throws Exception
 	{
-		Contact nouveauContact = new Contact(ancienContact);
+		Contact nouveauContact = TrouverContact(idContactAModifier);
 		nouveauContact.setFax(fax);
-		return this.dao.ModifierContact(ancienContact, nouveauContact);
+		return this.dao.ModifierContact(idContactAModifier, nouveauContact);
 	}
 
-	public Contact setFavoris (Contact ancienContact, boolean isFavoris) throws Exception
+	public Contact setFavoris (int idContactAModifier, boolean isFavoris) throws Exception
 	{
-		Contact nouveauContact = new Contact(ancienContact);
+		Contact nouveauContact = TrouverContact(idContactAModifier);
 		nouveauContact.setFavoris(isFavoris);
-		return this.dao.ModifierContact(ancienContact, nouveauContact);
+		return this.dao.ModifierContact(idContactAModifier, nouveauContact);
 	}
 
-	public Contact setDDN (Contact ancienContact, Date ddn) throws Exception
+	public Contact setDDN (int idContactAModifier, Date ddn) throws Exception
 	{
-		Contact nouveauContact = new Contact(ancienContact);
+		Contact nouveauContact = TrouverContact(idContactAModifier);
 		nouveauContact.setDdn(ddn);
-		return this.dao.ModifierContact(ancienContact, nouveauContact);
+		return this.dao.ModifierContact(idContactAModifier, nouveauContact);
 	}
 
 	// TODO
@@ -97,11 +97,11 @@ public class ServiceCarnetAdresse {
 		return null;
 	}
 
-	public Contact setGroupe(Contact ancienContact, Groupe groupe) throws Exception
+	public Contact setGroupe(int idContactAModifier, Groupe groupe) throws Exception
 	{
-		Contact nouveauContact = new Contact(ancienContact);
+		Contact nouveauContact = TrouverContact(idContactAModifier);
 		nouveauContact.setIdGroupe(groupe.getIdGroupe());
-		return this.dao.ModifierContact(ancienContact, nouveauContact);
+		return this.dao.ModifierContact(idContactAModifier, nouveauContact);
 	}
 
 	public Groupe trieContactAsc(Groupe groupe){
@@ -138,9 +138,9 @@ public class ServiceCarnetAdresse {
 		return this.dao.rechercherContactNom(nom);
 
 	}
-		public boolean SupprimerContact(Contact contact) throws Exception
+		public boolean SupprimerContact(int idContact) throws Exception
 	{
-		return this.dao.SupprimerContact(contact);
+		return this.dao.SupprimerContact(idContact);
 	}
 
 	public boolean SupprimerGroupe(String nomGroupe) throws Exception
