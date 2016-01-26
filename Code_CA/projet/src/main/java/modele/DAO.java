@@ -13,6 +13,8 @@ import service.ServiceCarnetAdresse;
 
 public class DAO{
 
+	//VBO Comme pour le service, séparer votre DAO en plusieurs (Contact, Groupe, etc) pour le rendre plus lisible.
+
 	Database db;
 	ServiceCarnetAdresse service;
 
@@ -26,6 +28,7 @@ public class DAO{
 		List<Mail> mails = new LinkedList<Mail>();
 		List<Telephone> telephones = new LinkedList<Telephone>();
 
+		//VBO Attention, les SELECT * c'est très mal, mais bon, j'accepte
 		PreparedStatement psSimpleContact = db.connexion.prepareStatement("SELECT * FROM CONTACT WHERE idcontact = ? ");
 		psSimpleContact.setInt(1, id);
 

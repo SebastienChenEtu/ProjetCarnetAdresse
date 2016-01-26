@@ -11,7 +11,7 @@ public class Telephone {
 
 	}
 
-
+//VBO Pensez à remettre en forme votre code.
 
 	public Telephone(int idTelephone, String telephone) {
 		super();

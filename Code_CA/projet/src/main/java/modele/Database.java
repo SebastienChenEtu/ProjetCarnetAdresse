@@ -190,6 +190,8 @@ public class Database
 		System.out.println(service.TrouverContact(c.getIdContact()));
 
 		Groupe g3 = service.FusionnerGroupe(g1, g2, "fusion");
+
+    //VBO Faites le ménage dans les commentaires
 //
 //		g2 = service.setNomGroupe(g2, "nouveauNom");
 //		g2 = service.setNomGroupe(g2, "test");

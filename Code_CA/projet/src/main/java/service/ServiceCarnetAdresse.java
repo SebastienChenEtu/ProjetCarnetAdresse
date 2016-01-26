@@ -27,6 +27,7 @@ public class ServiceCarnetAdresse {
 	// Sinon le couple DAO/service a peu d'intérêt ?..
 
 
+	//VBO Il faut découper votre service, il fait trop de choses là (groupe, contact, rechercher, etc.)
 	public ServiceCarnetAdresse()
 	{
 		this.db = new Database("Database.db");

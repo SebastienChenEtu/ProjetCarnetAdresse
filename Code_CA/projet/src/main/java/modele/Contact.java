@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 public class Contact implements Comparable<Contact>{
-	// il faut le gÃ©nÃ©rer automatiquement
+	// il faut le gÃ©nÃ©rer automatiquement //VBO Attention à l'encoding
 	private int idContact;
 	private String nom;
 	private String prenom;

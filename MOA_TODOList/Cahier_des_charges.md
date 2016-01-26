@@ -50,3 +50,7 @@ Les notes appartenant à ce thème sont de la même couleur que celui-ci.
 
 ### Griser et barrer les notes cochées
 Dans le cas d’une note se composant d’une “liste de cases à cocher”, l’utilisateur pourra, lors de l’ajout ou de la modification, griser et barrer le texte des cases qui sont cochées.
+
+# Bonus
+
+Ajouter des tags (comme sur Twitter) sur les notes afin de pouvoir les rechercher sur ce critère.
