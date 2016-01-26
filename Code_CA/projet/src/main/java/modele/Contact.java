@@ -25,10 +25,9 @@ public class Contact implements Comparable<Contact>{
 
 	}
 
-	public Contact(int idContact, String nom, String prenom, Date ddn, String fax, int idGroupe, InputStream photo,
+	public Contact(String nom, String prenom, Date ddn, String fax, int idGroupe, InputStream photo,
 			Boolean favoris) {
 		super();
-		this.idContact = idContact;
 		this.nom = nom;
 		this.prenom = prenom;
 		this.ddn = ddn;

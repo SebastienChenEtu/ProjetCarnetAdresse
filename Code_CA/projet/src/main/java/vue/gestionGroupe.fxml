@@ -1,25 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.Pane?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="334.0" prefWidth="401.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="673.0" prefWidth="401.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="101.0" layoutY="51.0" text="Nom du groupe" />
-      <ChoiceBox layoutX="209.0" layoutY="47.0" prefWidth="150.0" />
-      <Button layoutX="173.0" layoutY="95.0" mnemonicParsing="false" text="Supprimer" />
-      <Label layoutX="152.0" layoutY="14.0" text="Supprimer un groupe" />
-      <Separator layoutY="131.0" prefHeight="17.0" prefWidth="401.0" />
-      <Label layoutX="148.0" layoutY="160.0" text="Fusionner des groupes" />
-      <Label layoutX="29.0" layoutY="200.0" text="Groupe 1" />
-      <Label layoutX="29.0" layoutY="238.0" text="Groupe 2" />
-      <ChoiceBox layoutX="94.0" layoutY="197.0" prefHeight="25.0" prefWidth="150.0" />
-      <ChoiceBox layoutX="94.0" layoutY="234.0" prefWidth="150.0" />
-      <Button layoutX="183.0" layoutY="292.0" mnemonicParsing="false" text="Fusion" />
-      <Button layoutX="323.0" layoutY="292.0" mnemonicParsing="false" text="Retour" />
+      <Label layoutX="105.0" layoutY="233.0" text="Nom du groupe" />
+      <ChoiceBox layoutX="213.0" layoutY="229.0" prefWidth="150.0" />
+      <Button fx:id="btnSupprimer" layoutX="177.0" layoutY="271.0" mnemonicParsing="false" onAction="#btnSupprimer_onAction" text="Supprimer" />
+      <Label layoutX="156.0" layoutY="196.0" text="Supprimer un groupe" />
+      <Separator layoutX="4.0" layoutY="313.0" prefHeight="17.0" prefWidth="401.0" />
+      <Label layoutX="144.0" layoutY="499.0" text="Fusionner des groupes" />
+      <Label layoutX="33.0" layoutY="547.0" text="Groupe 1" />
+      <Label layoutX="33.0" layoutY="583.0" text="Groupe 2" />
+      <ChoiceBox layoutX="102.0" layoutY="543.0" prefHeight="25.0" prefWidth="150.0" />
+      <ChoiceBox layoutX="102.0" layoutY="579.0" prefWidth="150.0" />
+      <Button fx:id="btnFusion" layoutX="187.0" layoutY="626.0" mnemonicParsing="false" onAction="#btnFusion_onAction" text="Fusion" />
+      <Button fx:id="btnRetour" layoutX="322.0" layoutY="626.0" mnemonicParsing="false" onAction="#btnRetour_onAction" text="Retour" />
+      <Separator layoutX="-4.0" layoutY="476.0" prefHeight="17.0" prefWidth="401.0" />
+      <Label layoutX="153.0" layoutY="330.0" text="Modifier un groupe" />
+      <Label layoutX="105.0" layoutY="375.0" text="Nom du groupe" />
+      <ChoiceBox layoutX="213.0" layoutY="371.0" prefWidth="150.0" />
+      <Label layoutX="118.0" layoutY="411.0" text="Nouveau nom" />
+      <TextField layoutX="214.0" layoutY="407.0" />
+      <Button fx:id="btnModifier" layoutX="176.0" layoutY="444.0" mnemonicParsing="false" onAction="#btnModifier_onAction" text="Modifier" />
+      <Separator layoutY="164.0" prefHeight="17.0" prefWidth="401.0" />
+      <Label layoutX="161.0" layoutY="22.0" text="Ajouter un groupe" />
+      <Button fx:id="btnAjouterGroupe" layoutX="159.0" layoutY="123.0" mnemonicParsing="false" onAction="#btnAjouterGroupe_onAction" text="Ajouter le groupe" />
+      <TextField id="textGroupe" layoutX="206.0" layoutY="75.0" />
+      <Label layoutX="82.0" layoutY="79.0" text="Nom du groupe" />
    </children>
 </Pane>

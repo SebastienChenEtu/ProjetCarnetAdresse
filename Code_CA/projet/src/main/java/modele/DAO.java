@@ -102,24 +102,17 @@ public class DAO{
 				isContactFavoris = 1;
 			}
 
-			int idContactTempo = 0; // par défaut le 1er idContact
+			PreparedStatement ps = db.connexion.prepareStatement(" insert into contact(idgroupe, nom,favoris, prenom, ddn, photo, fax) "
+					+ "VALUES(?, ?, ?, ?, ?, ?, ?)");
+			ResultSet rs;
 
-			PreparedStatement ps = db.connexion.prepareStatement("select max(idcontact) from contact");
-			ResultSet rs = ps.executeQuery();
-			if(rs.next())
-			{
-				idContactTempo = rs.getInt(1)+1;
-			}
-			ps = db.connexion.prepareStatement(" insert into contact(idcontact,idgroupe, nom,favoris, prenom, ddn, photo, fax) "
-					+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
-			ps.setInt(1, idContactTempo);
-			ps.setInt(2, contact.getIdGroupe());
-			ps.setString(3, contact.getNom());
-			ps.setInt(4, isContactFavoris);
-			ps.setString(5, contact.getPrenom());
-			ps.setDate(6, (Date) contact.getDdn());
-			ps.setBinaryStream(7, contact.getPhoto(), 1000000); // ne pas mettre en dur le taille maximale (1000000)
-			ps.setString(8, contact.getFax());
+			ps.setInt(1, contact.getIdGroupe());
+			ps.setString(2, contact.getNom());
+			ps.setInt(3, isContactFavoris);
+			ps.setString(4, contact.getPrenom());
+			ps.setDate(5, (Date) contact.getDdn());
+			ps.setBinaryStream(6, contact.getPhoto(), 1000000); // ne pas mettre en dur le taille maximale (1000000)
+			ps.setString(7, contact.getFax());
 			// on crée le contact
 			ps.execute();
 
@@ -254,16 +247,17 @@ public class DAO{
 	}
 
 	//
-	public Groupe TrouverGroupe(Groupe groupe) throws SQLException{
+	public Groupe TrouverGroupe(String nomGroupe) throws SQLException{
 		Groupe groupeRes = new Groupe();
 		List<Contact> listeContacts = new LinkedList<Contact>();
-	
+
 		PreparedStatement psSimpleGroupe = db.connexion.prepareStatement("SELECT * FROM GROUPE WHERE nom = ?");
-		psSimpleGroupe.setString(1, groupe.getNom());
-	
-		PreparedStatement psContactsGroupe = db.connexion.prepareStatement("SELECT * FROM CONTACT WHERE idgroupe = ?");
-		psContactsGroupe.setInt(1, groupe.getIdGroupe());
-	
+		psSimpleGroupe.setString(1, nomGroupe);
+
+		PreparedStatement psContactsGroupe = db.connexion.prepareStatement
+				("select * from groupe, contact where contact.idgroupe = groupe.idgroupe and  groupe.nom = ?");
+		psContactsGroupe.setString(1, nomGroupe);
+
 		ResultSet rsContactsGroupe = psContactsGroupe.executeQuery();
 		ResultSet rsSimpleGroupe = psSimpleGroupe.executeQuery();
 		try {
@@ -272,13 +266,10 @@ public class DAO{
 			}
 			else {
 				groupeRes.setIdGroupe(Integer.parseInt(rsSimpleGroupe.getString("idGroupe")));
-				groupeRes.setNom(groupe.getNom());
-	
-				int curseurContact = 1;
-	
+				groupeRes.setNom(nomGroupe);
+
 				while(rsContactsGroupe.next()){
-					listeContacts.add(TrouverContact(rsContactsGroupe.getInt(curseurContact)));
-					curseurContact++;
+					listeContacts.add(TrouverContact(rsContactsGroupe.getInt("idContact")));
 				}
 				groupeRes.setListeContacts(listeContacts);
 			}
@@ -288,9 +279,10 @@ public class DAO{
 		return groupeRes;
 	}
 
-	
-	public Groupe ModifierGroupe(Groupe groupeAModifier, Groupe groupeSouhaite) throws Exception {
-		if(TrouverGroupe(groupeAModifier) == null){
+
+	public Groupe ModifierGroupe(String nomGroupeAModifier, Groupe groupeSouhaite) throws Exception {
+		Groupe groupeAModifier;
+		if((groupeAModifier = TrouverGroupe(nomGroupeAModifier)) == null){
 			throw new Exception("Aucun groupe de ce nom n'existe !");
 		}
 		try
@@ -301,7 +293,7 @@ public class DAO{
 			ps.setString(1, groupeSouhaite.getNom());
 			ps.setInt(2, groupeAModifier.getIdGroupe());
 			ps.execute();
-			return TrouverGroupe(groupeSouhaite);
+			return TrouverGroupe(groupeSouhaite.getNom());
 		}
 		catch(Exception e)
 		{
@@ -309,15 +301,16 @@ public class DAO{
 		}
 	}
 
-	public boolean SupprimerGroupe(Groupe groupe) throws Exception {
-		if(TrouverGroupe(groupe) == null){
+	public boolean SupprimerGroupe(String nomGroupe) throws Exception {
+		Groupe groupeASupprimer;
+		if((groupeASupprimer = TrouverGroupe(nomGroupe)) == null){
 			throw new Exception("Aucun groupe de ce nom n'existe !");
 		}
 		try {
 			PreparedStatement ps = db.connexion.prepareStatement("DELETE FROM GROUPE WHERE idgroupe = ?");
-			ps.setInt(1, groupe.getIdGroupe());
+			ps.setInt(1, groupeASupprimer.getIdGroupe());
 			ps.execute();
-			return TrouverGroupe(groupe) == null;
+			return TrouverGroupe(nomGroupe) == null;
 		}
 		catch(Exception e)
 		{
@@ -326,24 +319,16 @@ public class DAO{
 	}
 
 	public Groupe CreerGroupe(Groupe groupe) throws Exception {
-		if(TrouverGroupe(groupe) != null)
+		if(TrouverGroupe(groupe.getNom()) != null)
 		{
 			throw new Exception("Un groupe de ce nom existe déjà !");
 		}
-		int idGroupeTempo = 0; // par défaut le 1er idGroupe
-
-		PreparedStatement ps = db.connexion.prepareStatement("select max(idgroupe) from groupe");
-		ResultSet rs = ps.executeQuery();
-		if(rs.next())
-		{
-			idGroupeTempo = rs.getInt(1)+1;
-		}
+		PreparedStatement ps;
 		try {
-			ps = db.connexion.prepareStatement("INSERT INTO GROUPE(IDGROUPE, NOM) VALUES(?, ?)");
-			ps.setInt(1, idGroupeTempo);
+			ps = db.connexion.prepareStatement("INSERT INTO GROUPE(NOM) VALUES(?)");
 			ps.setString(2, groupe.getNom());
 			ps.execute();
-			return TrouverGroupe(groupe);
+			return TrouverGroupe(groupe.getNom());
 		}
 		catch (Exception e)
 		{
@@ -390,7 +375,7 @@ public class DAO{
 //					List<Contact> listeContacts = new LinkedList<Contact>();
 					groupeRes.setIdGroupe(Integer.parseInt(rsGroupe.getString("idGroupe")));
 					groupeRes.setNom(rsGroupe.getString("nom"));
-					TrouverGroupe(groupeRes);
+					TrouverGroupe(groupeRes.getNom());
 //					psContactsGroupe.setInt(1, groupeRes.getIdGroupe());
 //					ResultSet rsContactsGroupe = psContactsGroupe.executeQuery();
 //					listeContacts.add(TrouverContact(rsContactsGroupe.getInt(curseurContact)));
@@ -450,8 +435,8 @@ public class DAO{
 		}
 		return listeContact;
 	}
-	
-	
-	
-	
+
+
+
+
 }

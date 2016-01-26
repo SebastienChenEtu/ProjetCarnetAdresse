@@ -49,11 +49,11 @@ public class ServiceCarnetAdresse {
 		return this.dao.CreerGroupe(groupe);
 	}
 
-	public Groupe setNomGroupe(Groupe ancienGroupe, String nom) throws Exception
+	public Groupe setNomGroupe(String nomAncienGroupe, String nom) throws Exception
 	{
-		Groupe nouveauGroupe = new Groupe(ancienGroupe);
+		Groupe nouveauGroupe = this.dao.TrouverGroupe(nomAncienGroupe);
 		nouveauGroupe.setNom(nom);
-		return this.dao.ModifierGroupe(ancienGroupe, nouveauGroupe);
+		return this.dao.ModifierGroupe(nomAncienGroupe, nouveauGroupe);
 	}
 
 	public Contact setNomContact(Contact ancienContact, String nom) throws Exception
@@ -103,7 +103,7 @@ public class ServiceCarnetAdresse {
 		nouveauContact.setIdGroupe(groupe.getIdGroupe());
 		return this.dao.ModifierContact(ancienContact, nouveauContact);
 	}
-	
+
 	public Groupe trieContactAsc(Groupe groupe){
 		List<Contact> trieAsc = new LinkedList<Contact>();
 		trieAsc = groupe.getListeContacts();
@@ -111,7 +111,7 @@ public class ServiceCarnetAdresse {
 		groupe.setListeContacts(trieAsc);
 		return groupe;
 	}
-	
+
 	public Groupe trieContactDesc(Groupe groupe){
 		Groupe groupeDesc = trieContactAsc(groupe);
 		List<Contact> trieDesc = new LinkedList<Contact>();
@@ -125,27 +125,27 @@ public class ServiceCarnetAdresse {
 	public List<Contact> trouverToutContact() throws SQLException{
 		return this.dao.trouverToutContact();
 	}
-	
+
 	public List<Groupe> trouverToutGroupe() throws SQLException{
 		return this.dao.trouverToutGroupe();
 	}
-	
+
 	public List<Contact> trouverToutFavoris() throws SQLException{
 		return this.dao.trouverToutFavoris();
 	}
-	
+
 	public List<Contact> rechercheContactNom(String nom) throws SQLException{
 		return this.dao.rechercherContactNom(nom);
-		
+
 	}
 		public boolean SupprimerContact(Contact contact) throws Exception
 	{
 		return this.dao.SupprimerContact(contact);
 	}
 
-	public boolean SupprimerGroupe(Groupe groupe) throws Exception
+	public boolean SupprimerGroupe(String nomGroupe) throws Exception
 	{
-		return this.dao.SupprimerGroupe(groupe);
+		return this.dao.SupprimerGroupe(nomGroupe);
 	}
 
 	// TODO

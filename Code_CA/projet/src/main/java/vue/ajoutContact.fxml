@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
@@ -9,11 +13,11 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<TitledPane animated="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" text="Ajouter un Contact" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.65">
+<TitledPane animated="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" text="Ajouter un Contact" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <content>
     <AnchorPane id="panetitleAjoutContact" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
          <children>
-            <ImageView id="imgAvatar" fitHeight="95.0" fitWidth="130.0" layoutX="33.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView id="imgAvatar" fitHeight="95.0" fitWidth="124.0" layoutX="33.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@test.jpg" />
                </image>
@@ -27,17 +31,17 @@
             <Label id="labelAdresse" layoutX="42.0" layoutY="187.0" text="Adresse" />
             <Label id="labelTelephone" layoutX="11.0" layoutY="252.0" text="N° Télephone" />
             <TextField id="textAdresse" layoutX="98.0" layoutY="183.0" prefHeight="25.0" prefWidth="289.0" />
-            <Button id="btnAjoutAdresse" layoutX="400.0" layoutY="183.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="28.0" text="Add" />
+            <Button id="btnAjoutAdresse" fx:id="btnAjoutAdresse" layoutX="400.0" layoutY="183.0" mnemonicParsing="false" onAction="#btnAjoutAdresse_onAction" prefHeight="25.0" prefWidth="28.0" text="Add" />
             <TextField id="textTelephone" layoutX="98.0" layoutY="248.0" prefHeight="25.0" prefWidth="160.0" />
-            <Button id="btnAjoutTelephone" layoutX="279.0" layoutY="248.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="Button" />
+            <Button id="btnAjoutTelephone" fx:id="btnAjoutTelephone" layoutX="279.0" layoutY="248.0" mnemonicParsing="false" onAction="#btnAjoutTelephone_onAction" prefHeight="25.0" prefWidth="31.0" text="Button" />
             <Label id="labelFax" layoutX="379.0" layoutY="252.0" text="Fax" />
             <TextField id="textFax" layoutX="414.0" layoutY="248.0" />
             <Label id="labelEmail" layoutX="48.0" layoutY="318.0" text="E-mail" />
             <TextField id="textEmail" layoutX="98.0" layoutY="314.0" prefHeight="25.0" prefWidth="271.0" />
-            <Button id="btnAjoutEmail" layoutX="374.0" layoutY="314.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="Button" />
-            <Button id="btnValider" layoutX="448.0" layoutY="335.0" mnemonicParsing="false" text="Valider" />
-            <Button id="btnAnnuler" layoutX="518.0" layoutY="335.0" mnemonicParsing="false" text="Annuler" />
-            <Button id="btnAvatar" layoutX="33.0" layoutY="111.0" mnemonicParsing="false" prefHeight="14.0" prefWidth="131.0" text="Avatar" />
+            <Button id="btnAjoutEmail" fx:id="btnAjoutMail" layoutX="374.0" layoutY="314.0" mnemonicParsing="false" onAction="#btnAjoutMail_onAction" prefHeight="25.0" prefWidth="25.0" text="Button" />
+            <Button id="btnValider" fx:id="btnValide" layoutX="448.0" layoutY="335.0" mnemonicParsing="false" onAction="#btnValide_onAction" text="Valider" />
+            <Button id="btnAnnuler" fx:id="btnAnnuler" layoutX="520.0" layoutY="335.0" mnemonicParsing="false" onAction="#btnAnnuler_onAction" text="Annuler" />
+            <Button id="btnAvatar" fx:id="btnAvatar" layoutX="33.0" layoutY="111.0" mnemonicParsing="false" onAction="#btnAvatar_onAction" prefHeight="14.0" prefWidth="131.0" text="Avatar" />
          </children></AnchorPane>
   </content>
 </TitledPane>
