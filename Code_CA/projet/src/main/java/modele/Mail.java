@@ -18,4 +18,8 @@ public class Mail {
 
 	}
 
+	public Mail(String mail) {
+		this.Mail = mail;
+	}
+
 }

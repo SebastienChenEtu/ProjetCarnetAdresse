@@ -177,23 +177,23 @@ public class Database
 		g1 = service.CreerGroupe(g1);
 		g2 = service.CreerGroupe(g2);
 
-		Contact c = new Contact("test","test",new java.sql.Date(2000,01,22),"fax",2,istreamImage, true);
+		Contact c = new Contact("test","test",new java.sql.Date(2000,01,22),"fax",2,istreamImage, false);
 		java.sql.Date nouvelleDate = new java.sql.Date(3000,05,18);
 
 		Contact c2 = new Contact("test2","test2",new java.sql.Date(2000,01,22),"fax",2,istreamImage, true);
-		Contact c3 = new Contact("test3","test3",new java.sql.Date(2000,01,22),"fax",2,istreamImage, true);
-		Contact c4 = new Contact("test4","test4",new java.sql.Date(2000,01,22),"fax",2,istreamImage, true);
+		Contact c3 = new Contact("test3","test3",new java.sql.Date(2000,01,22),"fax",2,istreamImage, false);
+		Contact c4 = new Contact("test4","test4",new java.sql.Date(2000,01,22),"fax",2,istreamImage, false);
 
 		List<Adresse> adrPourC =  new LinkedList<Adresse>();
 		List<Mail> mailsPourC = new LinkedList<Mail>();
 		List<Telephone> telsPourC = new LinkedList<Telephone>();
 
-		adrPourC.add(new Adresse(1, "adresse C"));
-		adrPourC.add(new Adresse(2, "Adresse D"));
-		mailsPourC.add(new Mail(1, "mail C"));
-		mailsPourC.add(new Mail(2, "Mail D"));
-		telsPourC.add(new Telephone(1, "Tel C"));
-		telsPourC.add(new Telephone(2, "Tel D"));
+		adrPourC.add(new Adresse("adresse C"));
+		adrPourC.add(new Adresse("Adresse D"));
+		mailsPourC.add(new Mail("mail C"));
+		mailsPourC.add(new Mail("Mail D"));
+		telsPourC.add(new Telephone("Tel C"));
+		telsPourC.add(new Telephone("Tel D"));
 
 		c.setAdresses(adrPourC);
 		c.setMails(mailsPourC);
@@ -203,16 +203,23 @@ public class Database
 		service.CreerContact(c2);
 		service.CreerContact(c3);
 		service.CreerContact(c4);
-		c = service.setNomContact(1, "nouveauNom");
-		c = service.setPrenomContact(1, "nouveauPrenom");
-		c = service.setFavoris(1, false);
-		c = service.setFax(1, "nouveauFax");
-		c = service.setDDN(1, nouvelleDate);
-		c = service.setGroupe(1, g1);
+//		c = service.setNomContact(1, "nouveauNom");
+//		c = service.setPrenomContact(1, "nouveauPrenom");
+//		c = service.setFavoris(1, false);
+//		c = service.setFax(1, "nouveauFax");
+//		c = service.setDDN(1, nouvelleDate);
+//		c = service.setGroupe(1, g1);
 
 		System.out.println(service.TrouverContact(1));
+//		System.out.println("SUPPRESSION : " + service.SupprimerContact(1));
 
-		System.out.println("SUPPRESSION : " + service.SupprimerContact(1));
+		telsPourC.remove(1); // Adresse D
+		telsPourC.add(new Telephone("nouvelle Adresse"));
+		telsPourC.add(new Telephone("nouvelle Adresse"));
+
+		c = service.setTelephones(1, telsPourC);
+		System.out.println(service.TrouverContact(1));
+
 
 //		Groupe g3 = service.FusionnerGroupe(g1, g2, "fusion");
 //

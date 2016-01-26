@@ -21,6 +21,12 @@ public class Telephone {
 
 
 
+	public Telephone(String telephone) {
+		this.telephone = telephone;
+	}
+
+
+
 	public int getIdTelephone() {
 		return idTelephone;
 	}

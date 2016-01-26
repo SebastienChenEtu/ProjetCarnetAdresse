@@ -61,25 +61,18 @@ public class DAO{
 				ByteArrayInputStream stream = new ByteArrayInputStream(imgData);
 				contact.setPhoto(stream);
 
-				int curseurAdresse = 1;
-				int curseurMail = 1;
-				int curseurTelephone = 1;
-
 				while(rsAdressesContact.next()){
-					adresses.add(new Adresse(rsAdressesContact.getInt(curseurAdresse),rsAdressesContact.getString("adresse")));
-					curseurAdresse++;
+					adresses.add(new Adresse(rsAdressesContact.getInt("idadresse"),rsAdressesContact.getString("adresse")));
 				}
 
 				while(rsMailsContact.next())
 				{
-					mails.add(new Mail(rsMailsContact.getInt(curseurMail), rsMailsContact.getString("mail")));
-					curseurMail++;
+					mails.add(new Mail(rsMailsContact.getInt("idMail"), rsMailsContact.getString("mail")));
 				}
 
 				while(rsTelephonesContact.next())
 				{
-					telephones.add(new Telephone(rsTelephonesContact.getInt(curseurTelephone), rsTelephonesContact.getString("telephone")));
-					curseurTelephone++;
+					telephones.add(new Telephone(rsTelephonesContact.getInt("idTelephone"), rsTelephonesContact.getString("telephone")));
 				}
 
 				contact.setAdresses(adresses);
@@ -215,6 +208,61 @@ public class DAO{
 			ps.setInt(6, contactSouhaite.getIdGroupe());
 			ps.setInt(7, contactSouhaite.getIdContact());
 			ps.execute();
+
+			// pour les adresses d'un contact
+			if(contactSouhaite.getAdresses() != null)
+			{
+				ps = db.connexion.prepareStatement("DELETE FROM ADRESSE WHERE idContact = ?");
+				ps.setInt(1, idContactAModifier);
+				ps.execute();
+
+				for (Adresse adr : contactSouhaite.getAdresses()) {
+					/*ps = db.connexion.prepareStatement("UPDATE ADRESSE SET "
+							+ "ADRESSE = ?"
+							+ "WHERE IDCONTACT = ?");
+					ps.setString(1, adr.getAdresse());
+					ps.setInt(2, idContactAModifier);
+					 */
+					ps = db.connexion.prepareStatement("insert into adresse(idcontact, adresse) values (?, ?)");
+					ps.setInt(1, idContactAModifier);
+					ps.setString(2, adr.getAdresse());
+
+					// on update
+					ps.execute();
+				}
+			}
+			// pour les mails d'un contact
+			if(contactSouhaite.getMails() != null)
+			{
+				ps = db.connexion.prepareStatement("DELETE FROM MAIL WHERE idContact = ?");
+				ps.setInt(1, idContactAModifier);
+				ps.execute();
+
+				for (Mail mail : contactSouhaite.getMails()) {
+					ps = db.connexion.prepareStatement("insert into MAIL(idcontact, MAIL) values (?, ?)");
+					ps.setInt(1, idContactAModifier);
+					ps.setString(2, mail.getMail());
+
+					// on update
+					ps.execute();
+				}
+			}
+			// pour les telephones d'un contact
+			if(contactSouhaite.getTelephones() != null)
+			{
+				ps = db.connexion.prepareStatement("DELETE FROM TELEPHONE WHERE idContact = ?");
+				ps.setInt(1, idContactAModifier);
+				ps.execute();
+
+				for (Telephone telephone: contactSouhaite.getTelephones()) {
+					ps = db.connexion.prepareStatement("insert into TELEPHONE(idcontact, TELEPHONE) values (?, ?)");
+					ps.setInt(1, idContactAModifier);
+					ps.setString(2, telephone.getTelephone());
+
+					// on update
+					ps.execute();
+				}
+			}
 			return TrouverContact(idContactAModifier);
 		}
 		catch (Exception e)
@@ -319,13 +367,8 @@ public class DAO{
 		PreparedStatement psContact = db.connexion.prepareStatement("SELECT * FROM CONTACT");
 		ResultSet rsContact = psContact.executeQuery();
 		try {
-			if(!rsContact.next()){
-				return null;
-			}
-			else {
-				while(rsContact.next()){
-					listeContacts.add(TrouverContact(Integer.parseInt(rsContact.getString("idContact"))));
-				}
+			while(rsContact.next()){
+				listeContacts.add(TrouverContact(Integer.parseInt(rsContact.getString("idContact"))));
 			}
 		} catch (SQLException e) {
 			throw new SQLException(e.toString());
@@ -336,31 +379,23 @@ public class DAO{
 
 	public List<Groupe> trouverToutGroupe() throws SQLException {
 		List<Groupe> listeGroupe = new LinkedList<Groupe>();
-		PreparedStatement psGroupe = db.connexion.prepareStatement("SELECT * FROM GROUPE");
+		PreparedStatement psGroupe = db.connexion.prepareStatement("SELECT * FROM GROUPE ORDER BY NOM");
 
 		//		PreparedStatement psContactsGroupe = db.connexion.prepareStatement("SELECT * FROM CONTACT WHERE idgroupe = ?");
 		ResultSet rsGroupe = psGroupe.executeQuery();
 		try {
-			if(!rsGroupe.next()){
-				return null;
-			}
-			else {
-				//				int curseurContact = 1;
-
-				while(rsGroupe.next()){
-					Groupe groupeRes = new Groupe();
-					//					List<Contact> listeContacts = new LinkedList<Contact>();
-					groupeRes.setIdGroupe(Integer.parseInt(rsGroupe.getString("idGroupe")));
-					groupeRes.setNom(rsGroupe.getString("nom"));
-					TrouverGroupe(groupeRes.getNom());
-					//					psContactsGroupe.setInt(1, groupeRes.getIdGroupe());
-					//					ResultSet rsContactsGroupe = psContactsGroupe.executeQuery();
-					//					listeContacts.add(TrouverContact(rsContactsGroupe.getInt(curseurContact)));
-					//					groupeRes.setListeContacts(listeContacts);
-					service.trieContactAsc(groupeRes);
-					listeGroupe.add(groupeRes);
-					//					curseurContact++;
-				}
+			while(rsGroupe.next()){
+				Groupe groupeRes = new Groupe();
+				//					List<Contact> listeContacts = new LinkedList<Contact>();
+				groupeRes.setIdGroupe(Integer.parseInt(rsGroupe.getString("idGroupe")));
+				groupeRes.setNom(rsGroupe.getString("nom"));
+				groupeRes = TrouverGroupe(groupeRes.getNom());
+				//					psContactsGroupe.setInt(1, groupeRes.getIdGroupe());
+				//					ResultSet rsContactsGroupe = psContactsGroupe.executeQuery();
+				//					listeContacts.add(TrouverContact(rsContactsGroupe.getInt(curseurContact)));
+				//					groupeRes.setListeContacts(listeContacts);
+				listeGroupe.add(groupeRes);
+				//					curseurContact++;
 			}
 		} catch (SQLException e) {
 			throw new SQLException(e.toString());
@@ -369,43 +404,34 @@ public class DAO{
 	}
 
 	public List<Contact> trouverToutFavoris() throws SQLException {
-		List<Contact> listeContacts = new LinkedList<Contact>();
+		List<Contact> listeTousLesContacts = new LinkedList<Contact>();
+		List<Contact> listeTousLesFavoris = new LinkedList<Contact>();
 		PreparedStatement psContact = db.connexion.prepareStatement("SELECT * FROM CONTACT");
 		ResultSet rsContact = psContact.executeQuery();
 		try {
-			if(!rsContact.next()){
-				return null;
+			while(rsContact.next()){
+				listeTousLesContacts.add(TrouverContact(Integer.parseInt(rsContact.getString("idContact"))));
 			}
-			else {
-				while(rsContact.next()){
-					listeContacts.add(TrouverContact(Integer.parseInt(rsContact.getString("idContact"))));
+			for (Contact contact : listeTousLesContacts) {
+				if(contact.getFavoris()){
+					listeTousLesFavoris.add(contact);
 				}
-				for(Contact contact : listeContacts){
-					if(contact.getFavoris() == false){
-						listeContacts.remove(contact);
-					}
-				}
-				Collections.sort(listeContacts);
 			}
+			Collections.sort(listeTousLesContacts);
 		} catch (SQLException e) {
 			throw new SQLException(e.toString());
 		}
-		return listeContacts;
+		return listeTousLesFavoris;
 	}
 
 	public List<Contact> rechercherContactNom(String nom) throws SQLException {
 		List<Contact> listeContact = new LinkedList<Contact>();
-		PreparedStatement psContact = db.connexion.prepareStatement("SELECT * FROM CONTACT WHERE nom LIKE ?% ");
+		PreparedStatement psContact = db.connexion.prepareStatement("SELECT * FROM CONTACT WHERE nom LIKE ?%");
 		psContact.setString(1,nom);
 		ResultSet rsContact = psContact.executeQuery();
 		try {
-			if(!rsContact.next()){
-				return null;
-			}
-			else {
-				while(rsContact.next()){
-					listeContact.add(TrouverContact(Integer.parseInt(rsContact.getString("idContact"))));
-				}
+			while(rsContact.next()){
+				listeContact.add(TrouverContact(Integer.parseInt(rsContact.getString("idContact"))));
 			}
 		} catch (SQLException e) {
 			throw new SQLException(e.toString());

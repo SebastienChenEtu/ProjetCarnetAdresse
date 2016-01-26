@@ -1,5 +1,6 @@
 package modele;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import lombok.Data;
@@ -11,7 +12,7 @@ public class Groupe {
 	// il faut le gÃ©nÃ©rer automatiquement
 	private String nom;
 	private int idGroupe;
-	private List<Contact> listeContacts;
+	private List<Contact> listeContacts = new LinkedList<Contact>();
 
 	public Groupe(){
 

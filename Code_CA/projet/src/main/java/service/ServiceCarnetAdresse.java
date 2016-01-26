@@ -9,10 +9,13 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import modele.Adresse;
 import modele.Contact;
 import modele.DAO;
 import modele.Database;
 import modele.Groupe;
+import modele.Mail;
+import modele.Telephone;
 
 @Service
 public class ServiceCarnetAdresse {
@@ -162,5 +165,23 @@ public class ServiceCarnetAdresse {
 		groupe.setListeContacts(listeContacts);
 		groupe.setNom(nomGroupe);
 		return this.dao.CreerGroupe(groupe);
+	}
+
+	public Contact setAdresses(int idContactAModifier,List<Adresse> listeAdresses) throws Exception{
+		Contact nouveauContact = TrouverContact(idContactAModifier);
+		nouveauContact.setAdresses(listeAdresses);
+		return this.dao.ModifierContact(idContactAModifier, nouveauContact);
+	}
+
+	public Contact setMails(int idContactAModifier, List<Mail> listeMails) throws Exception{
+		Contact nouveauContact = TrouverContact(idContactAModifier);
+		nouveauContact.setMails(listeMails);
+		return this.dao.ModifierContact(idContactAModifier, nouveauContact);
+	}
+
+	public Contact setTelephones(int idContactAModifier, List<Telephone> listeTelephones) throws Exception{
+		Contact nouveauContact = TrouverContact(idContactAModifier);
+		nouveauContact.setTelephones(listeTelephones);
+		return this.dao.ModifierContact(idContactAModifier, nouveauContact);
 	}
 }

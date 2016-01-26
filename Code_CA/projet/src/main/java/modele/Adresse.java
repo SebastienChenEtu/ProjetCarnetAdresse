@@ -15,4 +15,8 @@ public class Adresse {
 		this.adresse = adresse;
 	}
 
+	public Adresse(String adresse) {
+		this.adresse = adresse;
+	}
+
 }
