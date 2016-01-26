@@ -2,16 +2,19 @@ package modele;
 
 import java.io.ByteArrayInputStream;
 import java.sql.Date;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+
+import service.ServiceCarnetAdresse;
 
 public class DAO{
 
 	Database db;
+	ServiceCarnetAdresse service;
 
 	public DAO(Database db){
 		this.db = db;
@@ -246,13 +249,13 @@ public class DAO{
 	public Groupe TrouverGroupe(Groupe groupe) throws SQLException{
 		Groupe groupeRes = new Groupe();
 		List<Contact> listeContacts = new LinkedList<Contact>();
-
+	
 		PreparedStatement psSimpleGroupe = db.connexion.prepareStatement("SELECT * FROM GROUPE WHERE nom = ?");
 		psSimpleGroupe.setString(1, groupe.getNom());
-
+	
 		PreparedStatement psContactsGroupe = db.connexion.prepareStatement("SELECT * FROM CONTACT WHERE idgroupe = ?");
 		psContactsGroupe.setInt(1, groupe.getIdGroupe());
-
+	
 		ResultSet rsContactsGroupe = psContactsGroupe.executeQuery();
 		ResultSet rsSimpleGroupe = psSimpleGroupe.executeQuery();
 		try {
@@ -262,9 +265,9 @@ public class DAO{
 			else {
 				groupeRes.setIdGroupe(Integer.parseInt(rsSimpleGroupe.getString("idGroupe")));
 				groupeRes.setNom(groupe.getNom());
-
+	
 				int curseurContact = 1;
-
+	
 				while(rsContactsGroupe.next()){
 					listeContacts.add(TrouverContact(rsContactsGroupe.getInt(curseurContact)));
 					curseurContact++;
@@ -277,6 +280,7 @@ public class DAO{
 		return groupeRes;
 	}
 
+	
 	public Groupe ModifierGroupe(Groupe groupeAModifier, Groupe groupeSouhaite) throws Exception {
 		if(TrouverGroupe(groupeAModifier) == null){
 			throw new Exception("Aucun groupe de ce nom n'existe !");
@@ -330,4 +334,108 @@ public class DAO{
 			throw new Exception(e.toString());
 		}
 	}
+
+	public List<Contact> trouverToutContact() throws SQLException {
+
+		List<Contact> listeContacts = new LinkedList<Contact>();
+		PreparedStatement psContact = db.connexion.prepareStatement("SELECT * FROM CONTACT");
+		ResultSet rsContact = psContact.executeQuery();
+		try {
+			if(!rsContact.next()){
+				return null;
+			}
+			else {
+				while(rsContact.next()){
+					listeContacts.add(TrouverContact(Integer.parseInt(rsContact.getString("idContact"))));
+				}
+			}
+		} catch (SQLException e) {
+			throw new SQLException(e.toString());
+		}
+		Collections.sort(listeContacts);
+		return listeContacts;
+	}
+
+	public List<Groupe> trouverToutGroupe() throws SQLException {
+		List<Groupe> listeGroupe = new LinkedList<Groupe>();
+		PreparedStatement psGroupe = db.connexion.prepareStatement("SELECT * FROM GROUPE");
+
+//		PreparedStatement psContactsGroupe = db.connexion.prepareStatement("SELECT * FROM CONTACT WHERE idgroupe = ?");
+		ResultSet rsGroupe = psGroupe.executeQuery();
+		try {
+			if(!rsGroupe.next()){
+				return null;
+			}
+			else {
+//				int curseurContact = 1;
+
+				while(rsGroupe.next()){
+					Groupe groupeRes = new Groupe();
+//					List<Contact> listeContacts = new LinkedList<Contact>();
+					groupeRes.setIdGroupe(Integer.parseInt(rsGroupe.getString("idGroupe")));
+					groupeRes.setNom(rsGroupe.getString("nom"));
+					TrouverGroupe(groupeRes);
+//					psContactsGroupe.setInt(1, groupeRes.getIdGroupe());
+//					ResultSet rsContactsGroupe = psContactsGroupe.executeQuery();
+//					listeContacts.add(TrouverContact(rsContactsGroupe.getInt(curseurContact)));
+//					groupeRes.setListeContacts(listeContacts);
+					service.trieContactAsc(groupeRes);
+					listeGroupe.add(groupeRes);
+//					curseurContact++;
+				}
+			}
+		} catch (SQLException e) {
+			throw new SQLException(e.toString());
+		}
+		return listeGroupe;
+	}
+
+	public List<Contact> trouverToutFavoris() throws SQLException {
+		List<Contact> listeContacts = new LinkedList<Contact>();
+		PreparedStatement psContact = db.connexion.prepareStatement("SELECT * FROM CONTACT");
+		ResultSet rsContact = psContact.executeQuery();
+		try {
+			if(!rsContact.next()){
+				return null;
+			}
+			else {
+				while(rsContact.next()){
+					listeContacts.add(TrouverContact(Integer.parseInt(rsContact.getString("idContact"))));
+				}
+				for(Contact contact : listeContacts){
+					if(contact.getFavoris() == false){
+						listeContacts.remove(contact);
+					}
+				}
+				Collections.sort(listeContacts);
+			}
+		} catch (SQLException e) {
+			throw new SQLException(e.toString());
+		}
+		return listeContacts;
+	}
+
+	public List<Contact> rechercherContactNom(String nom) throws SQLException {
+		List<Contact> listeContact = new LinkedList<Contact>();
+		PreparedStatement psContact = db.connexion.prepareStatement("SELECT * FROM CONTACT WHERE nom LIKE ?% ");
+		psContact.setString(1,nom);
+		ResultSet rsContact = psContact.executeQuery();
+		try {
+			if(!rsContact.next()){
+				return null;
+			}
+			else {
+				while(rsContact.next()){
+					listeContact.add(TrouverContact(Integer.parseInt(rsContact.getString("idContact"))));
+				}
+			}
+		} catch (SQLException e) {
+			throw new SQLException(e.toString());
+		}
+		return listeContact;
+	}
+	
+	
+	
+	
 }

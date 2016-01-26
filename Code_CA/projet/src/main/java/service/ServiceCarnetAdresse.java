@@ -13,7 +13,6 @@ import modele.Contact;
 import modele.DAO;
 import modele.Database;
 import modele.Groupe;
-import modele.Telephone;
 
 @Service
 public class ServiceCarnetAdresse {
@@ -121,5 +120,22 @@ public class ServiceCarnetAdresse {
 		}
 		groupe.setListeContacts(trieDesc);
 		return groupe;
+	}
+
+	public List<Contact> trouverToutContact() throws SQLException{
+		return this.dao.trouverToutContact();
+	}
+	
+	public List<Groupe> trouverToutGroupe() throws SQLException{
+		return this.dao.trouverToutGroupe();
+	}
+	
+	public List<Contact> trouverToutFavoris() throws SQLException{
+		return this.dao.trouverToutFavoris();
+	}
+	
+	public List<Contact> rechercheContactNom(String nom) throws SQLException{
+		return this.dao.rechercherContactNom(nom);
+		
 	}
 }
