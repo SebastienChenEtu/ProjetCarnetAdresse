@@ -138,4 +138,29 @@ public class ServiceCarnetAdresse {
 		return this.dao.rechercherContactNom(nom);
 		
 	}
+		public boolean SupprimerContact(Contact contact) throws Exception
+	{
+		return this.dao.SupprimerContact(contact);
+	}
+
+	public boolean SupprimerGroupe(Groupe groupe) throws Exception
+	{
+		return this.dao.SupprimerGroupe(groupe);
+	}
+
+	// TODO
+	// il faut récuperer la liste de contacte des groupes
+	// il faut mettre à jour l'id des contacts sur le nouveau groupe crée
+	public Groupe FusionnerGroupe(Groupe g1, Groupe g2, String nomGroupe) throws Exception
+	{
+		List<Contact> listeContacts = new LinkedList<Contact>();
+		listeContacts.addAll(g1.getListeContacts());
+		listeContacts.addAll(g2.getListeContacts());
+//		this.dao.SupprimerGroupe(g1);
+//		this.dao.SupprimerGroupe(g2);
+		Groupe groupe = new Groupe();
+		groupe.setListeContacts(listeContacts);
+		groupe.setNom(nomGroupe);
+		return this.dao.CreerGroupe(groupe);
+	}
 }

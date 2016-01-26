@@ -102,9 +102,17 @@ public class DAO{
 				isContactFavoris = 1;
 			}
 
-			PreparedStatement ps = db.connexion.prepareStatement(" insert into contact(idcontact,idgroupe, nom,favoris, prenom, ddn, photo, fax) "
+			int idContactTempo = 0; // par défaut le 1er idContact
+
+			PreparedStatement ps = db.connexion.prepareStatement("select max(idcontact) from contact");
+			ResultSet rs = ps.executeQuery();
+			if(rs.next())
+			{
+				idContactTempo = rs.getInt(1)+1;
+			}
+			ps = db.connexion.prepareStatement(" insert into contact(idcontact,idgroupe, nom,favoris, prenom, ddn, photo, fax) "
 					+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
-			ps.setInt(1, contact.getIdContact());
+			ps.setInt(1, idContactTempo);
 			ps.setInt(2, contact.getIdGroupe());
 			ps.setString(3, contact.getNom());
 			ps.setInt(4, isContactFavoris);
@@ -122,7 +130,7 @@ public class DAO{
 					int idAdresseTempo = 0; // par défaut le 1er idAdresse est à 0++, sinon max(idadresse) ne renvoie rien
 
 					ps = db.connexion.prepareStatement("select max(idadresse) from adresse");
-					ResultSet rs = ps.executeQuery();
+					rs = ps.executeQuery();
 					if(rs.next())
 					{
 						idAdresseTempo = rs.getInt(1);
@@ -142,7 +150,7 @@ public class DAO{
 					int idMailTempo = 0; // par défaut 0++ comme idAdresseTempo
 
 					ps = db.connexion.prepareStatement("select max(idmail) from mail");
-					ResultSet rs = ps.executeQuery();
+					rs = ps.executeQuery();
 					if(rs.next())
 					{
 						idMailTempo = rs.getInt(1);
@@ -164,7 +172,7 @@ public class DAO{
 					int idTelTempo = 0; // par défaut 0++ comme idAdresseTempo
 
 					ps = db.connexion.prepareStatement("select max(idtelephone) from telephone");
-					ResultSet rs = ps.executeQuery();
+					rs = ps.executeQuery();
 					if(rs.next())
 					{
 						idTelTempo = rs.getInt(1);
@@ -322,9 +330,17 @@ public class DAO{
 		{
 			throw new Exception("Un groupe de ce nom existe déjà !");
 		}
+		int idGroupeTempo = 0; // par défaut le 1er idGroupe
+
+		PreparedStatement ps = db.connexion.prepareStatement("select max(idgroupe) from groupe");
+		ResultSet rs = ps.executeQuery();
+		if(rs.next())
+		{
+			idGroupeTempo = rs.getInt(1)+1;
+		}
 		try {
-			PreparedStatement ps = db.connexion.prepareStatement("INSERT INTO GROUPE(IDGROUPE, NOM) VALUES(?, ?)");
-			ps.setInt(1, groupe.getIdGroupe());
+			ps = db.connexion.prepareStatement("INSERT INTO GROUPE(IDGROUPE, NOM) VALUES(?, ?)");
+			ps.setInt(1, idGroupeTempo);
 			ps.setString(2, groupe.getNom());
 			ps.execute();
 			return TrouverGroupe(groupe);
