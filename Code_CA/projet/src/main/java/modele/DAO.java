@@ -62,17 +62,17 @@ public class DAO{
 				contact.setPhoto(stream);
 
 				while(rsAdressesContact.next()){
-					adresses.add(new Adresse(rsAdressesContact.getInt("idadresse"),rsAdressesContact.getString("adresse")));
+					adresses.add(new Adresse(rsAdressesContact.getInt("idadresse"),rsAdressesContact.getString("adresse"), rsAdressesContact.getInt("idtype")));
 				}
 
 				while(rsMailsContact.next())
 				{
-					mails.add(new Mail(rsMailsContact.getInt("idMail"), rsMailsContact.getString("mail")));
+					mails.add(new Mail(rsMailsContact.getInt("idMail"), rsMailsContact.getString("mail"), rsMailsContact.getInt("idtype")));
 				}
 
 				while(rsTelephonesContact.next())
 				{
-					telephones.add(new Telephone(rsTelephonesContact.getInt("idTelephone"), rsTelephonesContact.getString("telephone")));
+					telephones.add(new Telephone(rsTelephonesContact.getInt("idTelephone"), rsTelephonesContact.getString("telephone"), rsTelephonesContact.getInt("idtype")));
 				}
 
 				contact.setAdresses(adresses);
@@ -122,9 +122,10 @@ public class DAO{
 			if(contact.getAdresses() != null)
 			{
 				for (Adresse adr : contact.getAdresses()) {
-					ps = db.connexion.prepareStatement("insert into adresse(idcontact, adresse) values (?, ?)");
+					ps = db.connexion.prepareStatement("insert into adresse(idcontact, adresse, idtype) values (?, ?, ?)");
 					ps.setInt(1, idContact);
 					ps.setString(2, adr.getAdresse());
+					ps.setInt(3, adr.getIdType());
 					// on crée les adresses pour le contact
 					ps.execute();
 				}
@@ -133,9 +134,10 @@ public class DAO{
 			if(contact.getMails() != null)
 			{
 				for (Mail mail : contact.getMails()) {
-					ps = db.connexion.prepareStatement("insert into mail(idcontact, mail) values (?, ?)");
+					ps = db.connexion.prepareStatement("insert into mail(idcontact, mail, idtype) values (?, ?, ?)");
 					ps.setInt(1, idContact);
 					ps.setString(2, mail.getMail());
+					ps.setInt(3, mail.getIdType());
 					// on crée les mails pour le contact
 					ps.execute();
 				}
@@ -145,9 +147,10 @@ public class DAO{
 			if(contact.getTelephones() != null)
 			{
 				for (Telephone tel : contact.getTelephones()) {
-					ps = db.connexion.prepareStatement("insert into telephone(idcontact, telephone) values (?, ?)");
+					ps = db.connexion.prepareStatement("insert into telephone(idcontact, telephone, idtype) values (?, ?, ?)");
 					ps.setInt(1, idContact);
 					ps.setString(2, tel.getTelephone());
+					ps.setInt(3, tel.getIdType());
 					// on crée les telephones pour le contact
 					ps.execute();
 				}
@@ -223,10 +226,10 @@ public class DAO{
 					ps.setString(1, adr.getAdresse());
 					ps.setInt(2, idContactAModifier);
 					 */
-					ps = db.connexion.prepareStatement("insert into adresse(idcontact, adresse) values (?, ?)");
+					ps = db.connexion.prepareStatement("insert into adresse(idcontact, adresse, idtype) values (?, ?, ?)");
 					ps.setInt(1, idContactAModifier);
 					ps.setString(2, adr.getAdresse());
-
+					ps.setInt(3, adr.getIdType());
 					// on update
 					ps.execute();
 				}
@@ -239,14 +242,16 @@ public class DAO{
 				ps.execute();
 
 				for (Mail mail : contactSouhaite.getMails()) {
-					ps = db.connexion.prepareStatement("insert into MAIL(idcontact, MAIL) values (?, ?)");
+					ps = db.connexion.prepareStatement("insert into MAIL(idcontact, MAIL, idtype) values (?, ?, ?)");
 					ps.setInt(1, idContactAModifier);
 					ps.setString(2, mail.getMail());
+					ps.setInt(3, mail.getIdType());
 
 					// on update
 					ps.execute();
 				}
 			}
+
 			// pour les telephones d'un contact
 			if(contactSouhaite.getTelephones() != null)
 			{
@@ -255,9 +260,10 @@ public class DAO{
 				ps.execute();
 
 				for (Telephone telephone: contactSouhaite.getTelephones()) {
-					ps = db.connexion.prepareStatement("insert into TELEPHONE(idcontact, TELEPHONE) values (?, ?)");
+					ps = db.connexion.prepareStatement("insert into TELEPHONE(idcontact, TELEPHONE, idtype) values (?, ?, ?)");
 					ps.setInt(1, idContactAModifier);
 					ps.setString(2, telephone.getTelephone());
+					ps.setInt(3, telephone.getIdType());
 
 					// on update
 					ps.execute();
@@ -439,7 +445,62 @@ public class DAO{
 		return listeContact;
 	}
 
+	public Type TrouverType(String libelleType) throws SQLException
+	{
+		Type typeRes = new Type();
 
+		PreparedStatement psType = db.connexion.prepareStatement("SELECT * FROM TYPE WHERE libelletype = ?");
+		psType.setString(1, libelleType);
+
+		ResultSet rsType = psType.executeQuery();
+		try {
+			if(!rsType.next()){
+				return null;
+			}
+			else {
+				typeRes.setIdType(Integer.parseInt(rsType.getString("idType")));
+				typeRes.setLibelleType(libelleType);
+			}
+		} catch (SQLException e) {
+			throw new SQLException(e.toString());
+		}
+		return typeRes;
+	}
+
+	public Type CreerType(Type type) throws Exception {
+		if(TrouverType(type.getLibelleType()) != null)
+		{
+			throw new Exception("Un type avec ce libellé existe déjà !");
+		}
+		PreparedStatement ps;
+		try {
+			ps = db.connexion.prepareStatement("INSERT INTO TYPE(LIBELLETYPE) VALUES(?)");
+			ps.setString(1, type.getLibelleType());
+			ps.execute();
+			return TrouverType(type.getLibelleType());
+		}
+		catch (Exception e)
+		{
+			throw new Exception(e.toString());
+		}
+	}
+
+	public boolean SupprimerType(String libelleType) throws Exception {
+		Type typeASupprimer;
+		if((typeASupprimer = TrouverType(libelleType)) == null){
+			throw new Exception("Aucun type avec ce libelle n'existe !");
+		}
+		try {
+			PreparedStatement ps = db.connexion.prepareStatement("DELETE FROM TYPE WHERE IDTYPE = ?");
+			ps.setInt(1, typeASupprimer.getIdType());
+			ps.execute();
+			return TrouverType(libelleType) == null;
+		}
+		catch(Exception e)
+		{
+			throw new Exception(e.toString());
+		}
+	}
 
 
 }

@@ -5,21 +5,24 @@ import lombok.Data;
 @Data
 public class Mail {
 
-	public Mail(int idMail, String mail) {
+	public Mail(int idMail, String mail, int idType) {
 		super();
 		this.idMail = idMail;
-		Mail = mail;
+		this.Mail = mail;
+		this.idType = idType;
 	}
 	private int idMail;
 	private String Mail;
+	private int idType;
 
 	public Mail()
 	{
 
 	}
 
-	public Mail(String mail) {
+	public Mail(String mail, int idType) {
 		this.Mail = mail;
+		this.idType = idType;
 	}
 
 }

@@ -1,9 +1,13 @@
 package modele;
 
+import lombok.Data;
+
+@Data
 public class Telephone {
 
 	private int idTelephone;
 	private String telephone;
+	private int idType;
 
 
 	public Telephone()
@@ -12,34 +16,19 @@ public class Telephone {
 	}
 
 
-
-	public Telephone(int idTelephone, String telephone) {
+	public Telephone(int idTelephone, String telephone, int idType) {
 		super();
 		this.idTelephone = idTelephone;
 		this.telephone = telephone;
+		this.idType = idType;
 	}
 
 
 
-	public Telephone(String telephone) {
+	public Telephone(String telephone, int idType) {
 		this.telephone = telephone;
+		this.idType = idType;
 	}
-
-
-
-	public int getIdTelephone() {
-		return idTelephone;
-	}
-	public void setIdTelephone(int idTelephone) {
-		this.idTelephone = idTelephone;
-	}
-	public String getTelephone() {
-		return telephone;
-	}
-	public void setTelephone(String telephone) {
-		this.telephone = telephone;
-	}
-
 
 
 }
