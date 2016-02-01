@@ -13,6 +13,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -204,7 +205,8 @@ public class Database
 		t1 = service.CreerType(t1);
 		System.out.println(service.TrouverType("Type1"));
 
-		Contact c = new Contact("test","test",new java.sql.Date(2000,01,22),"fax",2,istreamImage, false);
+
+		Contact c = new Contact("test","test",new java.sql.Date(new Date().getTime()),"fax",2,istreamImage, false);
 		java.sql.Date nouvelleDate = new java.sql.Date(3000,05,18);
 
 		Contact c2 = new Contact("test2","test2",new java.sql.Date(2000,01,22),"fax",2,istreamImage, true);

@@ -213,19 +213,13 @@ public class DAO{
 			ps.execute();
 
 			// pour les adresses d'un contact
-			if(contactSouhaite.getAdresses() != null)
+			/*if(contactSouhaite.getAdresses() != null)
 			{
 				ps = db.connexion.prepareStatement("DELETE FROM ADRESSE WHERE idContact = ?");
 				ps.setInt(1, idContactAModifier);
 				ps.execute();
 
 				for (Adresse adr : contactSouhaite.getAdresses()) {
-					/*ps = db.connexion.prepareStatement("UPDATE ADRESSE SET "
-							+ "ADRESSE = ?"
-							+ "WHERE IDCONTACT = ?");
-					ps.setString(1, adr.getAdresse());
-					ps.setInt(2, idContactAModifier);
-					 */
 					ps = db.connexion.prepareStatement("insert into adresse(idcontact, adresse, idtype) values (?, ?, ?)");
 					ps.setInt(1, idContactAModifier);
 					ps.setString(2, adr.getAdresse());
@@ -233,7 +227,7 @@ public class DAO{
 					// on update
 					ps.execute();
 				}
-			}
+			}*/
 			// pour les mails d'un contact
 			if(contactSouhaite.getMails() != null)
 			{
