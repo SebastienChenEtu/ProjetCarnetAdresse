@@ -155,7 +155,7 @@ public class Database
 
 		String sqlCreationTableContact = "CREATE TABLE IF NOT EXISTS CONTACT " +
 				"(IDCONTACT INTEGER PRIMARY KEY    AUTOINCREMENT NOT NULL," +
-				" IDGROUPE        VARCHAR2(50) CONSTRAINT fk_contact_groupe REFERENCES GROUPE (IDGROUPE), " +
+				" IDGROUPE        INTEGER DEFAULT 0 CONSTRAINT fk_contact_groupe REFERENCES GROUPE (IDGROUPE) ON DELETE SET DEFAULT, " +
 				" NOM           VARCHAR2(50)  NOT NULL, " +
 				" FAVORIS         BOOLEAN," +
 				" PRENOM        VARCHAR2(50), " +
@@ -169,12 +169,15 @@ public class Database
 				+ "(IDTYPE INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
 				+ "LIBELLETYPE VARCHAR2(50))";
 		requete.executeUpdate(sqlCreationType);
+
+		insertionValeursInitiales();
+
+
 	}
-
-	// TODO
-	public void insertionValeursInitiales()
+	public void insertionValeursInitiales() throws SQLException
 	{
-
+		String sqlCreationGroupeDefaut = "insert into groupe (idgroupe, nom) values (0, 'Groupe par defaut')";
+		requete.executeUpdate(sqlCreationGroupeDefaut);
 	}
 
 
@@ -187,7 +190,7 @@ public class Database
 
 
 		Groupe g1 = new Groupe();
-		g1.setNom("Défaut");
+		g1.setNom("oui");
 
 		Groupe g2 = new Groupe();
 		g2.setNom("nop");
@@ -241,14 +244,14 @@ public class Database
 		telsPourC.add(new Telephone("nouvelle Adresse", 1));
 		telsPourC.add(new Telephone("nouvelle Adresse", 1));
 
-		c = service.setTelephones(1, telsPourC);
+		c = service.setTelephones(2, telsPourC);
 
 		c = service.setFavoris(1, true);
 
 		System.out.println(service.TrouverContact(1));
 
+		service.FusionnerGroupe(g1, g2, "nouveauGroupe");
 
-		service.ExporterFavoris();
 		//		System.out.println(service.SupprimerContact(1));
 
 

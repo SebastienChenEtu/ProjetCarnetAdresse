@@ -359,6 +359,22 @@ public class DAO{
 			ps = db.connexion.prepareStatement("INSERT INTO GROUPE(NOM) VALUES(?)");
 			ps.setString(1, groupe.getNom());
 			ps.execute();
+			if(groupe.getListeContacts() != null)
+			{
+				ps = db.connexion.prepareStatement("select last_insert_rowid()");
+				ResultSet rs = ps.executeQuery();
+				int idGroupe = 0;
+
+				if(rs.next())
+				{
+					idGroupe = rs.getInt(1);
+				}
+
+				for (Contact contact : groupe.getListeContacts()) {
+					contact.setIdGroupe(idGroupe);
+					ModifierContact(contact.getIdContact(), contact);
+				}
+			}
 			return TrouverGroupe(groupe.getNom());
 		}
 		catch (Exception e)

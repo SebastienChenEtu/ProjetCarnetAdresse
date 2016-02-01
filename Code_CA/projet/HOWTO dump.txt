@@ -3,3 +3,6 @@ dump:
 
 import : 
 > sqlite3 some.db < filename.sql
+
+import favoris : 
+> .read favoris.sql

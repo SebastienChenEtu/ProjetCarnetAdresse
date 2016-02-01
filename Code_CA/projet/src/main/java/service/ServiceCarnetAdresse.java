@@ -1,9 +1,11 @@
 package service;
 
+import java.io.BufferedReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -160,13 +162,16 @@ public class ServiceCarnetAdresse {
 	public Groupe FusionnerGroupe(Groupe g1, Groupe g2, String nomGroupe) throws Exception
 	{
 		List<Contact> listeContacts = new LinkedList<Contact>();
+		g1 = this.dao.TrouverGroupe(g1.getNom());
+		g2 = this.dao.TrouverGroupe(g2.getNom());
 		listeContacts.addAll(g1.getListeContacts());
 		listeContacts.addAll(g2.getListeContacts());
-		//		this.dao.SupprimerGroupe(g1);
-		//		this.dao.SupprimerGroupe(g2);
+		this.dao.SupprimerGroupe(g1.getNom());
+		this.dao.SupprimerGroupe(g2.getNom());
 		Groupe groupe = new Groupe();
 		groupe.setListeContacts(listeContacts);
 		groupe.setNom(nomGroupe);
+		System.out.println("icicicisdpfksdpofk : " + listeContacts);
 		return this.dao.CreerGroupe(groupe);
 	}
 
@@ -203,7 +208,7 @@ public class ServiceCarnetAdresse {
 		return this.dao.SupprimerType(libelleType);
 	}
 
-	public void ExporterFavoris() throws SQLException
+	public void ExporterFavoris() throws SQLException, IOException
 	{
 		List<Contact> contactFavoris = trouverToutFavoris();
 		String sqlInsertions = "";
@@ -215,19 +220,50 @@ public class ServiceCarnetAdresse {
 				isContactFavoris = 1;
 			}
 
-			String sqlTp = "insert into contact(idgroupe, nom,favoris, prenom, ddn, photo, fax) "
+			String sqlTpContactSimple = "insert into contact(idcontact, idgroupe, nom,favoris, prenom, ddn, fax) "
 					+ "VALUES(";
-			sqlTp = sqlTp + contact.getIdGroupe() + " , '";
-			sqlTp = sqlTp + contact.getNom() + "' ,";
-			sqlTp = sqlTp + isContactFavoris + " , '";
-			sqlTp = sqlTp + contact.getPrenom() + "',";
-			sqlTp = sqlTp + contact.getDdn()+ " ,";
-			sqlTp = sqlTp + contact.getPhoto()+ " , '"; // ne pas mettre en dur le taille maximale (1000000)
-			sqlTp = sqlTp + contact.getFax()+ "' )";
+			sqlTpContactSimple = sqlTpContactSimple + contact.getIdContact() + ", ";
+			sqlTpContactSimple = sqlTpContactSimple + contact.getIdGroupe() + " , '";
+			sqlTpContactSimple = sqlTpContactSimple + contact.getNom() + "' ,";
+			sqlTpContactSimple = sqlTpContactSimple + isContactFavoris + " , '";
+			sqlTpContactSimple = sqlTpContactSimple + contact.getPrenom() + "',";
+			sqlTpContactSimple = sqlTpContactSimple + contact.getDdn()+ " ,'";
+			sqlTpContactSimple = sqlTpContactSimple + contact.getFax()+ "' );";
 
-			sqlInsertions = sqlInsertions + '\n' +sqlTp;
+			sqlInsertions = sqlInsertions + '\n' +sqlTpContactSimple;
+
+			for (Adresse adr : contact.getAdresses()) {
+				String sqlTpContactAdresses = "insert into adresse(idadresse, idcontact, adresse, idtype) values (";
+				sqlTpContactAdresses = sqlTpContactAdresses + adr.getIdAdresse() + ", ";
+				sqlTpContactAdresses = sqlTpContactAdresses + contact.getIdContact() + ", '";
+				sqlTpContactAdresses = sqlTpContactAdresses + adr.getAdresse() + "', ";
+				sqlTpContactAdresses = sqlTpContactAdresses + adr.getIdType() + ");";
+
+				sqlInsertions = sqlInsertions + '\n' + sqlTpContactAdresses;
+			}
+
+			for (Mail mail : contact.getMails()) {
+				String sqlTpContactMails= "insert into mail(idmail, idcontact, mail, idtype) values (";
+				sqlTpContactMails = sqlTpContactMails + mail.getIdMail() + ", ";
+				sqlTpContactMails = sqlTpContactMails + contact.getIdContact() + ", '";
+				sqlTpContactMails = sqlTpContactMails + mail.getMail() + "', ";
+				sqlTpContactMails = sqlTpContactMails + mail.getIdType() + ");";
+
+				sqlInsertions = sqlInsertions + '\n' + sqlTpContactMails;
+			}
+
+			for (Telephone tel : contact.getTelephones()) {
+				String sqlTpContactTelephones = "insert into telephone(idtelephone, idcontact, telephone, idtype) values (";
+				sqlTpContactTelephones = sqlTpContactTelephones + tel.getIdTelephone() + ", ";
+				sqlTpContactTelephones = sqlTpContactTelephones + contact.getIdContact() + ", '";
+				sqlTpContactTelephones = sqlTpContactTelephones + tel.getTelephone() + "', ";
+				sqlTpContactTelephones = sqlTpContactTelephones + tel.getIdType() + ");";
+
+				sqlInsertions = sqlInsertions + '\n' + sqlTpContactTelephones;
+			}
 		}
-
-		System.out.println(sqlInsertions);
+		FileWriter exportFile = new FileWriter("favoris.sql", true);
+		exportFile.write(sqlInsertions);
+		exportFile.close();
 	}
 }
