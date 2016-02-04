@@ -1,6 +1,9 @@
 package vue;
 
+import java.io.File;
 import java.io.IOException;
+
+import javax.swing.JFileChooser;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,15 +30,15 @@ public class ControllerAjoutContact {
 
 	@FXML
 	private TextField textAdresse;
-	
+
 	@FXML
-    private TextField textFax;
-	
+	private TextField textFax;
+
 	@FXML
-    private TextField textEmail;
-	
+	private TextField textEmail;
+
 	@FXML
-    private TextField textTelephone;
+	private TextField textTelephone;
 
 	@FXML
 	private Button btnAjoutAdresse;
@@ -81,23 +84,32 @@ public class ControllerAjoutContact {
 
 	@FXML
 	void btnAvatar_onAction(ActionEvent event) {
-
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+		int result = fileChooser.showOpenDialog(null);
+		if (result == JFileChooser.APPROVE_OPTION) {
+			File selectedFile = fileChooser.getSelectedFile();
+			System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+		}
+		// Il faudra vérifier le format (jpg, png...), la taille (pas trop lourde)
+		// Puis rendre l'image visible dans un petit cadre ?
+		// Mettre également un avatar par défaut
 	}
 
 	@FXML
 	void btnValide_onAction(ActionEvent event) {
 	}
-	
-    @FXML
-    void textNom_onAction(ActionEvent event) {
-    	if (textNom.equals("") || textNom.equals(null)){
-    		textTelephone.disabledProperty();
-    	}
-    	else {
-    		textTelephone.editableProperty();
-    	}
-    }
-    
+
+	@FXML
+	void textNom_onAction(ActionEvent event) {
+		if (textNom.equals("") || textNom.equals(null)){
+			textTelephone.disabledProperty();
+		}
+		else {
+			textTelephone.editableProperty();
+		}
+	}
+
 
 }
 
