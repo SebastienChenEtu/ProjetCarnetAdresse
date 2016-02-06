@@ -97,8 +97,14 @@ public class ControllerGestionGroupe {
     }
 
     @FXML
-    void btnFusion_onAction(ActionEvent event) {
-
+    void btnFusion_onAction(ActionEvent event) throws Exception {
+    	Groupe g1 = new Groupe();
+    	g1.setNom(cbFusionG1.getValue());
+    	Groupe g2 = new Groupe();
+    	g2.setNom(cbFusionG2.getValue());
+    	service.FusionnerGroupe(g1,g2 ,textFusionGroupe.getText());
+    	this.initialize();
+    	textFusionGroupe.clear();
     }
 
     @FXML
