@@ -445,4 +445,9 @@ public class ServiceCarnetAdresse {
 			}
 		}
 	}
+	
+	
+	public List<Contact> trouverTousContactsGroupe(String nomGroupe) throws NumberFormatException, Exception {
+		return this.dao.trouverTousContactsGroupe(nomGroupe);
+	}
 }
