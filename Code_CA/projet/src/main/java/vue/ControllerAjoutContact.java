@@ -1,7 +1,10 @@
 package vue;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.swing.JFileChooser;
 
@@ -16,8 +19,12 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import modele.DAO;
+import service.ServiceCarnetAdresse;
 
 public class ControllerAjoutContact {
+
+	ServiceCarnetAdresse service= new ServiceCarnetAdresse();
 
 	@FXML
 	private TextField textNom;
@@ -83,13 +90,15 @@ public class ControllerAjoutContact {
 	}
 
 	@FXML
-	void btnAvatar_onAction(ActionEvent event) {
+	void btnAvatar_onAction(ActionEvent event) throws Exception {
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
 		int result = fileChooser.showOpenDialog(null);
 		if (result == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = fileChooser.getSelectedFile();
 			System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+			FileInputStream fileInputStream = new FileInputStream(selectedFile);
+			service.setPhoto(1, fileInputStream);
 		}
 		// Il faudra vérifier le format (jpg, png...), la taille (pas trop lourde)
 		// Puis rendre l'image visible dans un petit cadre ?

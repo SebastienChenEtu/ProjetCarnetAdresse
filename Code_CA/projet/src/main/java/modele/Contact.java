@@ -46,6 +46,9 @@ public class Contact implements Comparable<Contact>{
 		this.idGroupe = contact.getIdGroupe();
 		this.photo = contact.getPhoto();
 		this.favoris = contact.getFavoris();
+		this.adresses  = contact.getAdresses();
+		this.mails = contact.getMails();
+		this.telephones = contact.getTelephones();
 	}
 
 	public int compareTo(Contact o) {
