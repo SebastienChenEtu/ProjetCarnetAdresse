@@ -25,6 +25,7 @@ import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import modele.Contact;
 import service.ServiceCarnetAdresse;
@@ -179,19 +180,19 @@ public class ControllerListeContact implements Initializable  {
 
     }
     
-//    @FXML
-//    public void tvListeContact_onClick(MouseEvent event) {
-//            if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
-//                Node node = ((Node) event.getTarget()).getParent();
-//                TableRow row;
-//                if (node instanceof TableRow) {
-//                    row = (TableRow) node;
-//                } else {
-//                    // clicking on text part
-//                    row = (TableRow) node.getParent();
-//                }
-//                System.out.println(row.getItem());
-//            }
-//        }
+    
+    @FXML
+    public void tvListeContact_onClick(MouseEvent event) throws IOException {
+            if (event.getClickCount() == 2) {
+            	contact = new Contact(tvListeContact.getSelectionModel().getSelectedItem());
+            	System.out.println(contact.toString());
+            	System.out.println("controller ok");
+            	Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("detailContact.fxml"));
+            	Scene pageAjoutScene= new Scene(pageAjoutParent);
+            	Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();
+            	app_stage.setScene(pageAjoutScene); 
+            	app_stage.show();
+            }
+        }
     
 }

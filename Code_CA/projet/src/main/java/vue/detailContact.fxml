@@ -21,7 +21,7 @@
          </image>
       </ImageView>
       <Label id="labelNom" layoutX="285.0" layoutY="24.0" prefHeight="17.0" prefWidth="40.0" text="Nom" />
-      <TextField id="textNom" disable="true" layoutX="325.0" layoutY="20.0" />
+      <TextField fx:id="textNom" disable="true" layoutX="325.0" layoutY="20.0" />
       <Label id="labelPrenom" layoutX="272.0" layoutY="67.0" prefHeight="17.0" prefWidth="47.0" text="Prénom" />
       <TextField id="textPrenom" disable="true" layoutX="325.0" layoutY="63.0" />
       <Label id="labelGroupe" layoutX="199.0" layoutY="115.0" text="Choisissez un groupe" />
