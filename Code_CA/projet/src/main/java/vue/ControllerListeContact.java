@@ -37,6 +37,7 @@ public class ControllerListeContact implements Initializable  {
 	 private static final String PRENOM = "prenom";
 	 private static final String NOM = "nom";
 	 private static final String FAVORIS = "favoris";
+	 private static final String SELECTION = "selection";
 	 private ServiceCarnetAdresse service = new ServiceCarnetAdresse();
 	 
 	 private static ObservableList<Contact> contacts=FXCollections.observableArrayList();
@@ -64,7 +65,7 @@ public class ControllerListeContact implements Initializable  {
     private TableColumn<Contact, String> columnPrenom;
     
     @FXML
-    private TableColumn<Contact,Boolean> columnSelection;
+    private TableColumn<Object,Boolean> columnSelection;
     
     @FXML
     private TableColumn<Contact,Boolean> columnFavoris;
@@ -91,6 +92,7 @@ public class ControllerListeContact implements Initializable  {
 		columnPrenom.setCellValueFactory(new PropertyValueFactory<>(PRENOM));
     	columnNom.setCellValueFactory(new PropertyValueFactory<>(NOM));
     	columnFavoris.setCellValueFactory(new PropertyValueFactory<>(FAVORIS));
+    	columnSelection.setCellValueFactory(new PropertyValueFactory<>(SELECTION));
     	contacts.clear();
     	try {
 			contacts.addAll(service.trouverToutContact());
@@ -102,6 +104,7 @@ public class ControllerListeContact implements Initializable  {
     	ColonnePrenom();
     	ColonneNom();
     	ColonneFavoris();
+    	ColonneSelection();
     	//fixColumnsWidth();
 		
 	}
@@ -118,6 +121,10 @@ public class ControllerListeContact implements Initializable  {
     	columnFavoris.setOnEditCommit((CellEditEvent<Contact, Boolean> cell) -> {
             cell.getTableView().getItems().get(cell.getTablePosition().getRow()).setFavoris(cell.getNewValue());
         });
+    }
+    
+    public void ColonneSelection() {
+    	columnSelection.setCellFactory(CheckBoxTableCell.forTableColumn(columnSelection));
     }
 
     public void ColonneNom() {
