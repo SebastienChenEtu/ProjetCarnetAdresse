@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -19,7 +20,7 @@
           <TableColumn id="columnSelection" fx:id="columnSelection" prefWidth="68.0" text="Sélection" />
           <TableColumn id="columnPrenom" fx:id="columnPrenom" prefWidth="159.0" text="Prénom" />
             <TableColumn id="columnNom" fx:id="columnNom" prefWidth="154.0" text="Nom" />
-            <TableColumn id="columnFavoris" fx:id="columnFavoris" prefWidth="68.0" text="Favoris" />
+            <TableColumn id="columnFavoris" fx:id="columnFavoris" prefWidth="68.0" text="Favoris"></TableColumn>
         </columns>
       </TableView>
       <Button id="btnAjouterGroupe" fx:id="btnGestionGroupe" layoutX="64.0" layoutY="427.0" mnemonicParsing="false" onAction="#btnGestionGroupe_onChange" prefHeight="25.0" prefWidth="149.0" text="Gestion de mes groupes" />

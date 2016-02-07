@@ -171,7 +171,7 @@ public class Database
 				+ "LIBELLETYPE VARCHAR2(50))";
 		requete.executeUpdate(sqlCreationType);
 
-		insertionValeursInitiales();
+		//insertionValeursInitiales();
 
 
 	}

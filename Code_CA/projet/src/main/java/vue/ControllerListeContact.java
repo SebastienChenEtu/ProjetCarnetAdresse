@@ -2,6 +2,8 @@ package vue;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
@@ -14,13 +16,18 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import modele.Contact;
+import service.ServiceCarnetAdresse;
 
 public class ControllerListeContact implements Initializable  {
 	
@@ -28,8 +35,12 @@ public class ControllerListeContact implements Initializable  {
 	
 	 private static final String PRENOM = "prenom";
 	 private static final String NOM = "nom";
+	 private static final String FAVORIS = "favoris";
+	 private ServiceCarnetAdresse service = new ServiceCarnetAdresse();
 	 
-	 private static ObservableList<Contact> contacts;
+	 private static ObservableList<Contact> contacts=FXCollections.observableArrayList();
+	 
+	 
 	 
 
 
@@ -71,15 +82,26 @@ public class ControllerListeContact implements Initializable  {
 
     @FXML
     private Button btnModifierContact;
+    
+
 
     @Override
 	public void initialize(URL url, ResourceBundle rb) {
 		columnPrenom.setCellValueFactory(new PropertyValueFactory<>(PRENOM));
     	columnNom.setCellValueFactory(new PropertyValueFactory<>(NOM));
-    	contacts = FXCollections.observableArrayList();
+    	columnFavoris.setCellValueFactory(new PropertyValueFactory<>(FAVORIS));
+    	contacts.clear();
+    	try {
+			contacts.addAll(service.trouverToutContact());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	tvListeContact.setItems(contacts);
     	ColonnePrenom();
     	ColonneNom();
+    	ColonneFavoris();
+    	//fixColumnsWidth();
 		
 	}
     
@@ -90,12 +112,12 @@ public class ControllerListeContact implements Initializable  {
             cell.getTableView().getItems().get(cell.getTablePosition().getRow()).setPrenom(cell.getNewValue());
         });
     }
-//    public void buildColumn_NoteItemState() {
-//        stateCol.setCellFactory(CheckBoxTableCell.forTableColumn(stateCol));
-//        stateCol.setOnEditCommit((CellEditEvent<NoteItem, Boolean> cell) -> {
-//            cell.getTableView().getItems().get(cell.getTablePosition().getRow()).setDone(cell.getNewValue());
-//        });
-//    }
+    public void ColonneFavoris() {
+    	columnFavoris.setCellFactory(CheckBoxTableCell.forTableColumn(columnFavoris));
+    	columnFavoris.setOnEditCommit((CellEditEvent<Contact, Boolean> cell) -> {
+            cell.getTableView().getItems().get(cell.getTablePosition().getRow()).setFavoris(cell.getNewValue());
+        });
+    }
 
     public void ColonneNom() {
     	columnNom.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -104,9 +126,9 @@ public class ControllerListeContact implements Initializable  {
         });
     }
     
-    private void fixColumnsWidth() {
-    	columnNom.prefWidthProperty().bind(tvListeContact.widthProperty().subtract(columnPrenom.getWidth()));
-    }
+//    private void fixColumnsWidth() {
+//    	columnNom.prefWidthProperty().bind(tvListeContact.widthProperty().subtract(columnPrenom.getWidth()));
+//    }
     
     
     @FXML
@@ -146,6 +168,7 @@ public class ControllerListeContact implements Initializable  {
     	app_stage.show();
     }
 
+
     @FXML
     void btnRechercherContact_onAction(ActionEvent event) {
 
@@ -155,4 +178,20 @@ public class ControllerListeContact implements Initializable  {
     void btnSupprimerSelection_onAction(ActionEvent event) {
 
     }
+    
+//    @FXML
+//    public void tvListeContact_onClick(MouseEvent event) {
+//            if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+//                Node node = ((Node) event.getTarget()).getParent();
+//                TableRow row;
+//                if (node instanceof TableRow) {
+//                    row = (TableRow) node;
+//                } else {
+//                    // clicking on text part
+//                    row = (TableRow) node.getParent();
+//                }
+//                System.out.println(row.getItem());
+//            }
+//        }
+    
 }
