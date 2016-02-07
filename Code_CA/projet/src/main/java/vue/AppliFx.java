@@ -1,5 +1,10 @@
 package vue;
+import java.io.IOException;
+
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class AppliFx extends Application{
@@ -7,16 +12,15 @@ public class AppliFx extends Application{
 
 
 	public static void main(String[] args) {
-		System.out.println( "Main method inside Thread : " +  Thread.currentThread().getName());
 		launch(args);
 	}
 
-	public void start(Stage primaryStage) throws Exception {
-		 primaryStage.setWidth(1024);
-	        primaryStage.setHeight(968);
-	        primaryStage.setTitle("JavaFX Xebia"); 
-	        primaryStage.show();
-	           
+	public void start(Stage stage) throws IOException  {
+		Parent root = FXMLLoader.load(getClass().getResource("listeContact.fxml"));
+		Scene scene=new Scene(root);
+		stage.setScene(scene);
+		stage.show();
+		
 	}
 }
 

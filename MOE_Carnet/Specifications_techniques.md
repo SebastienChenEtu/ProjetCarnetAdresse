@@ -10,13 +10,13 @@ Ce document expose les caractérisations techniques qui sont utilisées pour men
  
 Les technologies utilisées sont les suivantes :  
 
-| Utilisation        | Technologie utilisée       |
-| :-------------:    |:-------------:   |
-| Code    | Java  |
-| Tests unitaires    | Junit |
-| Interfaces    | JavaFX Scene Builder  |
-| Base de données    | SQLite  |
-| Partage du code    | GitHub  |
+| Utilisation        | Technologie utilisée | Commentaires|
+| :-------------:    |:-------------:       |:-------------: |
+| Code               | Java                 |Multi-plateforme au niveau du système d'exploitation|
+| Tests unitaires    | Junit                |Framework de test pour Java |
+| Interfaces         | JavaFX Scene Builder |Le plus adapté à notre projet|
+| Base de données    | SQLite               |Léger et multi-plateforme |
+| Partage du code    | GitHub               |Simple et pratique|
 
 
 ###Contenu

@@ -1,47 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 
-<TitledPane animated="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" text="Ajouter un Contact" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-  <content>
-    <AnchorPane id="panetitleAjoutContact" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-         <children>
-            <ImageView id="imgAvatar" fitHeight="95.0" fitWidth="124.0" layoutX="33.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@test.jpg" />
-               </image>
-            </ImageView>
-            <Label id="labelNom" layoutX="285.0" layoutY="24.0" prefHeight="17.0" prefWidth="40.0" text="Nom" />
-            <TextField id="textNom" layoutX="325.0" layoutY="20.0" />
-            <Label id="labelPrenom" layoutX="272.0" layoutY="67.0" prefHeight="17.0" prefWidth="47.0" text="Prénom" />
-            <TextField id="textPrenom" layoutX="325.0" layoutY="63.0" />
-            <ChoiceBox id="cbGroupe" layoutX="325.0" layoutY="111.0" prefWidth="150.0" />
-            <Label id="labelGroupe" layoutX="199.0" layoutY="115.0" text="Choisissez un groupe" />
-            <Label id="labelAdresse" layoutX="42.0" layoutY="187.0" text="Adresse" />
-            <Label id="labelTelephone" layoutX="11.0" layoutY="252.0" text="N° Télephone" />
-            <TextField id="textAdresse" layoutX="98.0" layoutY="183.0" prefHeight="25.0" prefWidth="289.0" />
-            <Button id="btnAjoutAdresse" fx:id="btnAjoutAdresse" layoutX="400.0" layoutY="183.0" mnemonicParsing="false" onAction="#btnAjoutAdresse_onAction" prefHeight="25.0" prefWidth="28.0" text="Add" />
-            <TextField id="textTelephone" layoutX="98.0" layoutY="248.0" prefHeight="25.0" prefWidth="160.0" />
-            <Button id="btnAjoutTelephone" fx:id="btnAjoutTelephone" layoutX="279.0" layoutY="248.0" mnemonicParsing="false" onAction="#btnAjoutTelephone_onAction" prefHeight="25.0" prefWidth="31.0" text="Button" />
-            <Label id="labelFax" layoutX="379.0" layoutY="252.0" text="Fax" />
-            <TextField id="textFax" layoutX="414.0" layoutY="248.0" />
-            <Label id="labelEmail" layoutX="48.0" layoutY="318.0" text="E-mail" />
-            <TextField id="textEmail" layoutX="98.0" layoutY="314.0" prefHeight="25.0" prefWidth="271.0" />
-            <Button id="btnAjoutEmail" fx:id="btnAjoutMail" layoutX="374.0" layoutY="314.0" mnemonicParsing="false" onAction="#btnAjoutMail_onAction" prefHeight="25.0" prefWidth="25.0" text="Button" />
-            <Button id="btnValider" fx:id="btnValide" layoutX="448.0" layoutY="335.0" mnemonicParsing="false" onAction="#btnValide_onAction" text="Valider" />
-            <Button id="btnAnnuler" fx:id="btnAnnuler" layoutX="520.0" layoutY="335.0" mnemonicParsing="false" onAction="#btnAnnuler_onAction" text="Annuler" />
-            <Button id="btnAvatar" fx:id="btnAvatar" layoutX="33.0" layoutY="111.0" mnemonicParsing="false" onAction="#btnAvatar_onAction" prefHeight="14.0" prefWidth="131.0" text="Avatar" />
-         </children></AnchorPane>
-  </content>
-</TitledPane>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vue.ControllerAjoutContact">
+   <children>
+      <Label id="labelNom" layoutX="295.0" layoutY="34.0" prefHeight="17.0" prefWidth="40.0" text="Nom" />
+      <TextField id="textNom" fx:id="textNom" layoutX="335.0" layoutY="30.0" onAction="#textNom_onAction" onKeyReleased="#textNom_onKeyReleased" />
+      <Label id="labelPrenom" layoutX="282.0" layoutY="77.0" prefHeight="17.0" prefWidth="47.0" text="Prénom" />
+      <TextField id="textPrenom" fx:id="textPrenom" layoutX="335.0" layoutY="73.0" />
+      <ChoiceBox id="cbGroupe" fx:id="cbGroupe" layoutX="335.0" layoutY="151.0" prefWidth="150.0" />
+      <Label id="labelGroupe" layoutX="212.0" layoutY="155.0" text="Choisissez un groupe" />
+      <Label id="labelAdresse" layoutX="52.0" layoutY="197.0" text="Adresse" />
+      <Label id="labelTelephone" layoutX="21.0" layoutY="262.0" text="N° Télephone" />
+      <TextField id="textAdresse" fx:id="textAdresse" layoutX="108.0" layoutY="193.0" prefHeight="25.0" prefWidth="289.0" />
+      <Button id="btnAjoutAdresse" fx:id="btnAjoutAdresse" layoutX="410.0" layoutY="193.0" mnemonicParsing="false" onAction="#btnAjoutAdresse_onAction" prefHeight="25.0" prefWidth="28.0" text="Add" />
+      <TextField id="textTelephone" fx:id="textTelephone" layoutX="108.0" layoutY="258.0" prefHeight="25.0" prefWidth="160.0" />
+      <Button id="btnAjoutTelephone" fx:id="btnAjoutTelephone" layoutX="289.0" layoutY="258.0" mnemonicParsing="false" onAction="#btnAjoutTelephone_onAction" prefHeight="25.0" prefWidth="31.0" text="Button" />
+      <Label id="labelFax" layoutX="389.0" layoutY="262.0" text="Fax" />
+      <TextField id="textFax" fx:id="textFax" layoutX="424.0" layoutY="258.0" />
+      <Label id="labelEmail" layoutX="58.0" layoutY="328.0" text="E-mail" />
+      <TextField id="textEmail" fx:id="textEmail" layoutX="108.0" layoutY="324.0" prefHeight="25.0" prefWidth="271.0" />
+      <Button id="btnAjoutEmail" fx:id="btnAjoutMail" layoutX="384.0" layoutY="324.0" mnemonicParsing="false" onAction="#btnAjoutMail_onAction" prefHeight="25.0" prefWidth="25.0" text="Button" />
+      <Button id="btnValider" fx:id="btnValide" layoutX="458.0" layoutY="345.0" mnemonicParsing="false" onAction="#btnValide_onAction" text="Valider" />
+      <Button id="btnAnnuler" fx:id="btnAnnuler" layoutX="530.0" layoutY="345.0" mnemonicParsing="false" onAction="#btnAnnuler_onAction" text="Annuler" />
+      <Button id="btnAvatar" fx:id="btnAvatar" layoutX="43.0" layoutY="113.0" mnemonicParsing="false" onAction="#btnAvatar_onAction" prefHeight="25.0" prefWidth="124.0" text="Avatar" />
+      <ImageView id="imgAvatar" fx:id="avatar" fitHeight="95.0" fitWidth="124.0" layoutX="43.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../../../../../Users/David/Desktop/ProfilParDefaut.jpeg" />
+         </image>
+      </ImageView>
+      <Label layoutX="229.0" layoutY="117.0" text="Date de naissance" />
+      <DatePicker fx:id="dpDateNaissance" layoutX="351.0" layoutY="113.0" />
+   </children>
+</Pane>

@@ -10,10 +10,11 @@ Dans notre rôle de MOE, nous devions développer une application de Carnet d’
 
 ### Présentation de l’équipe et méthodes de travail
 
-Notre équipe se compose de six personnes au total et nous avons choisi de nous diviser en deux groupes pour se partager la charge de travail :
+Notre équipe se compose de six personnes au total et nous avons choisi de nous diviser en trois groupes pour se partager la charge de travail :
 
-+ partie rédactionnelle : Audelyne JEAN-CHARLES, Noémie LEROY et Kevin NGO
-+ partie développement : Adrien BERTUZZI, Sébastien CHEN et David CLEMENT
++ partie rédactionnelle : Noémie LEROY et Kevin NGO
++ partie développement back-end : Adrien BERTUZZI et Sébastien CHEN
++ partie développement front-end : David CLEMENT et Audelyne JEAN-CHARLES
 
 Afin d’assurer la transmission d’informations entre tous les membres de l’équipe, nous avons utilisé les deux outils collaboratifs suivants : GitHub et Google Drive.
 
@@ -24,25 +25,55 @@ Premièrement, étant en charge de la rédaction de spécifications fonctionnell
 En ce qui concerne le cahier des charges, nous avons défini ce que nous voulions comme Todo List et les spécifications désirées.  
 La Todo List attendue est plutôt classique, nous lui avons ajouté un système de favoris, un système d’envoi de notifications par mail, un système de tri par thèmes et par importance.
 
-Enfin, nous avons, également, réalisé un cahier de recette afin de pouvoir tester point par point toutes les caractéristiques de l’application finale. Ainsi, grâce à ce cahier de recette, nous pouvons dire si nos besoins ont bien été respectés.
+Nous avons, également, réalisé un cahier de recette afin de pouvoir tester point par point toutes les caractéristiques de l’application finale. Ainsi, grâce à ce cahier de recette, nous pouvons dire si nos besoins ont bien été respectés.
 
 Deuxièmement, pour notre projet de Carnet d’adresses, nous avons rédigé une spécification technique afin d’expliciter toutes les technologies utilisées et les diverses contraintes imposées.
+
+Enfin, nous sommes restés disponibles pour répondre aux différentes questions du groupe en charge de la Todo List.
 
 ### Partie développement
 
 Le projet de Carnet d’adresses consiste à développer une application permettant de répertorier les contacts de l’utilisateur.  
 En plus de comprendre les fonctionnalités basiques d’un carnet d’adresses telles que le tri alphabétique, la création, modification, suppression mais encore les favoris.  
-Ce dernier doit permettre au consommateur de fusionner ses groupes, d’importer / exporter ses contacts sous le format .sql.
+Ce dernier doit permettre au consommateur de fusionner ses groupes ainsi que d’importer / exporter ses contacts sous le format .sql.
 
 L’outil GitHub nous a permis de poser des questions à l’équipe qui nous a fourni le cahier des charges du projet afin de lever toutes ambiguïtés sur leur besoin.
 
-### Diagramme de classes
+#### Diagramme de classes  
+
+![Diag_classe]()
+
+#### Difficultés rencontrées, solutions trouvées
 
 
 
-### Tests unitaires
+#### Tests unitaires  
+
+Nous avons réalisé plusieurs tests unitaires afin de vérifier le fonctionnement des fonctions principales du code.
 
 
+
+#### Fonctionnalité bonus  
+
+La fonctionnalité bonus qui nous a été donnée est ....
+
+#### Visualisation de l'interface 
+
+
+#### Points perfectibles, points à améliorer
+
+
+### Retours personnels
+
+Ce module était intéressant car il mélangeait deux domaines : le développement et la gestion de projet.  
+Cela nous a permis de nous rendre compte de l’ampleur d’un projet dans sa totalité (code, tests, réalisation de documentations). En effet, la gestion du temps et la communication sont primordiales dans ce genre de projet.
+
+Cela nous a également permis d'approfondir notre connaissance et prise en main de GitHub.  
+Ce type d'outil, surtout en entreprise, est nécessaire lorsque plusieurs personnes sont amenées à développer sur un projet commun afin de partager leur évolution.  
+Aussi, GitHub permet de voir l'historique des modifications de tous les documents (texte, code).
+
+Enfin, nous avons appris à utiliser le markdown qui est simple à mettre en place et intuitif. Cela évite d'importer un document texte à chaque changement.
 
 ### Conclusion
 
+En définitive,

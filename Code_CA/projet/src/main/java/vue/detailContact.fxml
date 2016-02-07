@@ -13,7 +13,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="panetitleAjoutContact" minHeight="0.0" minWidth="0.0" prefHeight="454.0" prefWidth="614.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="panetitleAjoutContact" minHeight="0.0" minWidth="0.0" prefHeight="454.0" prefWidth="614.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vue.ControllerDetailContact">
    <children>
       <ImageView id="imgAvatar" fitHeight="95.0" fitWidth="130.0" layoutX="33.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -21,7 +21,7 @@
          </image>
       </ImageView>
       <Label id="labelNom" layoutX="285.0" layoutY="24.0" prefHeight="17.0" prefWidth="40.0" text="Nom" />
-      <TextField id="textNom" disable="true" layoutX="325.0" layoutY="20.0" />
+      <TextField fx:id="textNom" disable="true" layoutX="325.0" layoutY="20.0" />
       <Label id="labelPrenom" layoutX="272.0" layoutY="67.0" prefHeight="17.0" prefWidth="47.0" text="Prénom" />
       <TextField id="textPrenom" disable="true" layoutX="325.0" layoutY="63.0" />
       <Label id="labelGroupe" layoutX="199.0" layoutY="115.0" text="Choisissez un groupe" />

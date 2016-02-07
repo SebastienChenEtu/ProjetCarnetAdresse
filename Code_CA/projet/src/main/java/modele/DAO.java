@@ -1,5 +1,10 @@
 package modele;
 
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.EOFException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -56,9 +61,9 @@ public class DAO{
 				contact.setFax(rsContactSimple.getString("fax"));
 				contact.setIdGroupe(rsContactSimple.getInt("idgroupe"));
 
-//				byte[] imgData = rsContactSimple.getBytes("photo");
-//				ByteArrayInputStream stream = new ByteArrayInputStream(imgData);
-//				contact.setPhoto(stream);
+				byte[] imgData = rsContactSimple.getBytes("photo");
+				ByteArrayInputStream stream = new ByteArrayInputStream(imgData);
+				contact.setPhoto(stream);
 
 				while(rsAdressesContact.next()){
 					adresses.add(new Adresse(rsAdressesContact.getInt("idadresse"),rsAdressesContact.getString("adresse"), rsAdressesContact.getInt("idtype")));
@@ -96,10 +101,7 @@ public class DAO{
 
 			PreparedStatement ps = db.connexion.prepareStatement(" insert into contact(idgroupe, nom,favoris, prenom, ddn, photo, fax) "
 					+ "VALUES(?, ?, ?, ?, ?, ?, ?)");
-			
-//			PreparedStatement ps = db.connexion.prepareStatement(" insert into contact(idgroupe, nom,favoris, prenom, ddn, fax) "
-//					+ "VALUES(?, ?, ?, ?, ?, ?)");
-			
+
 			ResultSet rs;
 
 			ps.setInt(1, contact.getIdGroupe());
@@ -109,7 +111,6 @@ public class DAO{
 			ps.setDate(5, (Date) contact.getDdn());
 			ps.setBinaryStream(6, contact.getPhoto(), 1000000); // ne pas mettre en dur le taille maximale (1000000)
 			ps.setString(7, contact.getFax());
-			//ps.setString(6, contact.getFax());
 			// on crée le contact
 			ps.execute();
 
@@ -187,16 +188,13 @@ public class DAO{
 	// TODO
 	// ce serait bien de renvoyer le nouveau contact crée
 	// ce n'est pas grave niveau optimisation ?
-	public Contact ModifierContact(int idContactAModifier, Contact contactSouhaite) throws Exception {
-		if(TrouverContact(idContactAModifier) == null){
+public Contact ModifierContact(int idContactAModifier, Contact contactSouhaite) throws Exception {
+		Contact ancienContact;
+		PreparedStatement ps;
+		if((ancienContact = TrouverContact(idContactAModifier)) == null){
 			throw new Exception("Aucun Contact de ce nom n'existe !");
 		}
-		int isContactFavoris = 0; // en SQLite boolean false|true devient int 0|1
-		if(contactSouhaite.getFavoris())
-		{
-			isContactFavoris = 1;
-		}
-
+		/*
 		try {
 			PreparedStatement ps = db.connexion.prepareStatement("UPDATE CONTACT "
 					+ "SET NOM = ?,"
@@ -214,8 +212,144 @@ public class DAO{
 			ps.setInt(6, contactSouhaite.getIdGroupe());
 			ps.setInt(7, contactSouhaite.getIdContact());
 			ps.execute();
+		 */
 
-			// pour les adresses d'un contact
+		try
+		{
+
+			if (!ancienContact.getNom().equals(contactSouhaite.getNom()))
+			{
+				ps = db.connexion.prepareStatement("UPDATE CONTACT SET NOM = ? WHERE IDCONTACT = ?");
+				ps.setString(1, contactSouhaite.getNom());
+				ps.setInt(2, idContactAModifier);
+				ps.execute();
+			}
+
+			if (!ancienContact.getPrenom().equals(contactSouhaite.getPrenom()))
+			{
+				ps = db.connexion.prepareStatement("UPDATE CONTACT SET PRENOM = ? WHERE IDCONTACT = ?");
+				ps.setString(1, contactSouhaite.getPrenom());
+				ps.setInt(2, idContactAModifier);
+				ps.execute();
+			}
+
+			if (ancienContact.getFax() != (contactSouhaite.getFax()))
+			{
+				ps = db.connexion.prepareStatement("UPDATE CONTACT SET FAX = ? WHERE IDCONTACT = ?");
+				ps.setString(1, contactSouhaite.getFax());
+				ps.setInt(2, idContactAModifier);
+				ps.execute();
+			}
+
+			if (ancienContact.getFavoris() != contactSouhaite.getFavoris())
+			{
+				ps = db.connexion.prepareStatement("UPDATE CONTACT SET FAVORIS = ? WHERE IDCONTACT = ?");
+				ps.setInt(1, contactSouhaite.getFavoris() ? 1 : 0);
+				ps.setInt(2, idContactAModifier);
+				ps.execute();
+			}
+
+			if (ancienContact.getIdGroupe() != (contactSouhaite.getIdGroupe()))
+			{
+				ps = db.connexion.prepareStatement("UPDATE CONTACT SET IDGROUPE = ? WHERE IDCONTACT = ?");
+				ps.setInt(1, contactSouhaite.getIdGroupe());
+				ps.setInt(2, idContactAModifier);
+				ps.execute();
+			}
+
+			if (ancienContact.getDdn() != (contactSouhaite.getDdn()))
+			{
+				ps = db.connexion.prepareStatement("UPDATE CONTACT SET DDN = ? WHERE IDCONTACT = ?");
+				ps.setDate(1, (Date)contactSouhaite.getDdn());
+				ps.setInt(2, idContactAModifier);
+				ps.execute();
+			}
+
+			if(!isPhotoEqual(ancienContact.getPhoto(), contactSouhaite.getPhoto()))
+			{
+				ps = db.connexion.prepareStatement("UPDATE CONTACT SET PHOTO = ? WHERE IDCONTACT = ?");
+//				System.out.println(ancienContact.getPhoto());
+//				System.out.println(contactSouhaite.getPhoto());
+				ps.setBinaryStream(1, contactSouhaite.getPhoto(), 10000000);
+				ps.setInt(2, idContactAModifier);
+				ps.execute();
+				System.out.println("UPDATED!!");
+			}
+
+			// Pour les adresses d'un contact
+			int differenceEntreListesAdresses = contactSouhaite.getAdresses().size() - ancienContact.getAdresses().size();
+
+			if(differenceEntreListesAdresses >= 0)
+			{
+				for(int i = 0; i < ancienContact.getAdresses().size() ; i++)
+				{
+					Adresse adresseEnCoursSouhaite = contactSouhaite.getAdresses().get(i);
+					Adresse adresseEnCoursAncien = ancienContact.getAdresses().get(i);
+
+					if(!adresseEnCoursSouhaite.getAdresse().equals(adresseEnCoursAncien.getAdresse()))
+					{
+						ps = db.connexion.prepareStatement("UPDATE ADRESSE SET ADRESSE = ? WHERE IDCONTACT = ? AND IDADRESSE = ?");
+						ps.setString(1, adresseEnCoursSouhaite.getAdresse());
+						ps.setInt(2, idContactAModifier);
+						ps.setInt(3, adresseEnCoursAncien.getIdAdresse());
+						ps.execute();
+					}
+					if(adresseEnCoursSouhaite.getIdType() != adresseEnCoursAncien.getIdType())
+					{
+						ps = db.connexion.prepareStatement("UPDATE ADRESSE SET IDTYPE = ? WHERE IDCONTACT = ? AND IDADRESSE = ?");
+						ps.setInt(1, adresseEnCoursSouhaite.getIdType());
+						ps.setInt(2, idContactAModifier);
+						ps.setInt(3, adresseEnCoursAncien.getIdAdresse());
+						ps.execute();
+					}
+				}
+				for(int i = ancienContact.getAdresses().size() ; i < contactSouhaite.getAdresses().size() ; i++)
+				{
+					Adresse adresseEnCoursSouhaite = contactSouhaite.getAdresses().get(i);
+
+					ps = db.connexion.prepareStatement("insert into adresse(idcontact, adresse, idtype) values (?, ?, ?)");
+					ps.setInt(1, idContactAModifier);
+					ps.setString(2, adresseEnCoursSouhaite.getAdresse());
+					ps.setInt(3, adresseEnCoursSouhaite.getIdType());
+					ps.execute();
+				}
+			}
+			else
+			{
+				for(int i = 0; i < contactSouhaite.getAdresses().size() ; i++)
+				{
+					Adresse adresseEnCoursSouhaite = contactSouhaite.getAdresses().get(i);
+					Adresse adresseEnCoursAncien = ancienContact.getAdresses().get(i);
+
+					if(!adresseEnCoursSouhaite.getAdresse().equals(adresseEnCoursAncien.getAdresse()))
+					{
+						ps = db.connexion.prepareStatement("UPDATE ADRESSE SET ADRESSE = ? WHERE IDCONTACT = ? AND IDADRESSE = ?");
+						ps.setString(1, adresseEnCoursSouhaite.getAdresse());
+						ps.setInt(2, idContactAModifier);
+						ps.setInt(3, adresseEnCoursAncien.getIdAdresse());
+						ps.execute();
+					}
+					if(adresseEnCoursSouhaite.getIdType() != adresseEnCoursAncien.getIdType())
+					{
+						ps = db.connexion.prepareStatement("UPDATE ADRESSE SET IDTYPE = ? WHERE IDCONTACT = ? AND IDADRESSE = ?");
+						ps.setInt(1, adresseEnCoursSouhaite.getIdType());
+						ps.setInt(2, idContactAModifier);
+						ps.setInt(3, adresseEnCoursAncien.getIdAdresse());
+						ps.execute();
+					}
+				}
+				for(int i = contactSouhaite.getAdresses().size() ; i < ancienContact.getAdresses().size() ; i++)
+				{
+					Adresse adresseEnCoursAncien = ancienContact.getAdresses().get(i);
+
+					ps = db.connexion.prepareStatement("delete from adresse where idadresse = ?");
+					ps.setInt(1, adresseEnCoursAncien.getIdAdresse());
+					ps.execute();
+				}
+			}
+
+
+			/*			// pour les adresses d'un contact
 			if(contactSouhaite.getAdresses() != null)
 			{
 				ps = db.connexion.prepareStatement("DELETE FROM ADRESSE WHERE idContact = ?");
@@ -223,12 +357,6 @@ public class DAO{
 				ps.execute();
 
 				for (Adresse adr : contactSouhaite.getAdresses()) {
-					/*ps = db.connexion.prepareStatement("UPDATE ADRESSE SET "
-							+ "ADRESSE = ?"
-							+ "WHERE IDCONTACT = ?");
-					ps.setString(1, adr.getAdresse());
-					ps.setInt(2, idContactAModifier);
-					 */
 					ps = db.connexion.prepareStatement("insert into adresse(idcontact, adresse, idtype) values (?, ?, ?)");
 					ps.setInt(1, idContactAModifier);
 					ps.setString(2, adr.getAdresse());
@@ -237,6 +365,84 @@ public class DAO{
 					ps.execute();
 				}
 			}
+			 */
+			// il faut ensuite comparer en collection
+			// et modifier là où il y a des différences
+			// voir http://stackoverflow.com/questions/19155283/simple-way-to-compare-2-arraylists
+
+			// pour les mails d'un contact
+			int differenceEntreListesMails = contactSouhaite.getMails().size() - ancienContact.getMails().size();
+
+			if(differenceEntreListesMails >= 0)
+			{
+				for(int i = 0; i < ancienContact.getMails().size() ; i++)
+				{
+					Mail mailEnCoursSouhaite = contactSouhaite.getMails().get(i);
+					Mail mailEnCoursAncien = ancienContact.getMails().get(i);
+
+					if(!mailEnCoursSouhaite.getMail().equals(mailEnCoursAncien.getMail()))
+					{
+						ps = db.connexion.prepareStatement("UPDATE MAIL SET MAIL = ? WHERE IDCONTACT = ? AND IDMAIL = ?");
+						ps.setString(1, mailEnCoursSouhaite.getMail());
+						ps.setInt(2, idContactAModifier);
+						ps.setInt(3, mailEnCoursAncien.getIdMail());
+						ps.execute();
+					}
+					if(mailEnCoursSouhaite.getIdType() != mailEnCoursAncien.getIdType())
+					{
+						ps = db.connexion.prepareStatement("UPDATE MAIL SET IDTYPE = ? WHERE IDCONTACT = ? AND IDMAIL = ?");
+						ps.setInt(1, mailEnCoursSouhaite.getIdType());
+						ps.setInt(2, idContactAModifier);
+						ps.setInt(3, mailEnCoursAncien.getIdMail());
+						ps.execute();
+					}
+				}
+				for(int i = ancienContact.getMails().size() ; i < contactSouhaite.getMails().size() ; i++)
+				{
+					Mail mailEnCoursSouhaite = contactSouhaite.getMails().get(i);
+
+					ps = db.connexion.prepareStatement("insert into mail(idcontact, mail, idtype) values (?, ?, ?)");
+					ps.setInt(1, idContactAModifier);
+					ps.setString(2, mailEnCoursSouhaite.getMail());
+					ps.setInt(3, mailEnCoursSouhaite.getIdType());
+					ps.execute();
+				}
+			}
+			else
+			{
+				for(int i = 0; i < contactSouhaite.getMails().size() ; i++)
+				{
+					Mail mailEnCoursSouhaite = contactSouhaite.getMails().get(i);
+					Mail mailEnCoursAncien = ancienContact.getMails().get(i);
+
+					if(!mailEnCoursSouhaite.getMail().equals(mailEnCoursAncien.getMail()))
+					{
+						ps = db.connexion.prepareStatement("UPDATE MAIL SET MAIL = ? WHERE IDCONTACT = ? AND IDMAIL = ?");
+						ps.setString(1, mailEnCoursSouhaite.getMail());
+						ps.setInt(2, idContactAModifier);
+						ps.setInt(3, mailEnCoursAncien.getIdMail());
+						ps.execute();
+					}
+					if(mailEnCoursSouhaite.getIdType() != mailEnCoursAncien.getIdType())
+					{
+						ps = db.connexion.prepareStatement("UPDATE MAIL SET IDTYPE = ? WHERE IDCONTACT = ? AND IDMAIL= ?");
+						ps.setInt(1, mailEnCoursSouhaite.getIdType());
+						ps.setInt(2, idContactAModifier);
+						ps.setInt(3, mailEnCoursAncien.getIdMail());
+						ps.execute();
+					}
+				}
+				for(int i = contactSouhaite.getMails().size() ; i < ancienContact.getMails().size() ; i++)
+				{
+					Mail mailEnCoursAncien = ancienContact.getMails().get(i);
+
+					ps = db.connexion.prepareStatement("delete from mail where idmail = ?");
+					ps.setInt(1, mailEnCoursAncien.getIdMail());
+					ps.execute();
+				}
+			}
+
+			/*
 			// pour les mails d'un contact
 			if(contactSouhaite.getMails() != null)
 			{
@@ -254,7 +460,80 @@ public class DAO{
 					ps.execute();
 				}
 			}
+			 */
+			// pour les telephones d'un contact
+			int differenceEntreListesTelephones = contactSouhaite.getTelephones().size() - ancienContact.getTelephones().size();
 
+			if(differenceEntreListesTelephones >= 0)
+			{
+				for(int i = 0; i < ancienContact.getTelephones().size() ; i++)
+				{
+					Telephone telEnCoursSouhaite = contactSouhaite.getTelephones().get(i);
+					Telephone telEnCoursAncien = ancienContact.getTelephones().get(i);
+
+					if(!telEnCoursSouhaite.getTelephone().equals(telEnCoursAncien.getTelephone()))
+					{
+						ps = db.connexion.prepareStatement("UPDATE TELEPHONE SET TELEPHONE = ? WHERE IDCONTACT = ? AND IDTELEPHONE = ?");
+						ps.setString(1, telEnCoursSouhaite.getTelephone());
+						ps.setInt(2, idContactAModifier);
+						ps.setInt(3, telEnCoursAncien.getIdTelephone());
+						ps.execute();
+					}
+					if(telEnCoursSouhaite.getIdType() != telEnCoursAncien.getIdType())
+					{
+						ps = db.connexion.prepareStatement("UPDATE TELEPHONE SET IDTYPE = ? WHERE IDCONTACT = ? AND IDTELEPHONE = ?");
+						ps.setInt(1, telEnCoursSouhaite.getIdType());
+						ps.setInt(2, idContactAModifier);
+						ps.setInt(3, telEnCoursAncien.getIdTelephone());
+						ps.execute();
+					}
+				}
+				for(int i = ancienContact.getTelephones().size() ; i < contactSouhaite.getTelephones().size() ; i++)
+				{
+					Telephone telEnCoursSouhaite = contactSouhaite.getTelephones().get(i);
+
+					ps = db.connexion.prepareStatement("insert into telephone (idcontact, telephone, idtype) values (?, ?, ?)");
+					ps.setInt(1, idContactAModifier);
+					ps.setString(2, telEnCoursSouhaite.getTelephone());
+					ps.setInt(3, telEnCoursSouhaite.getIdType());
+					ps.execute();
+				}
+			}
+			else
+			{
+				for(int i = 0; i < contactSouhaite.getTelephones().size() ; i++)
+				{
+					Telephone telEnCoursSouhaite = contactSouhaite.getTelephones().get(i);
+					Telephone telEnCoursAncien = ancienContact.getTelephones().get(i);
+
+					if(!telEnCoursSouhaite.getTelephone().equals(telEnCoursAncien.getTelephone()))
+					{
+						ps = db.connexion.prepareStatement("UPDATE TELEPHONE SET TELEPHONE = ? WHERE IDCONTACT = ? AND IDTELEPHONE = ?");
+						ps.setString(1, telEnCoursSouhaite.getTelephone());
+						ps.setInt(2, idContactAModifier);
+						ps.setInt(3, telEnCoursAncien.getIdTelephone());
+						ps.execute();
+					}
+					if(telEnCoursSouhaite.getIdType() != telEnCoursAncien.getIdType())
+					{
+						ps = db.connexion.prepareStatement("UPDATE TELEPHONE SET IDTYPE = ? WHERE IDCONTACT = ? AND IDTELEPHONE= ?");
+						ps.setInt(1, telEnCoursSouhaite.getIdType());
+						ps.setInt(2, idContactAModifier);
+						ps.setInt(3, telEnCoursAncien.getIdTelephone());
+						ps.execute();
+					}
+				}
+				for(int i = contactSouhaite.getTelephones().size() ; i < ancienContact.getTelephones().size() ; i++)
+				{
+					Telephone telEnCoursAncien = ancienContact.getTelephones().get(i);
+
+					ps = db.connexion.prepareStatement("delete from telephone where idtelephone = ?");
+					ps.setInt(1, telEnCoursAncien.getIdTelephone());
+					ps.execute();
+				}
+			}
+
+			/*
 			// pour les telephones d'un contact
 			if(contactSouhaite.getTelephones() != null)
 			{
@@ -272,6 +551,7 @@ public class DAO{
 					ps.execute();
 				}
 			}
+			 */
 			return TrouverContact(idContactAModifier);
 		}
 		catch (Exception e)
@@ -362,6 +642,22 @@ public class DAO{
 			ps = db.connexion.prepareStatement("INSERT INTO GROUPE(NOM) VALUES(?)");
 			ps.setString(1, groupe.getNom());
 			ps.execute();
+			if(groupe.getListeContacts() != null)
+			{
+				ps = db.connexion.prepareStatement("select last_insert_rowid()");
+				ResultSet rs = ps.executeQuery();
+				int idGroupe = 0;
+
+				if(rs.next())
+				{
+					idGroupe = rs.getInt(1);
+				}
+
+				for (Contact contact : groupe.getListeContacts()) {
+					contact.setIdGroupe(idGroupe);
+					ModifierContact(contact.getIdContact(), contact);
+				}
+			}
 			return TrouverGroupe(groupe.getNom());
 		}
 		catch (Exception e)
@@ -433,10 +729,26 @@ public class DAO{
 		return listeTousLesFavoris;
 	}
 
+	public List<Contact> trouverTousContactsGroupe(String nomGroupe) throws SQLException {
+		List<Contact> listeTousLesContacts = new LinkedList<Contact>();
+		PreparedStatement psContact = db.connexion.prepareStatement("SELECT * FROM CONTACT, GROUPE WHERE CONTACT.IDGROUPE = GROUPE.IDGROUPE AND GROUPE.NOM = ?");
+		psContact.setString(1, nomGroupe);
+		ResultSet rsContact = psContact.executeQuery();
+		try {
+			while(rsContact.next()){
+				listeTousLesContacts.add(TrouverContact(Integer.parseInt(rsContact.getString("idContact"))));
+			}
+			Collections.sort(listeTousLesContacts);
+		} catch (SQLException e) {
+			throw new SQLException(e.toString());
+		}
+		return listeTousLesContacts;
+	}
+
 	public List<Contact> rechercherContactNom(String nom) throws SQLException {
 		List<Contact> listeContact = new LinkedList<Contact>();
-		PreparedStatement psContact = db.connexion.prepareStatement("SELECT * FROM CONTACT WHERE nom LIKE ?%");
-		psContact.setString(1,nom);
+		PreparedStatement psContact = db.connexion.prepareStatement("SELECT * FROM CONTACT WHERE nom LIKE ?");
+		psContact.setString(1, nom + '%');
 		ResultSet rsContact = psContact.executeQuery();
 		try {
 			while(rsContact.next()){
@@ -505,5 +817,47 @@ public class DAO{
 		}
 	}
 
+	public Type ModifierType(String nomTypeAModifier, Type typeSouhaite) throws Exception {
+		Type typeAModifier;
+		if((typeAModifier = TrouverType(nomTypeAModifier)) == null){
+			throw new Exception("Aucun type avec ce libelle n'existe !");
+		}
+		try
+		{
+			PreparedStatement ps = db.connexion.prepareStatement("UPDATE TYPE "
+					+ "SET LIBELLETYPE = ?"
+					+ "WHERE idtype = ?");
+			ps.setString(1, typeSouhaite.getLibelleType());
+			ps.setInt(2, typeAModifier.getIdType());
+			ps.execute();
+			return TrouverType(typeSouhaite.getLibelleType());
+		}
+		catch(Exception e)
+		{
+			throw new Exception(e.toString());
+		}
+	}
+
+	private boolean isPhotoEqual(InputStream i1, InputStream i2) throws IOException {
+		byte[] buf1 = new byte[64 *1024];
+		byte[] buf2 = new byte[64 *1024];
+		try {
+			DataInputStream d2 = new DataInputStream(i2);
+			int len;
+			while ((len = i1.read(buf1)) > 0) {
+				d2.readFully(buf2,0,len);
+				for(int i=0;i<len;i++)
+					if(buf1[i] != buf2[i]){
+						return false;
+					}
+			}
+			return d2.read() < 0;
+		} catch(EOFException ioe) {
+			return false;
+		} finally {
+			i1.close();
+			i2.close();
+		}
+	}
 
 }
