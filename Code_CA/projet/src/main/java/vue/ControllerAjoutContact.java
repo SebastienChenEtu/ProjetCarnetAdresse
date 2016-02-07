@@ -2,6 +2,8 @@ package vue;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -30,6 +32,7 @@ import modele.Contact;
 import modele.Groupe;
 import modele.Mail;
 import modele.Telephone;
+import modele.DAO;
 import service.ServiceCarnetAdresse;
 
 public class ControllerAjoutContact {
@@ -178,13 +181,15 @@ public class ControllerAjoutContact {
 	}
 
 	@FXML
-	void btnAvatar_onAction(ActionEvent event) {
+	void btnAvatar_onAction(ActionEvent event)throws Exception {
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
 		int result = fileChooser.showOpenDialog(null);
 		if (result == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = fileChooser.getSelectedFile();
 			System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+			FileInputStream fileInputStream = new FileInputStream(selectedFile);
+			service.setPhoto(1, fileInputStream);
 		}
 		// Il faudra vérifier le format (jpg, png...), la taille (pas trop lourde)
 		// Puis rendre l'image visible dans un petit cadre ?

@@ -1,15 +1,20 @@
 package service;
 
-import java.io.BufferedReader;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.sql.Date;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 import org.springframework.stereotype.Service;
 
@@ -110,7 +115,28 @@ public class ServiceCarnetAdresse {
 	public Contact setPhoto(int idContactAModifier, InputStream photo) throws Exception
 	{
 		Contact nouveauContact = TrouverContact(idContactAModifier);
-		nouveauContact.setPhoto(photo);
+		//nouveauContact.setPhoto(photo);
+		//return this.dao.ModifierContact(idContactAModifier, nouveauContact);
+
+		ResultSet rs = db.requete.executeQuery("select photo from contact where idcontact = 1");
+		byte[] imgData = null;
+		if (rs.next()) {
+            imgData = rs.getBytes("photo");//Here r1.getBytes() extract byte data from resultSet
+        }
+		ByteArrayInputStream stream = new ByteArrayInputStream(imgData);
+		System.out.println(stream);
+		BufferedImage image2 = ImageIO.read(stream);
+
+        JLabel label2 = new JLabel(new ImageIcon(image2));
+        JFrame f2 = new JFrame();
+        f2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f2.getContentPane().add(label2);
+        f2.pack();
+        f2.setLocation(200,200);
+        f2.setVisible(true);
+
+
+		//nouveauContact.setPhoto(stream);
 		return this.dao.ModifierContact(idContactAModifier, nouveauContact);
 	}
 
@@ -219,32 +245,32 @@ public class ServiceCarnetAdresse {
 	public boolean ExporterFavoris() throws Exception
 	{
 		List<Contact> contactFavoris = trouverToutFavoris();
-		String sqlInsertions = "";
+		String sqlInsertions = "create temp table _variables(last_rowid integer);" + '\n';
 
 		try {
-			for (Contact contact : contactFavoris) {
-				int isContactFavoris = 0; // en SQLite boolean false|true devient int 0|1
-				if(contact.getFavoris())
-				{
-					isContactFavoris = 1;
-				}
 
-				String sqlTpContactSimple = "insert into contact(idcontact, idgroupe, nom,favoris, prenom, ddn, fax) "
+			for (Contact contact : contactFavoris) {
+
+				String sqlTpContactSimple = "insert into contact(idgroupe, nom,favoris, prenom, ddn, fax) "
 						+ "VALUES(";
-				sqlTpContactSimple = sqlTpContactSimple + contact.getIdContact() + ", ";
-				sqlTpContactSimple = sqlTpContactSimple + contact.getIdGroupe() + " , '";
+				//sqlTpContactSimple = sqlTpContactSimple + contact.getIdContact() + ", ";
+				//sqlTpContactSimple = sqlTpContactSimple + contact.getIdGroupe() + " , '";
+				sqlTpContactSimple = sqlTpContactSimple + "0 , '";
 				sqlTpContactSimple = sqlTpContactSimple + contact.getNom() + "' ,";
-				sqlTpContactSimple = sqlTpContactSimple + isContactFavoris + " , '";
+				sqlTpContactSimple = sqlTpContactSimple + "1, '";
 				sqlTpContactSimple = sqlTpContactSimple + contact.getPrenom() + "',";
 				sqlTpContactSimple = sqlTpContactSimple + contact.getDdn()+ " ,'";
 				sqlTpContactSimple = sqlTpContactSimple + contact.getFax()+ "' );";
 
-				sqlInsertions = sqlInsertions + '\n' +sqlTpContactSimple;
+				sqlInsertions = sqlInsertions + '\n' +sqlTpContactSimple + '\n';
+
+				sqlInsertions = sqlInsertions + "insert into _variables values ((select last_insert_rowid() from contact));" + '\n';
 
 				for (Adresse adr : contact.getAdresses()) {
-					String sqlTpContactAdresses = "insert into adresse(idadresse, idcontact, adresse, idtype) values (";
-					sqlTpContactAdresses = sqlTpContactAdresses + adr.getIdAdresse() + ", ";
-					sqlTpContactAdresses = sqlTpContactAdresses + contact.getIdContact() + ", '";
+					String sqlTpContactAdresses = "insert into adresse (idcontact, adresse, idtype) values (";
+					//sqlTpContactAdresses = sqlTpContactAdresses + adr.getIdAdresse() + ", ";
+					// sqlTpContactAdresses = sqlTpContactAdresses + contact.getIdContact() + ", '";
+					sqlTpContactAdresses = sqlTpContactAdresses + "(select max(last_rowid) from _variables), '";
 					sqlTpContactAdresses = sqlTpContactAdresses + adr.getAdresse() + "', ";
 					sqlTpContactAdresses = sqlTpContactAdresses + adr.getIdType() + ");";
 
@@ -252,9 +278,10 @@ public class ServiceCarnetAdresse {
 				}
 
 				for (Mail mail : contact.getMails()) {
-					String sqlTpContactMails= "insert into mail(idmail, idcontact, mail, idtype) values (";
-					sqlTpContactMails = sqlTpContactMails + mail.getIdMail() + ", ";
-					sqlTpContactMails = sqlTpContactMails + contact.getIdContact() + ", '";
+					String sqlTpContactMails= "insert into mail(idcontact, mail, idtype) values (";
+					//sqlTpContactMails = sqlTpContactMails + mail.getIdMail() + ", ";
+					//sqlTpContactMails = sqlTpContactMails + contact.getIdContact() + ", '";
+					sqlTpContactMails = sqlTpContactMails+ "(select max(last_rowid) from _variables) , '";
 					sqlTpContactMails = sqlTpContactMails + mail.getMail() + "', ";
 					sqlTpContactMails = sqlTpContactMails + mail.getIdType() + ");";
 
@@ -262,15 +289,18 @@ public class ServiceCarnetAdresse {
 				}
 
 				for (Telephone tel : contact.getTelephones()) {
-					String sqlTpContactTelephones = "insert into telephone(idtelephone, idcontact, telephone, idtype) values (";
-					sqlTpContactTelephones = sqlTpContactTelephones + tel.getIdTelephone() + ", ";
-					sqlTpContactTelephones = sqlTpContactTelephones + contact.getIdContact() + ", '";
+					String sqlTpContactTelephones = "insert into telephone(idcontact, telephone, idtype) values (";
+					//sqlTpContactTelephones = sqlTpContactTelephones + tel.getIdTelephone() + ", ";
+					//sqlTpContactTelephones = sqlTpContactTelephones + contact.getIdContact() + ", '";
+					sqlTpContactTelephones = sqlTpContactTelephones + "(select max(last_rowid) from _variables), '";
 					sqlTpContactTelephones = sqlTpContactTelephones + tel.getTelephone() + "', ";
 					sqlTpContactTelephones = sqlTpContactTelephones + tel.getIdType() + ");";
 
-					sqlInsertions = sqlInsertions + '\n' + sqlTpContactTelephones;
+					sqlInsertions = sqlInsertions + '\n' + sqlTpContactTelephones + '\n';
 				}
 			}
+
+			sqlInsertions = sqlInsertions + '\n' + "drop table _variables;";
 			FileWriter exportFile = new FileWriter("favoris.sql", true);
 			exportFile.write(sqlInsertions);
 			exportFile.close();
@@ -295,6 +325,7 @@ public class ServiceCarnetAdresse {
 		}
 	}
 
+	// TODO
 	public boolean ImporterBase() throws Exception
 	{
 		try {
@@ -308,9 +339,110 @@ public class ServiceCarnetAdresse {
 		}
 	}
 
-	// TODO
-	public boolean ExporterContactGroupe()
+	public boolean ImporterFavoris() throws Exception
 	{
-		return false;
+		try
+		{
+			System.getProperty("user.dir");
+			Runtime.getRuntime().exec("cmd.exe /c  sqlite3.exe Database.db < import_favoris.txt");
+			return true;
+		}
+		catch (Exception e)
+		{
+			throw new Exception(e.toString());
+		}
+	}
+
+	public boolean ImporterContactsGroupe(String nomGroupe) throws Exception
+	{
+		try
+		{
+			System.getProperty("user.dir");
+			String nomFichierTxt = "import_" + nomGroupe + ".txt";
+			FileWriter exportFile = new FileWriter(nomFichierTxt, true);
+			exportFile.write(".read contacts_" + nomGroupe + ".sql");
+			exportFile.close();
+			Runtime.getRuntime().exec("cmd.exe /c  sqlite3.exe Database.db < " + nomFichierTxt);
+			return true;
+		}
+		catch (Exception e)
+		{
+			throw new Exception(e.toString());
+		}
+	}
+
+
+	public boolean ExporterContactsGroupe(String nomGroupe) throws Exception
+	{
+		{
+			List<Contact> contactGroupe = this.dao.trouverTousContactsGroupe(nomGroupe);
+			String sqlInsertions = "create temp table _variables(last_rowid_contact integer, last_rowid_groupe integer);";
+			sqlInsertions = sqlInsertions + '\n' + "insert into groupe (nom) values('" + nomGroupe + "');" + '\n';
+			sqlInsertions = sqlInsertions + "insert into _variables (last_rowid_groupe) values ((select last_insert_rowid() from groupe));" + '\n';
+
+			try {
+
+				for (Contact contact : contactGroupe) {
+
+					String sqlTpContactSimple = "insert into contact(idgroupe, nom,favoris, prenom, ddn, fax) "
+							+ "VALUES(";
+					//sqlTpContactSimple = sqlTpContactSimple + contact.getIdContact() + ", ";
+					//sqlTpContactSimple = sqlTpContactSimple + contact.getIdGroupe() + " , '";
+					sqlTpContactSimple = sqlTpContactSimple + "(select max(last_rowid_groupe) from _variables) , '";
+					sqlTpContactSimple = sqlTpContactSimple + contact.getNom() + "' ,";
+					sqlTpContactSimple = sqlTpContactSimple + "1, '";
+					sqlTpContactSimple = sqlTpContactSimple + contact.getPrenom() + "',";
+					sqlTpContactSimple = sqlTpContactSimple + contact.getDdn()+ " ,'";
+					sqlTpContactSimple = sqlTpContactSimple + contact.getFax()+ "' );";
+
+					sqlInsertions = sqlInsertions + '\n' +sqlTpContactSimple + '\n';
+
+					sqlInsertions = sqlInsertions + "insert into _variables (last_rowid_contact) values ((select last_insert_rowid() from contact));" + '\n';
+
+					for (Adresse adr : contact.getAdresses()) {
+						String sqlTpContactAdresses = "insert into adresse (idcontact, adresse, idtype) values (";
+						//sqlTpContactAdresses = sqlTpContactAdresses + adr.getIdAdresse() + ", ";
+						// sqlTpContactAdresses = sqlTpContactAdresses + contact.getIdContact() + ", '";
+						sqlTpContactAdresses = sqlTpContactAdresses + "(select max(last_rowid_contact) from _variables), '";
+						sqlTpContactAdresses = sqlTpContactAdresses + adr.getAdresse() + "', ";
+						sqlTpContactAdresses = sqlTpContactAdresses + adr.getIdType() + ");";
+
+						sqlInsertions = sqlInsertions + '\n' + sqlTpContactAdresses;
+					}
+
+					for (Mail mail : contact.getMails()) {
+						String sqlTpContactMails= "insert into mail(idcontact, mail, idtype) values (";
+						//sqlTpContactMails = sqlTpContactMails + mail.getIdMail() + ", ";
+						//sqlTpContactMails = sqlTpContactMails + contact.getIdContact() + ", '";
+						sqlTpContactMails = sqlTpContactMails+ "(select max(last_rowid_contact) from _variables) , '";
+						sqlTpContactMails = sqlTpContactMails + mail.getMail() + "', ";
+						sqlTpContactMails = sqlTpContactMails + mail.getIdType() + ");";
+
+						sqlInsertions = sqlInsertions + '\n' + sqlTpContactMails;
+					}
+
+					for (Telephone tel : contact.getTelephones()) {
+						String sqlTpContactTelephones = "insert into telephone(idcontact, telephone, idtype) values (";
+						//sqlTpContactTelephones = sqlTpContactTelephones + tel.getIdTelephone() + ", ";
+						//sqlTpContactTelephones = sqlTpContactTelephones + contact.getIdContact() + ", '";
+						sqlTpContactTelephones = sqlTpContactTelephones + "(select max(last_rowid_contact) from _variables), '";
+						sqlTpContactTelephones = sqlTpContactTelephones + tel.getTelephone() + "', ";
+						sqlTpContactTelephones = sqlTpContactTelephones + tel.getIdType() + ");";
+
+						sqlInsertions = sqlInsertions + '\n' + sqlTpContactTelephones + '\n';
+					}
+				}
+
+				sqlInsertions = sqlInsertions + '\n' + "drop table _variables;";
+				FileWriter exportFile = new FileWriter("contacts_" + nomGroupe + ".sql", true);
+				exportFile.write(sqlInsertions);
+				exportFile.close();
+				return true;
+			}
+			catch (Exception e)
+			{
+				throw new Exception(e.toString());
+			}
+		}
 	}
 }

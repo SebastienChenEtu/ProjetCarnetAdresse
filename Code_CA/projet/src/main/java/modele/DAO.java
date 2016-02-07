@@ -265,7 +265,16 @@ public class DAO{
 				ps.execute();
 			}
 
-			System.out.println("comparaison des photos : " + !isPhotoEqual(ancienContact.getPhoto(), contactSouhaite.getPhoto()));
+			if(!isPhotoEqual(ancienContact.getPhoto(), contactSouhaite.getPhoto()))
+			{
+				ps = db.connexion.prepareStatement("UPDATE CONTACT SET PHOTO = ? WHERE IDCONTACT = ?");
+//				System.out.println(ancienContact.getPhoto());
+//				System.out.println(contactSouhaite.getPhoto());
+				ps.setBinaryStream(1, contactSouhaite.getPhoto(), 10000000);
+				ps.setInt(2, idContactAModifier);
+				ps.execute();
+				System.out.println("UPDATED!!");
+			}
 
 			// Pour les adresses d'un contact
 			int differenceEntreListesAdresses = contactSouhaite.getAdresses().size() - ancienContact.getAdresses().size();
@@ -720,10 +729,26 @@ public class DAO{
 		return listeTousLesFavoris;
 	}
 
+	public List<Contact> trouverTousContactsGroupe(String nomGroupe) throws SQLException {
+		List<Contact> listeTousLesContacts = new LinkedList<Contact>();
+		PreparedStatement psContact = db.connexion.prepareStatement("SELECT * FROM CONTACT, GROUPE WHERE CONTACT.IDGROUPE = GROUPE.IDGROUPE AND GROUPE.NOM = ?");
+		psContact.setString(1, nomGroupe);
+		ResultSet rsContact = psContact.executeQuery();
+		try {
+			while(rsContact.next()){
+				listeTousLesContacts.add(TrouverContact(Integer.parseInt(rsContact.getString("idContact"))));
+			}
+			Collections.sort(listeTousLesContacts);
+		} catch (SQLException e) {
+			throw new SQLException(e.toString());
+		}
+		return listeTousLesContacts;
+	}
+
 	public List<Contact> rechercherContactNom(String nom) throws SQLException {
 		List<Contact> listeContact = new LinkedList<Contact>();
-		PreparedStatement psContact = db.connexion.prepareStatement("SELECT * FROM CONTACT WHERE nom LIKE ?%");
-		psContact.setString(1,nom);
+		PreparedStatement psContact = db.connexion.prepareStatement("SELECT * FROM CONTACT WHERE nom LIKE ?");
+		psContact.setString(1, nom + '%');
 		ResultSet rsContact = psContact.executeQuery();
 		try {
 			while(rsContact.next()){
