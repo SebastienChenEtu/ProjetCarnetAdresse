@@ -15,19 +15,26 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import modele.Contact;
+import modele.Groupe;
 import service.ServiceCarnetAdresse;
 
 public class ControllerListeContact implements Initializable  {
@@ -38,22 +45,17 @@ public class ControllerListeContact implements Initializable  {
 	 private static final String NOM = "nom";
 	 private static final String FAVORIS = "favoris";
 	 private static final String SELECTION = "selection";
-	 private ServiceCarnetAdresse service = new ServiceCarnetAdresse();
+	 private static ServiceCarnetAdresse service = new ServiceCarnetAdresse();
 	 
 	 private static ObservableList<Contact> contacts=FXCollections.observableArrayList();
 	 
+	 ArrayList<Groupe> groupe;
 	 
-	 
-
-
     @FXML
     private ResourceBundle resources;
 
     @FXML
     private URL location;
-
-    @FXML
-    private Button btnRechercherContact;
     
     @FXML
     private  TableView<Contact> tvListeContact;
@@ -83,7 +85,16 @@ public class ControllerListeContact implements Initializable  {
     private Button btnAjouterContact;
 
     @FXML
-    private Button btnModifierContact;
+    private Button btnAfficherTousContacts;
+    
+    @FXML
+    private TextField textRechercheContact;
+    
+    @FXML
+    private Button btnRechercherContact;
+    
+    @FXML
+    private ChoiceBox<String> cbGroupe;
     
 
 
@@ -100,15 +111,42 @@ public class ControllerListeContact implements Initializable  {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    	creerColonnes();
+    	//fixColumnsWidth();
+    	
+    	
+    	
+    	cbGroupe.getItems().clear();
+		try {
+			groupe = new ArrayList<Groupe> (service.trouverToutGroupe());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ArrayList<String> nomGroupe = new ArrayList<String>();
+		for (Groupe g : groupe){
+//			if (g.getIdGroupe()!= 0)
+			nomGroupe.add(g.getNom());
+		}
+		cbGroupe.getItems().addAll(nomGroupe);
+	}
+    
+    @FXML
+    void cbGroupe_onClick(ActionEvent event) throws NumberFormatException, Exception{
+    	contacts.clear();
+    	contacts.addAll(service.trouverTousContactsGroupe(cbGroupe.getValue()));
+    	creerColonnes();
+    }
+    
+    
+    
+    void creerColonnes(){
     	tvListeContact.setItems(contacts);
     	ColonnePrenom();
     	ColonneNom();
     	ColonneFavoris();
     	ColonneSelection();
-    	//fixColumnsWidth();
-		
-	}
-    
+    }
     
     public void ColonnePrenom() {
     	columnPrenom.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -141,7 +179,14 @@ public class ControllerListeContact implements Initializable  {
     
     @FXML
     void btnAffichageFavoris_onAction(ActionEvent event) {
-    	
+    	contacts.clear();
+    	try {
+			contacts.addAll(service.trouverToutFavoris());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	creerColonnes();
     }
 
     @FXML
@@ -167,19 +212,41 @@ public class ControllerListeContact implements Initializable  {
     }
 
     @FXML
-    void btnModifierContact_onChange(ActionEvent event) throws IOException {
-    	System.out.println("controller ok");
-    	Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("detailContact.fxml"));
-    	Scene pageAjoutScene= new Scene(pageAjoutParent);
-    	Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();
-    	app_stage.setScene(pageAjoutScene);
-    	app_stage.show();
+    void btnAfficherTousContacts_onChange(ActionEvent event) throws IOException {
+    	contacts.clear();
+    	try {
+			contacts.addAll(service.trouverToutContact());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	creerColonnes();
     }
 
 
     @FXML
     void btnRechercherContact_onAction(ActionEvent event) {
-
+    	if (!textRechercheContact.getText().equals(null) && !textRechercheContact.getText().equals("")){
+    			contacts.clear();
+    	    	try {
+    				contacts.addAll(service.rechercheContactNom(textRechercheContact.getText()));
+    			} catch (SQLException e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    			}
+    	    	if (contacts.isEmpty()){
+    	    		Alert alert = new Alert(AlertType.INFORMATION);
+    	    		alert.setTitle("Message d'information");
+    	    		alert.setHeaderText("Aucun contact trouvé");
+    	    		alert.showAndWait();
+    	    	}
+    	    	creerColonnes();
+    	}else{
+    		Alert alert = new Alert(AlertType.WARNING);
+    		alert.setTitle("Message d'avertissement");
+    		alert.setHeaderText("Aucun nom n'est entré pour le contact");
+    		alert.showAndWait();
+    	}
     }
 
     @FXML
