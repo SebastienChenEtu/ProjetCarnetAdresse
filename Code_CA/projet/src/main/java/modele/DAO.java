@@ -1,6 +1,5 @@
 package modele;
 
-import java.io.ByteArrayInputStream;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -57,9 +56,9 @@ public class DAO{
 				contact.setFax(rsContactSimple.getString("fax"));
 				contact.setIdGroupe(rsContactSimple.getInt("idgroupe"));
 
-				byte[] imgData = rsContactSimple.getBytes("photo");
-				ByteArrayInputStream stream = new ByteArrayInputStream(imgData);
-				contact.setPhoto(stream);
+//				byte[] imgData = rsContactSimple.getBytes("photo");
+//				ByteArrayInputStream stream = new ByteArrayInputStream(imgData);
+//				contact.setPhoto(stream);
 
 				while(rsAdressesContact.next()){
 					adresses.add(new Adresse(rsAdressesContact.getInt("idadresse"),rsAdressesContact.getString("adresse"), rsAdressesContact.getInt("idtype")));
@@ -97,6 +96,10 @@ public class DAO{
 
 			PreparedStatement ps = db.connexion.prepareStatement(" insert into contact(idgroupe, nom,favoris, prenom, ddn, photo, fax) "
 					+ "VALUES(?, ?, ?, ?, ?, ?, ?)");
+			
+//			PreparedStatement ps = db.connexion.prepareStatement(" insert into contact(idgroupe, nom,favoris, prenom, ddn, fax) "
+//					+ "VALUES(?, ?, ?, ?, ?, ?)");
+			
 			ResultSet rs;
 
 			ps.setInt(1, contact.getIdGroupe());
@@ -106,6 +109,7 @@ public class DAO{
 			ps.setDate(5, (Date) contact.getDdn());
 			ps.setBinaryStream(6, contact.getPhoto(), 1000000); // ne pas mettre en dur le taille maximale (1000000)
 			ps.setString(7, contact.getFax());
+			//ps.setString(6, contact.getFax());
 			// on crée le contact
 			ps.execute();
 
@@ -155,7 +159,7 @@ public class DAO{
 					ps.execute();
 				}
 			}
-			return TrouverContact(contact.getIdContact());
+			return TrouverContact(idContact);
 		}
 		catch (Exception e)
 		{
@@ -187,7 +191,6 @@ public class DAO{
 		if(TrouverContact(idContactAModifier) == null){
 			throw new Exception("Aucun Contact de ce nom n'existe !");
 		}
-
 		int isContactFavoris = 0; // en SQLite boolean false|true devient int 0|1
 		if(contactSouhaite.getFavoris())
 		{
