@@ -64,6 +64,13 @@ public class ServiceCarnetAdresse {
 		return this.dao.ModifierGroupe(nomAncienGroupe, nouveauGroupe);
 	}
 
+	public Type setLibelleType(String nomAncienType, String nom) throws Exception
+	{
+		Type nouveauType = this.dao.TrouverType(nomAncienType);
+		nouveauType.setLibelleType(nom);
+		return this.dao.ModifierType(nomAncienType, nouveauType);
+	}
+
 	public Contact setNomContact(int idContactAModifier, String nom) throws Exception
 	{
 		Contact nouveauContact = TrouverContact(idContactAModifier);
@@ -100,9 +107,11 @@ public class ServiceCarnetAdresse {
 	}
 
 	// TODO
-	public Contact setPhoto(Contact ancienContact, InputStream photo)
+	public Contact setPhoto(int idContactAModifier, InputStream photo) throws Exception
 	{
-		return null;
+		Contact nouveauContact = TrouverContact(idContactAModifier);
+		nouveauContact.setPhoto(photo);
+		return this.dao.ModifierContact(idContactAModifier, nouveauContact);
 	}
 
 	public Contact setGroupe(int idContactAModifier, Groupe groupe) throws Exception
@@ -171,7 +180,6 @@ public class ServiceCarnetAdresse {
 		Groupe groupe = new Groupe();
 		groupe.setListeContacts(listeContacts);
 		groupe.setNom(nomGroupe);
-		System.out.println("icicicisdpfksdpofk : " + listeContacts);
 		return this.dao.CreerGroupe(groupe);
 	}
 
@@ -208,62 +216,101 @@ public class ServiceCarnetAdresse {
 		return this.dao.SupprimerType(libelleType);
 	}
 
-	public void ExporterFavoris() throws SQLException, IOException
+	public boolean ExporterFavoris() throws Exception
 	{
 		List<Contact> contactFavoris = trouverToutFavoris();
 		String sqlInsertions = "";
 
-		for (Contact contact : contactFavoris) {
-			int isContactFavoris = 0; // en SQLite boolean false|true devient int 0|1
-			if(contact.getFavoris())
-			{
-				isContactFavoris = 1;
+		try {
+			for (Contact contact : contactFavoris) {
+				int isContactFavoris = 0; // en SQLite boolean false|true devient int 0|1
+				if(contact.getFavoris())
+				{
+					isContactFavoris = 1;
+				}
+
+				String sqlTpContactSimple = "insert into contact(idcontact, idgroupe, nom,favoris, prenom, ddn, fax) "
+						+ "VALUES(";
+				sqlTpContactSimple = sqlTpContactSimple + contact.getIdContact() + ", ";
+				sqlTpContactSimple = sqlTpContactSimple + contact.getIdGroupe() + " , '";
+				sqlTpContactSimple = sqlTpContactSimple + contact.getNom() + "' ,";
+				sqlTpContactSimple = sqlTpContactSimple + isContactFavoris + " , '";
+				sqlTpContactSimple = sqlTpContactSimple + contact.getPrenom() + "',";
+				sqlTpContactSimple = sqlTpContactSimple + contact.getDdn()+ " ,'";
+				sqlTpContactSimple = sqlTpContactSimple + contact.getFax()+ "' );";
+
+				sqlInsertions = sqlInsertions + '\n' +sqlTpContactSimple;
+
+				for (Adresse adr : contact.getAdresses()) {
+					String sqlTpContactAdresses = "insert into adresse(idadresse, idcontact, adresse, idtype) values (";
+					sqlTpContactAdresses = sqlTpContactAdresses + adr.getIdAdresse() + ", ";
+					sqlTpContactAdresses = sqlTpContactAdresses + contact.getIdContact() + ", '";
+					sqlTpContactAdresses = sqlTpContactAdresses + adr.getAdresse() + "', ";
+					sqlTpContactAdresses = sqlTpContactAdresses + adr.getIdType() + ");";
+
+					sqlInsertions = sqlInsertions + '\n' + sqlTpContactAdresses;
+				}
+
+				for (Mail mail : contact.getMails()) {
+					String sqlTpContactMails= "insert into mail(idmail, idcontact, mail, idtype) values (";
+					sqlTpContactMails = sqlTpContactMails + mail.getIdMail() + ", ";
+					sqlTpContactMails = sqlTpContactMails + contact.getIdContact() + ", '";
+					sqlTpContactMails = sqlTpContactMails + mail.getMail() + "', ";
+					sqlTpContactMails = sqlTpContactMails + mail.getIdType() + ");";
+
+					sqlInsertions = sqlInsertions + '\n' + sqlTpContactMails;
+				}
+
+				for (Telephone tel : contact.getTelephones()) {
+					String sqlTpContactTelephones = "insert into telephone(idtelephone, idcontact, telephone, idtype) values (";
+					sqlTpContactTelephones = sqlTpContactTelephones + tel.getIdTelephone() + ", ";
+					sqlTpContactTelephones = sqlTpContactTelephones + contact.getIdContact() + ", '";
+					sqlTpContactTelephones = sqlTpContactTelephones + tel.getTelephone() + "', ";
+					sqlTpContactTelephones = sqlTpContactTelephones + tel.getIdType() + ");";
+
+					sqlInsertions = sqlInsertions + '\n' + sqlTpContactTelephones;
+				}
 			}
-
-			String sqlTpContactSimple = "insert into contact(idcontact, idgroupe, nom,favoris, prenom, ddn, fax) "
-					+ "VALUES(";
-			sqlTpContactSimple = sqlTpContactSimple + contact.getIdContact() + ", ";
-			sqlTpContactSimple = sqlTpContactSimple + contact.getIdGroupe() + " , '";
-			sqlTpContactSimple = sqlTpContactSimple + contact.getNom() + "' ,";
-			sqlTpContactSimple = sqlTpContactSimple + isContactFavoris + " , '";
-			sqlTpContactSimple = sqlTpContactSimple + contact.getPrenom() + "',";
-			sqlTpContactSimple = sqlTpContactSimple + contact.getDdn()+ " ,'";
-			sqlTpContactSimple = sqlTpContactSimple + contact.getFax()+ "' );";
-
-			sqlInsertions = sqlInsertions + '\n' +sqlTpContactSimple;
-
-			for (Adresse adr : contact.getAdresses()) {
-				String sqlTpContactAdresses = "insert into adresse(idadresse, idcontact, adresse, idtype) values (";
-				sqlTpContactAdresses = sqlTpContactAdresses + adr.getIdAdresse() + ", ";
-				sqlTpContactAdresses = sqlTpContactAdresses + contact.getIdContact() + ", '";
-				sqlTpContactAdresses = sqlTpContactAdresses + adr.getAdresse() + "', ";
-				sqlTpContactAdresses = sqlTpContactAdresses + adr.getIdType() + ");";
-
-				sqlInsertions = sqlInsertions + '\n' + sqlTpContactAdresses;
-			}
-
-			for (Mail mail : contact.getMails()) {
-				String sqlTpContactMails= "insert into mail(idmail, idcontact, mail, idtype) values (";
-				sqlTpContactMails = sqlTpContactMails + mail.getIdMail() + ", ";
-				sqlTpContactMails = sqlTpContactMails + contact.getIdContact() + ", '";
-				sqlTpContactMails = sqlTpContactMails + mail.getMail() + "', ";
-				sqlTpContactMails = sqlTpContactMails + mail.getIdType() + ");";
-
-				sqlInsertions = sqlInsertions + '\n' + sqlTpContactMails;
-			}
-
-			for (Telephone tel : contact.getTelephones()) {
-				String sqlTpContactTelephones = "insert into telephone(idtelephone, idcontact, telephone, idtype) values (";
-				sqlTpContactTelephones = sqlTpContactTelephones + tel.getIdTelephone() + ", ";
-				sqlTpContactTelephones = sqlTpContactTelephones + contact.getIdContact() + ", '";
-				sqlTpContactTelephones = sqlTpContactTelephones + tel.getTelephone() + "', ";
-				sqlTpContactTelephones = sqlTpContactTelephones + tel.getIdType() + ");";
-
-				sqlInsertions = sqlInsertions + '\n' + sqlTpContactTelephones;
-			}
+			FileWriter exportFile = new FileWriter("favoris.sql", true);
+			exportFile.write(sqlInsertions);
+			exportFile.close();
+			return true;
 		}
-		FileWriter exportFile = new FileWriter("favoris.sql", true);
-		exportFile.write(sqlInsertions);
-		exportFile.close();
+		catch (Exception e)
+		{
+			throw new Exception(e.toString());
+		}
+	}
+
+	public boolean ExporterBase() throws Exception
+	{
+		try {
+			System.getProperty("user.dir");
+			Runtime.getRuntime().exec("cmd.exe /c sqlite3.exe Database.db .dump > Recovery.sql");
+			return true;
+		}
+		catch (Exception e)
+		{
+			throw new Exception(e.toString());
+		}
+	}
+
+	public boolean ImporterBase() throws Exception
+	{
+		try {
+			System.getProperty("user.dir");
+			Runtime.getRuntime().exec("cmd.exe /c sqlite3.exe NewDatabase.db < Recovery.sql");
+			return true;
+		}
+		catch (Exception e)
+		{
+			throw new Exception(e.toString());
+		}
+	}
+
+	// TODO
+	public boolean ExporterContactGroupe()
+	{
+		return false;
 	}
 }
