@@ -61,7 +61,12 @@ public class ServiceCarnetAdresse {
 	{
 		return this.dao.CreerGroupe(groupe);
 	}
-
+	
+	public Contact ModifierContact(int idContact,Contact contact) throws Exception
+	{
+		return this.dao.ModifierContact(idContact, contact);
+	}
+	
 	public Groupe setNomGroupe(String nomAncienGroupe, String nom) throws Exception
 	{
 		Groupe nouveauGroupe = this.dao.TrouverGroupe(nomAncienGroupe);

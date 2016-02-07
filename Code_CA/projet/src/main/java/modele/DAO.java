@@ -9,7 +9,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -102,6 +101,7 @@ public class DAO{
 
 			PreparedStatement ps = db.connexion.prepareStatement(" insert into contact(idgroupe, nom,favoris, prenom, ddn, photo, fax) "
 					+ "VALUES(?, ?, ?, ?, ?, ?, ?)");
+
 			ResultSet rs;
 
 			ps.setInt(1, contact.getIdGroupe());
@@ -160,7 +160,7 @@ public class DAO{
 					ps.execute();
 				}
 			}
-			return TrouverContact(contact.getIdContact());
+			return TrouverContact(idContact);
 		}
 		catch (Exception e)
 		{
@@ -188,7 +188,7 @@ public class DAO{
 	// TODO
 	// ce serait bien de renvoyer le nouveau contact crée
 	// ce n'est pas grave niveau optimisation ?
-	public Contact ModifierContact(int idContactAModifier, Contact contactSouhaite) throws Exception {
+public Contact ModifierContact(int idContactAModifier, Contact contactSouhaite) throws Exception {
 		Contact ancienContact;
 		PreparedStatement ps;
 		if((ancienContact = TrouverContact(idContactAModifier)) == null){

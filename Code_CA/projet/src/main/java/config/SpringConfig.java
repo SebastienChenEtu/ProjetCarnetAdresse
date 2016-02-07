@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 import modele.DAO;
 import modele.Database;
+import service.ServiceCarnetAdresse;
 
 
 @Configuration
@@ -19,6 +20,6 @@ public class SpringConfig {
 		DAO dao = new DAO(dt);
 		return dao;
 	}
-	
+
 	
 }
