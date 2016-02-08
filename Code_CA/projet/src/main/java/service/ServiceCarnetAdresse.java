@@ -1,12 +1,21 @@
 package service;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.sql.Date;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 import org.springframework.stereotype.Service;
 
@@ -18,6 +27,7 @@ import modele.Groupe;
 import modele.Mail;
 import modele.Telephone;
 import modele.Type;
+
 
 @Service
 public class ServiceCarnetAdresse {
@@ -349,16 +359,20 @@ public class ServiceCarnetAdresse {
 		}
 	}
 
-	public boolean ImporterContactsGroupe(String nomGroupe) throws Exception
+public boolean ImporterFichier(String nomFichier) throws Exception
 	{
 		try
 		{
 			System.getProperty("user.dir");
-			String nomFichierTxt = "import_" + nomGroupe + ".txt";
+			String nomFichierTxt = "import_" + nomFichier + ".txt";
 			FileWriter exportFile = new FileWriter(nomFichierTxt, true);
-			exportFile.write(".read contacts_" + nomGroupe + ".sql");
+			exportFile.write(".read " + nomFichier);
 			exportFile.close();
-			Runtime.getRuntime().exec("cmd.exe /c  sqlite3.exe Database.db < " + nomFichierTxt);
+			Thread.sleep(1000);
+			Process p = Runtime.getRuntime().exec("cmd.exe /c  sqlite3.exe Database.db < " + nomFichierTxt);
+			p.waitFor();
+			File fichierASupprimer = new File(nomFichierTxt);
+			fichierASupprimer.delete();
 			return true;
 		}
 		catch (Exception e)
@@ -366,7 +380,6 @@ public class ServiceCarnetAdresse {
 			throw new Exception(e.toString());
 		}
 	}
-
 
 	public boolean ExporterContactsGroupe(String nomGroupe) throws Exception
 	{

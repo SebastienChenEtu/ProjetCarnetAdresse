@@ -34,8 +34,7 @@ Enfin, nous sommes restés disponibles pour répondre aux différentes questions
 ### Partie développement
 
 Le projet de Carnet d’adresses consiste à développer une application permettant de répertorier les contacts de l’utilisateur.  
-En plus de comprendre les fonctionnalités basiques d’un carnet d’adresses telles que le tri alphabétique, la création, modification, suppression mais encore les favoris.  
-Ce dernier doit permettre au consommateur de fusionner ses groupes ainsi que d’importer / exporter ses contacts sous le format .sql.
+En plus de comprendre les fonctionnalités basiques d’un carnet d’adresses telles que le tri alphabétique, la création/modification/suppression mais encore la gestion de favoris, ce dernier doit permettre au consommateur de fusionner ses groupes ainsi que d’importer/exporter ses contacts sous le format .sql.
 
 L’outil GitHub nous a permis de poser des questions à l’équipe qui nous a fourni le cahier des charges du projet afin de lever toutes ambiguïtés sur leur besoin.
 
@@ -49,18 +48,20 @@ L’outil GitHub nous a permis de poser des questions à l’équipe qui nous a 
 
 #### Tests unitaires  
 
-Nous avons réalisé plusieurs tests unitaires afin de vérifier le fonctionnement des fonctions principales du code.
-
-
+Nous avons réalisé plusieurs tests unitaires afin de vérifier le fonctionnement des fonctions principales du code.  
+À l'aide de ces tests, nous pouvons vérifier la qualité de notre code afin de s'assurer des résultats de nos attentes et de pouvoir le refactorer plus facilement dans le cadre d'un développement plus approfondi du programme.
 
 #### Fonctionnalité bonus  
 
-La fonctionnalité bonus qui nous a été donnée est ....
+La fonctionnalité bonus qui nous a été donnée est de permettre à l'utilisateur de définir plusieurs téléphones, adresses, mails, en ajoutant un libellé sur chaque élément.
 
 #### Visualisation de l'interface 
 
+[Images à insérer]
 
 #### Points perfectibles, points à améliorer
+
+Les points qu'il nous reste à améliorer sont ....
 
 
 ### Retours personnels
@@ -70,10 +71,13 @@ Cela nous a permis de nous rendre compte de l’ampleur d’un projet dans sa to
 
 Cela nous a également permis d'approfondir notre connaissance et prise en main de GitHub.  
 Ce type d'outil, surtout en entreprise, est nécessaire lorsque plusieurs personnes sont amenées à développer sur un projet commun afin de partager leur évolution.  
-Aussi, GitHub permet de voir l'historique des modifications de tous les documents (texte, code).
+Aussi, GitHub permet de voir l'historique des modifications de tous les documents (texte, code), ce qui est pratique.
 
-Enfin, nous avons appris à utiliser le markdown qui est simple à mettre en place et intuitif. Cela évite d'importer un document texte à chaque changement.
+De plus, nous avons appris à utiliser le markdown qui est simple à mettre en place et intuitif. Cela évite d'importer un document texte à chaque changement.
+
+Enfin, nous avons assimiler les bases de JavaFX pour mettre en place les interfaces destinées à l'utilisation du Carnet d'adresses.
 
 ### Conclusion
 
-En définitive,
+En définitive, ce projet a pu être mené à bien malgré quelques problèmes qui ont pu être résolus.  
+

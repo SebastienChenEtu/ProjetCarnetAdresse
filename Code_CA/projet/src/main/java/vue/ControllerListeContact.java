@@ -33,8 +33,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import modele.Adresse;
 import modele.Contact;
 import modele.Groupe;
+import modele.Mail;
+import modele.Telephone;
 import service.ServiceCarnetAdresse;
 
 public class ControllerListeContact implements Initializable  {
@@ -54,6 +57,9 @@ public class ControllerListeContact implements Initializable  {
 	 private static ObservableList<Contact> contacts=FXCollections.observableArrayList();
 	 
 	 ArrayList<Groupe> groupe;
+	 
+	 
+	/***************** Attributs fxml ********************/
 	 
     @FXML
     private ResourceBundle resources;
@@ -100,7 +106,11 @@ public class ControllerListeContact implements Initializable  {
     @FXML
     private ChoiceBox<String> cbGroupe;
     
+    @FXML
+    private Button btnImport;
 
+    
+    /********************* fonctions **********************/
 
     @Override
 	public void initialize(URL url, ResourceBundle rb) {
@@ -272,5 +282,14 @@ public class ControllerListeContact implements Initializable  {
             	app_stage.show();
             }
         }
+    
+    @FXML
+    public void btnImport_onAction(ActionEvent event) throws IOException {
+    	Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("import.fxml"));
+    	Scene pageAjoutScene= new Scene(pageAjoutParent);
+    	Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();
+    	app_stage.setScene(pageAjoutScene);
+    	app_stage.show();
+    }
     
 }
