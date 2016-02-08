@@ -29,8 +29,8 @@ import modele.Type;
 
 @Service
 public class ServiceCarnetAdresse {
-	Database db;
-	DAO dao;
+	static Database db;
+	static DAO dao;
 	// Ne serait-ce pas plus optimal de faire des requêtes SQL simples pour chaque update qu'on souhaite
 	// plutôt qu'instancier un objet contact à chaque fois et utiliser une méthode "modifier" du DAO
 	// (même si c'est moins "facile" ?) - Ou alors optimer la méthode "modifier" en soi directement
