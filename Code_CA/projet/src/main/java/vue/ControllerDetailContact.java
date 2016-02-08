@@ -20,11 +20,11 @@ import modele.Telephone;
 import service.ServiceCarnetAdresse;
 
 public class ControllerDetailContact{
-	
+
 	private ControllerListeContact controller=new ControllerListeContact();
-	
+
 	private static ServiceCarnetAdresse service = new ServiceCarnetAdresse();
-	
+
 	private Contact c = new Contact();
 
     @FXML
@@ -35,33 +35,33 @@ public class ControllerDetailContact{
 
     @FXML
     private Button btnModifier;
-    
+
     @FXML
     private TextField textNom;
-    
+
     @FXML
     private TextField textPrenom;
-    
+
     @FXML
     private TextField textFax;
-    
+
     @FXML
     private TextField textGroupe;
-    
+
     @FXML
     private TextArea textlistTelephone;
-    
+
     @FXML
     private TextArea textlistAdresse;
-    
+
     @FXML
     private TextArea textlistEmail;
-    
+
 
     @FXML
     void btnModifier_onAction(ActionEvent event) {
     }
-    
+
     @FXML
     void initialize(){
     	c = controller.getContact();
@@ -86,6 +86,9 @@ public class ControllerDetailContact{
     		s += (a.getAdresse() + "\n");
     	}
     	textlistAdresse.setText(s);
+ //   	g = service.
+ //   	textGroupe.setText();
+
     }
 
     @FXML
