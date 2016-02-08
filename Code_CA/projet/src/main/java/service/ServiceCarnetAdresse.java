@@ -44,9 +44,9 @@ public class ServiceCarnetAdresse {
 
 	public ServiceCarnetAdresse()
 	{
-		this.db = new Database("Database.db");
-		this.db.connexion();
-		this.dao = new DAO(db);
+		ServiceCarnetAdresse.db = new Database("Database.db");
+		ServiceCarnetAdresse.db.connexion();
+		ServiceCarnetAdresse.dao = new DAO(db);
 	}
 
 	public Contact CreerContact(Contact contact) throws Exception
@@ -63,21 +63,21 @@ public class ServiceCarnetAdresse {
 	{
 		return this.dao.CreerGroupe(groupe);
 	}
-	
+
 	public Groupe TrouverGroupe(String nom) throws SQLException{
 		return this.dao.TrouverGroupe(nom);
 	}
-	
+
 	public Groupe ModifierGroupe(String nom,Groupe groupe) throws Exception
 	{
 		return this.dao.ModifierGroupe(nom, groupe);
 	}
-	
+
 	public Contact ModifierContact(int idContact,Contact contact) throws Exception
 	{
 		return this.dao.ModifierContact(idContact, contact);
 	}
-	
+
 	public Groupe setNomGroupe(String nomAncienGroupe, String nom) throws Exception
 	{
 		Groupe nouveauGroupe = this.dao.TrouverGroupe(nomAncienGroupe);
@@ -368,7 +368,7 @@ public boolean ImporterFichier(String nomFichier) throws Exception
 			FileWriter exportFile = new FileWriter(nomFichierTxt, true);
 			exportFile.write(".read " + nomFichier);
 			exportFile.close();
-			Thread.sleep(1000);
+			Thread.sleep(3000);
 			Process p = Runtime.getRuntime().exec("cmd.exe /c  sqlite3.exe Database.db < " + nomFichierTxt);
 			p.waitFor();
 			File fichierASupprimer = new File(nomFichierTxt);
@@ -454,12 +454,12 @@ public boolean ImporterFichier(String nomFichier) throws Exception
 			}
 		}
 	}
-	
-	
+
+
 	public List<Contact> trouverTousContactsGroupe(String nomGroupe) throws NumberFormatException, Exception {
 		return this.dao.trouverTousContactsGroupe(nomGroupe);
 	}
-	
+
 		public Groupe TrouverGroupe(int idGroupe) throws SQLException
 	{
 		return this.dao.TrouverGroupe(idGroupe);
@@ -469,10 +469,14 @@ public boolean ImporterFichier(String nomFichier) throws Exception
 	{
 		return this.dao.TrouverType(idType);
 	}
-	
+
 	public Type ModifierType(String nomTypeAModifier, Type typeSouhaite) throws Exception{
 		return this.dao.ModifierType( nomTypeAModifier, typeSouhaite);
 
 	}
-	
+
+	public List<Type> TrouverTousType() throws SQLException{
+		return this.dao.trouverToutType();
+	}
+
 }

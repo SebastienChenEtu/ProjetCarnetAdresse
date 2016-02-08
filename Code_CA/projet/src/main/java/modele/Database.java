@@ -286,6 +286,7 @@ public class Database
 			System.out.println(contact.getIdContact() + " - " + contact.getNom());
 		}
 
+		System.out.println(service.TrouverTousType());
 //		System.out.println(service.setPhoto(1, istreamImage2));
 
 

@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 import service.ServiceCarnetAdresse;
 
 public class ControllerImport {
-	ServiceCarnetAdresse service = new ServiceCarnetAdresse();
+	static ServiceCarnetAdresse service = new ServiceCarnetAdresse();
 
 	@FXML
 	private Button btnImportDonnees;
