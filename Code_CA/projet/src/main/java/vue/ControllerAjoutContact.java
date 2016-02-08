@@ -191,12 +191,6 @@ public class ControllerAjoutContact {
 			System.out.println(selectedFile.getName());
 			FileInputStream fileInputStream = new FileInputStream(selectedFile);
 			// service.setPhoto(1, fileInputStream);
-
-			// TEST
-			//service.ExporterBase();
-			// service.ImporterBase();
-			//service.ImporterContactsGroupe(selectedFile.getName());
-			// /TEST
 		}
 		// Il faudra vérifier le format (jpg, png...), la taille (pas trop lourde)
 		// Puis rendre l'image visible dans un petit cadre ?

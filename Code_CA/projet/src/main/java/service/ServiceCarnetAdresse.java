@@ -335,7 +335,7 @@ public class ServiceCarnetAdresse {
 	{
 		try {
 			System.getProperty("user.dir");
-			Runtime.getRuntime().exec("cmd.exe /c sqlite3.exe NewDatabase.db < Recovery.sql");
+			Runtime.getRuntime().exec("cmd.exe /c sqlite3.exe Import_Database.db < Recovery.sql");
 			return true;
 		}
 		catch (Exception e)

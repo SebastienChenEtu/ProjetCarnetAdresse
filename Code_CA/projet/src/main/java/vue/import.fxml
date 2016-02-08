@@ -7,7 +7,8 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="324.0" prefWidth="370.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vue.ControllerImport">
    <children>
-      <Button fx:id="btnImportDonnees" layoutX="66.0" layoutY="45.0" mnemonicParsing="false" onAction="#btnImportDonnees_onAction" prefHeight="25.0" prefWidth="253.0" text="Importer les données" />
+      <Button fx:id="btnImportDonnees" layoutX="66.0" layoutY="35.0" mnemonicParsing="false" onAction="#btnImportDonnees_onAction" prefHeight="25.0" prefWidth="253.0" text="Importer les données" />
+      <Button fx:id="btnImportDonneesBase" layoutX="66.0" layoutY="55.0" mnemonicParsing="false" onAction="#btnImportDonneesBase_onAction" prefHeight="25.0" prefWidth="253.0" text="Importer une base" />
       <Button fx:id="btnExportTous" layoutX="68.0" layoutY="146.0" mnemonicParsing="false" onAction="#btnExportTous_onAction" prefHeight="25.0" prefWidth="253.0" text="Exporter tous" />
       <Button fx:id="btnExportFavoris" layoutX="68.0" layoutY="186.0" mnemonicParsing="false" onAction="#btnExportFavoris_onAction" prefHeight="25.0" prefWidth="253.0" text="Exporter favoris" />
       <Button fx:id="btnExportGroupe" layoutX="68.0" layoutY="226.0" mnemonicParsing="false" onAction="#btnExportGroupe_onAction" prefHeight="25.0" prefWidth="253.0" text="Exporter groupes" />
