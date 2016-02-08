@@ -82,6 +82,7 @@ public class ControllerListeContact implements Initializable  {
     @FXML
     private TableColumn<Contact,Boolean> columnFavoris;
     
+    
     @FXML
     private Button btnSupprimerSelection;
 
