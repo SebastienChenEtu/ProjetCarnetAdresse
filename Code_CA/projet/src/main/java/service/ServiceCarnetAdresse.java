@@ -61,12 +61,21 @@ public class ServiceCarnetAdresse {
 	{
 		return this.dao.CreerGroupe(groupe);
 	}
-
+	
+	public Groupe TrouverGroupe(String nom) throws SQLException{
+		return this.dao.TrouverGroupe(nom);
+	}
+	
+	public Groupe ModifierGroupe(String nom,Groupe groupe) throws Exception
+	{
+		return this.dao.ModifierGroupe(nom, groupe);
+	}
+	
 	public Contact ModifierContact(int idContact,Contact contact) throws Exception
 	{
 		return this.dao.ModifierContact(idContact, contact);
 	}
-
+	
 	public Groupe setNomGroupe(String nomAncienGroupe, String nom) throws Exception
 	{
 		Groupe nouveauGroupe = this.dao.TrouverGroupe(nomAncienGroupe);
@@ -440,13 +449,13 @@ public class ServiceCarnetAdresse {
 			}
 		}
 	}
-
-
+	
+	
 	public List<Contact> trouverTousContactsGroupe(String nomGroupe) throws NumberFormatException, Exception {
 		return this.dao.trouverTousContactsGroupe(nomGroupe);
 	}
-
-	public Groupe TrouverGroupe(int idGroupe) throws SQLException
+	
+		public Groupe TrouverGroupe(int idGroupe) throws SQLException
 	{
 		return this.dao.TrouverGroupe(idGroupe);
 	}
