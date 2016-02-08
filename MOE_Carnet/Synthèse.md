@@ -44,12 +44,6 @@ L’outil GitHub nous a permis de poser des questions à l’équipe qui nous a 
 
 #### Difficultés rencontrées, solutions trouvées
 
-Nous avons rencontré diverses difficultés lors de l'élaboration du code auxquelles nous avons, également, trouvé des solutions telles que :
-+ la prise en compte des favoris, pour résoudre cela nous avons décider de choisir le favoris dans la modification même du contact
-+ les photos, 
-+ le passage d'un controller à un autre, la résolution a été d'utiliser un attribut et d'appeler le controleur dans un autre
-+ l'import/export, 
-
 
 
 #### Tests unitaires  
@@ -77,7 +71,7 @@ Cela nous a permis de nous rendre compte de l’ampleur d’un projet dans sa to
 
 Cela nous a également permis d'approfondir notre connaissance et prise en main de GitHub.  
 Ce type d'outil, surtout en entreprise, est nécessaire lorsque plusieurs personnes sont amenées à développer sur un projet commun afin de partager leur évolution.  
-Aussi, GitHub permet de voir l'historique des modifications de tous les documents (texte, code).
+Aussi, GitHub permet de voir l'historique des modifications de tous les documents (texte, code), ce qui est pratique.
 
 De plus, nous avons appris à utiliser le markdown qui est simple à mettre en place et intuitif. Cela évite d'importer un document texte à chaque changement.
 
