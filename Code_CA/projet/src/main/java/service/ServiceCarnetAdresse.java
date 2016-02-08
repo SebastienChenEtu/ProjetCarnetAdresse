@@ -28,6 +28,7 @@ import modele.Mail;
 import modele.Telephone;
 import modele.Type;
 
+
 @Service
 public class ServiceCarnetAdresse {
 	static Database db;
@@ -62,21 +63,21 @@ public class ServiceCarnetAdresse {
 	{
 		return this.dao.CreerGroupe(groupe);
 	}
-
+	
 	public Groupe TrouverGroupe(String nom) throws SQLException{
 		return this.dao.TrouverGroupe(nom);
 	}
-
+	
 	public Groupe ModifierGroupe(String nom,Groupe groupe) throws Exception
 	{
 		return this.dao.ModifierGroupe(nom, groupe);
 	}
-
+	
 	public Contact ModifierContact(int idContact,Contact contact) throws Exception
 	{
 		return this.dao.ModifierContact(idContact, contact);
 	}
-
+	
 	public Groupe setNomGroupe(String nomAncienGroupe, String nom) throws Exception
 	{
 		Groupe nouveauGroupe = this.dao.TrouverGroupe(nomAncienGroupe);
@@ -344,7 +345,6 @@ public class ServiceCarnetAdresse {
 		}
 	}
 
-	/*
 	public boolean ImporterFavoris() throws Exception
 	{
 		try
@@ -358,9 +358,8 @@ public class ServiceCarnetAdresse {
 			throw new Exception(e.toString());
 		}
 	}
-	*/
 
-	public boolean ImporterFichier(String nomFichier) throws Exception
+public boolean ImporterFichier(String nomFichier) throws Exception
 	{
 		try
 		{
@@ -381,7 +380,6 @@ public class ServiceCarnetAdresse {
 			throw new Exception(e.toString());
 		}
 	}
-
 
 	public boolean ExporterContactsGroupe(String nomGroupe) throws Exception
 	{
@@ -456,12 +454,12 @@ public class ServiceCarnetAdresse {
 			}
 		}
 	}
-
-
+	
+	
 	public List<Contact> trouverTousContactsGroupe(String nomGroupe) throws NumberFormatException, Exception {
 		return this.dao.trouverTousContactsGroupe(nomGroupe);
 	}
-
+	
 		public Groupe TrouverGroupe(int idGroupe) throws SQLException
 	{
 		return this.dao.TrouverGroupe(idGroupe);
@@ -471,4 +469,10 @@ public class ServiceCarnetAdresse {
 	{
 		return this.dao.TrouverType(idType);
 	}
+	
+	public Type ModifierType(String nomTypeAModifier, Type typeSouhaite) throws Exception{
+		return this.dao.ModifierType( nomTypeAModifier, typeSouhaite);
+
+	}
+	
 }

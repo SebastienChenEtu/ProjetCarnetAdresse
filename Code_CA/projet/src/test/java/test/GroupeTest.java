@@ -1,3 +1,4 @@
+
 package test;
 
 import static org.junit.Assert.*;
@@ -23,8 +24,12 @@ public class GroupeTest {
 		Groupe creationGroupe = service.CreerGroupe(groupeTest);
 		assertEquals("Licence Miage", creationGroupe.getNom());
 		
-		//Test trouver groupe
+		//Test trouver groupe par nom
 		creationGroupe = service.TrouverGroupe(creationGroupe.getNom());
+		assertEquals("Licence Miage", creationGroupe.getNom());
+		
+		//test trouver groupe par id
+		creationGroupe = service.TrouverGroupe(creationGroupe.getIdGroupe());
 		assertEquals("Licence Miage", creationGroupe.getNom());
 		
 		//Test Modifier groupe
@@ -46,3 +51,4 @@ public class GroupeTest {
 	}
 
 }
+
