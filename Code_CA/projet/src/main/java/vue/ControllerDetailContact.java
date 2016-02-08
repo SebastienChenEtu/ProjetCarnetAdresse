@@ -63,6 +63,8 @@ public class ControllerDetailContact{
 
     @FXML
     void btnModifier_onAction(ActionEvent event) {
+    	TextField t = new TextField();
+    	t.setText("ok");
     }
 
     @FXML

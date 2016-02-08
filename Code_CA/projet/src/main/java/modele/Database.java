@@ -227,11 +227,11 @@ public class Database
 
 
 		Contact c = new Contact("t","test",new java.sql.Date(new Date().getTime()),"fax",2,istreamImage, true);
-		java.sql.Date nouvelleDate = new java.sql.Date(3000,05,18);
+		java.sql.Date nouvelleDate = new java.sql.Date(new Date().getTime());
 
-		Contact c2 = new Contact("test2","test2",new java.sql.Date(2000,01,22),"fax",2,istreamImage, true);
-		Contact c3 = new Contact("test3","test3",new java.sql.Date(2000,01,22),"fax",2,istreamImage, false);
-		Contact c4 = new Contact("test4","test4",new java.sql.Date(2000,01,22),"fax",2,istreamImage, true);
+		Contact c2 = new Contact("test2","test2",new java.sql.Date(new Date().getTime()),"fax",2,istreamImage, true);
+		Contact c3 = new Contact("test3","test3",new java.sql.Date(new Date().getTime()),"fax",2,istreamImage, false);
+		Contact c4 = new Contact("test4","test4",new java.sql.Date(new Date().getTime()),"fax",2,istreamImage, true);
 
 		List<Adresse> adrPourC =  new LinkedList<Adresse>();
 		List<Mail> mailsPourC = new LinkedList<Mail>();

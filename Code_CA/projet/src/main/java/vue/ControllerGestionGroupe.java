@@ -92,24 +92,32 @@ public class ControllerGestionGroupe {
     void btnAjouterGroupe_onAction(ActionEvent event) throws Exception {
     	Boolean b = true;
     	Groupe g = new Groupe();
-    	g.setNom(textAjoutGroupe.getText());
-    	for (Groupe gr : groupe){
-    		if (gr.getNom().equals(g.getNom())){
-    			b =false;
+    	if (!textAjoutGroupe.getText().equals(null) && !textAjoutGroupe.getText().equals("")){
+    		g.setNom(textAjoutGroupe.getText());
+    		for (Groupe gr : groupe){
+    			if (gr.getNom().equals(g.getNom())){
+    				b =false;
+    			}
+    		}
+    		if (b){
+    			service.CreerGroupe(g);
+    			this.initialize();
+    			textAjoutGroupe.clear();
+    			Alert alert = new Alert(AlertType.INFORMATION);
+    			alert.setTitle("Message d'information");
+    			alert.setHeaderText("Groupe créé avec succés");
+    			alert.showAndWait();
+    		}else {
+    			Alert alert = new Alert(AlertType.ERROR);
+    			alert.setTitle("Message d'erreur");
+    			alert.setHeaderText("Un groupe de ce nom existe déjà");
+    			alert.showAndWait();
     		}
     	}
-    	if (b){
-    		service.CreerGroupe(g);
-    		this.initialize();
-    		textAjoutGroupe.clear();
-    		Alert alert = new Alert(AlertType.INFORMATION);
-    		alert.setTitle("Message d'information");
-    		alert.setHeaderText("Groupe créé avec succés");
-    		alert.showAndWait();
-    	}else {
-    		Alert alert = new Alert(AlertType.ERROR);
-    		alert.setTitle("Message d'erreur");
-    		alert.setHeaderText("Un groupe de ce nom existe déjà");
+    	else {
+    		Alert alert = new Alert(AlertType.WARNING);
+    		alert.setTitle("Message d'avertissement");
+    		alert.setHeaderText("Aucun nom n'est entré pour le groupe");
     		alert.showAndWait();
     	}
     	
@@ -139,6 +147,7 @@ public class ControllerGestionGroupe {
 
     @FXML
     void btnModifier_onAction(ActionEvent event) throws Exception {
+    	if (!textModifierGroupe.getText().equals(null) && !textModifierGroupe.getText().equals("")){
     	service.setNomGroupe(cbModifierGroupe.getValue(),textModifierGroupe.getText() );
     	this.initialize();
     	textModifierGroupe.clear();
@@ -146,6 +155,13 @@ public class ControllerGestionGroupe {
     	alert.setTitle("Message d'information");
     	alert.setHeaderText("Le groupe a été modifié");
     	alert.showAndWait();
+    	}
+    	else{
+    		Alert alert = new Alert(AlertType.WARNING);
+    		alert.setTitle("Message d'avertissement");
+    		alert.setHeaderText("Aucun nom n'est entré pour le groupe");
+    		alert.showAndWait();
+    	}
     }
 
   
