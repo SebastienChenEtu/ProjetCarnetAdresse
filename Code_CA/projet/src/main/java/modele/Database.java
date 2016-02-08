@@ -183,8 +183,14 @@ public class Database
 	}
 	public void insertionValeursInitiales() throws SQLException
 	{
-		String sqlCreationGroupeDefaut = "insert into groupe (idgroupe, nom) values (0, 'Groupe par defaut')";
+		String sqlCreationGroupeDefaut = "insert into groupe (idgroupe, nom) values (0, 'Groupe par defaut');";
 		requete.executeUpdate(sqlCreationGroupeDefaut);
+
+		String sqlCreationTypeDefaut = "insert into type(idtype, libelletype) values (0, 'Bureau');";
+		sqlCreationTypeDefaut = sqlCreationTypeDefaut + "insert into type(idtype, libelletype) values (1, 'Domicile');";
+		sqlCreationTypeDefaut = sqlCreationTypeDefaut + "insert into type(idtype, libelletype) values (2, 'Fixe');";
+		sqlCreationTypeDefaut = sqlCreationTypeDefaut + "insert into type(idtype, libelletype) values (3, 'autre');";
+		requete.executeUpdate(sqlCreationTypeDefaut);
 	}
 
 
@@ -245,6 +251,9 @@ public class Database
 		service.CreerContact(c4);
 
 		System.out.println(service.TrouverContact(1));
+
+		System.out.println("groupe id = 2 : " + service.TrouverGroupe(2));
+		System.out.println("type id = 2 : " + service.TrouverType(2));
 
 		//		c = service.setPhoto(1, istreamImage2);
 		//		c = service.setPrenomContact(1, "nouveauPrenom");
