@@ -120,28 +120,18 @@ public class ServiceCarnetAdresse {
 	public Contact setPhoto(int idContactAModifier, InputStream photo) throws Exception
 	{
 		Contact nouveauContact = TrouverContact(idContactAModifier);
-		//nouveauContact.setPhoto(photo);
-		//return this.dao.ModifierContact(idContactAModifier, nouveauContact);
+		nouveauContact.setPhoto(photo);
 
-		ResultSet rs = db.requete.executeQuery("select photo from contact where idcontact = 1");
-		byte[] imgData = null;
-		if (rs.next()) {
-            imgData = rs.getBytes("photo");//Here r1.getBytes() extract byte data from resultSet
-        }
-		ByteArrayInputStream stream = new ByteArrayInputStream(imgData);
-		System.out.println(stream);
-		BufferedImage image2 = ImageIO.read(stream);
+//		BufferedImage image2 = ImageIO.read(nouveauContact.getPhoto());
+//
+//        JLabel label2 = new JLabel(new ImageIcon(image2));
+//        JFrame f2 = new JFrame();
+//        f2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        f2.getContentPane().add(label2);
+//        f2.pack();
+//        f2.setLocation(200,200);
+//        f2.setVisible(true);
 
-        JLabel label2 = new JLabel(new ImageIcon(image2));
-        JFrame f2 = new JFrame();
-        f2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f2.getContentPane().add(label2);
-        f2.pack();
-        f2.setLocation(200,200);
-        f2.setVisible(true);
-
-
-		//nouveauContact.setPhoto(stream);
 		return this.dao.ModifierContact(idContactAModifier, nouveauContact);
 	}
 

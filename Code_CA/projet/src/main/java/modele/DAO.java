@@ -109,7 +109,8 @@ public class DAO{
 			ps.setInt(3, isContactFavoris);
 			ps.setString(4, contact.getPrenom());
 			ps.setDate(5, (Date) contact.getDdn());
-			ps.setBinaryStream(6, contact.getPhoto(), 1000000); // ne pas mettre en dur le taille maximale (1000000)
+			//ps.setBinaryStream(6, contact.getPhoto(), 1000000); // ne pas mettre en dur le taille maximale (1000000)
+			ps.setBinaryStream(6, contact.getPhoto(), 1000000);
 			ps.setString(7, contact.getFax());
 			// on crée le contact
 			ps.execute();
@@ -270,7 +271,7 @@ public Contact ModifierContact(int idContactAModifier, Contact contactSouhaite) 
 				ps = db.connexion.prepareStatement("UPDATE CONTACT SET PHOTO = ? WHERE IDCONTACT = ?");
 //				System.out.println(ancienContact.getPhoto());
 //				System.out.println(contactSouhaite.getPhoto());
-				ps.setBinaryStream(1, contactSouhaite.getPhoto(), 10000000);
+				ps.setBinaryStream(1, contactSouhaite.getPhoto(), 1000000);
 				ps.setInt(2, idContactAModifier);
 				ps.execute();
 				System.out.println("UPDATED!!");

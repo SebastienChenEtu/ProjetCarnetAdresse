@@ -23,6 +23,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import org.hamcrest.core.IsSame;
+
 import service.ServiceCarnetAdresse;
 
 
@@ -204,7 +206,6 @@ public class Database
 		File monImage2 = new File(".\\original.jpeg");
 		FileInputStream istreamImage2 = new FileInputStream(monImage2);
 
-
 		Groupe g1 = new Groupe();
 		g1.setNom("oui");
 
@@ -276,6 +277,8 @@ public class Database
 		for (Contact contact : listContacts) {
 			System.out.println(contact.getIdContact() + " - " + contact.getNom());
 		}
+
+		System.out.println(service.setPhoto(1, istreamImage2));
 
 
 //		BufferedImage image = ImageIO.read(c.getPhoto());
