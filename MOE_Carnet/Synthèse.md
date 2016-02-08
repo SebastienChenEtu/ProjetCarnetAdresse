@@ -34,8 +34,7 @@ Enfin, nous sommes restés disponibles pour répondre aux différentes questions
 ### Partie développement
 
 Le projet de Carnet d’adresses consiste à développer une application permettant de répertorier les contacts de l’utilisateur.  
-En plus de comprendre les fonctionnalités basiques d’un carnet d’adresses telles que le tri alphabétique, la création, modification, suppression mais encore les favoris.  
-Ce dernier doit permettre au consommateur de fusionner ses groupes ainsi que d’importer / exporter ses contacts sous le format .sql.
+En plus de comprendre les fonctionnalités basiques d’un carnet d’adresses telles que le tri alphabétique, la création/modification/suppression mais encore la gestion de favoris, ce dernier doit permettre au consommateur de fusionner ses groupes ainsi que d’importer/exporter ses contacts sous le format .sql.
 
 L’outil GitHub nous a permis de poser des questions à l’équipe qui nous a fourni le cahier des charges du projet afin de lever toutes ambiguïtés sur leur besoin.
 
@@ -44,6 +43,12 @@ L’outil GitHub nous a permis de poser des questions à l’équipe qui nous a 
 ![Diag_classe]()
 
 #### Difficultés rencontrées, solutions trouvées
+
+Nous avons rencontré diverses difficultés lors de l'élaboration du code auxquelles nous avons, également, trouvé des solutions telles que :
++ la prise en compte des favoris, pour résoudre cela nous avons décider de choisir le favoris dans la modification même du contact
++ les photos, 
++ le passage d'un controller à un autre, la résolution a été d'utiliser un attribut et d'appeler le controleur dans un autre
++ l'import/export, 
 
 
 
@@ -58,10 +63,11 @@ La fonctionnalité bonus qui nous a été donnée est de permettre à l'utilisat
 
 #### Visualisation de l'interface 
 
-
+[Images à insérer]
 
 #### Points perfectibles, points à améliorer
 
+Les points qu'il nous reste à améliorer sont ....
 
 
 ### Retours personnels
@@ -75,8 +81,9 @@ Aussi, GitHub permet de voir l'historique des modifications de tous les document
 
 De plus, nous avons appris à utiliser le markdown qui est simple à mettre en place et intuitif. Cela évite d'importer un document texte à chaque changement.
 
-Enfin, nous avons assimiler les bases de JavaFX pour mettre en place les interfaces destinées à l'utilisation du carnet d'adresses.
+Enfin, nous avons assimiler les bases de JavaFX pour mettre en place les interfaces destinées à l'utilisation du Carnet d'adresses.
 
 ### Conclusion
 
-En définitive, 
+En définitive, ce projet a pu être mené à bien malgré quelques problèmes qui ont pu être résolus.  
+
