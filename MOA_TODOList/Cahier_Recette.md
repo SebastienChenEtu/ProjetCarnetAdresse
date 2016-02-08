@@ -56,7 +56,7 @@
 | Démarches        | Données          | Résultats  |
 | :-------------:    |:-------------:   | :-----:|
 | Envoi d’une notification lors de sa connexion     |  | Une notification des notes « Importantes » du jour sont envoyées à l'utilisateur|
-| Envoi d’une notification par mail     |  | L’application envoie un mail chaque jour selon l'heure configurée par l'utilisateur lui informant les notes « Importantes » de la liste|
+| Envoi d’une notification par mail     |  | L’application envoie un mail chaque jour selon l'heure configurée par l'utilisateur lui informant de ses notes « Importantes »|
 
 #### Changement des couleurs de fond
 | Démarches        | Données          | Résultats  |
