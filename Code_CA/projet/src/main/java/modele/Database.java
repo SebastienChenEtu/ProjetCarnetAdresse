@@ -252,6 +252,11 @@ public class Database
 		service.CreerContact(c3);
 		service.CreerContact(c4);
 
+		for(int i = 0; i < 20 ; i++)
+		{
+			service.CreerContact(c);
+		}
+
 		System.out.println(service.TrouverContact(1));
 
 		System.out.println("groupe id = 2 : " + service.TrouverGroupe(2));

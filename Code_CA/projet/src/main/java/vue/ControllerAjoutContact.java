@@ -193,8 +193,9 @@ public class ControllerAjoutContact {
 			// service.setPhoto(1, fileInputStream);
 
 			// TEST
-			// service.ExporterContactsGroupe("nop");
-			service.ImporterContactsGroupe("nop");
+			//service.ExporterBase();
+			// service.ImporterBase();
+			//service.ImporterContactsGroupe(selectedFile.getName());
 			// /TEST
 		}
 		// Il faudra vérifier le format (jpg, png...), la taille (pas trop lourde)
