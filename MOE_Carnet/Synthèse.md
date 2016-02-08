@@ -49,18 +49,19 @@ L’outil GitHub nous a permis de poser des questions à l’équipe qui nous a 
 
 #### Tests unitaires  
 
-Nous avons réalisé plusieurs tests unitaires afin de vérifier le fonctionnement des fonctions principales du code.
-
-
+Nous avons réalisé plusieurs tests unitaires afin de vérifier le fonctionnement des fonctions principales du code.  
+À l'aide de ces tests, nous pouvons vérifier la qualité de notre code afin de s'assurer des résultats de nos attentes et de pouvoir le refactorer plus facilement dans le cadre d'un développement plus approfondi du programme.
 
 #### Fonctionnalité bonus  
 
-La fonctionnalité bonus qui nous a été donnée est ....
+La fonctionnalité bonus qui nous a été donnée est de permettre à l'utilisateur de définir plusieurs téléphones, adresses, mails, en ajoutant un libellé sur chaque élément.
 
 #### Visualisation de l'interface 
 
 
+
 #### Points perfectibles, points à améliorer
+
 
 
 ### Retours personnels
@@ -72,8 +73,10 @@ Cela nous a également permis d'approfondir notre connaissance et prise en main 
 Ce type d'outil, surtout en entreprise, est nécessaire lorsque plusieurs personnes sont amenées à développer sur un projet commun afin de partager leur évolution.  
 Aussi, GitHub permet de voir l'historique des modifications de tous les documents (texte, code).
 
-Enfin, nous avons appris à utiliser le markdown qui est simple à mettre en place et intuitif. Cela évite d'importer un document texte à chaque changement.
+De plus, nous avons appris à utiliser le markdown qui est simple à mettre en place et intuitif. Cela évite d'importer un document texte à chaque changement.
+
+Enfin, nous avons assimiler les bases de JavaFX pour mettre en place les interfaces destinées à l'utilisation du carnet d'adresses.
 
 ### Conclusion
 
-En définitive,
+En définitive, 
