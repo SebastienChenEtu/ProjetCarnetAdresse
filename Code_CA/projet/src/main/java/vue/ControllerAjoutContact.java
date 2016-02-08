@@ -36,7 +36,7 @@ import modele.DAO;
 import service.ServiceCarnetAdresse;
 
 public class ControllerAjoutContact {
-	
+
 	ServiceCarnetAdresse service = new ServiceCarnetAdresse();
 
 	@FXML
@@ -47,7 +47,7 @@ public class ControllerAjoutContact {
 
 	@FXML
 	private ImageView avatar;
-	
+
 	@FXML
 	private ChoiceBox<Groupe> cbGroupe;
 
@@ -80,7 +80,7 @@ public class ControllerAjoutContact {
 
 	@FXML
 	private Button btnAvatar;
-	
+
 	@FXML
 	private DatePicker dpDateNaissance;
 
@@ -90,7 +90,7 @@ public class ControllerAjoutContact {
 		textPrenom.setText("");
 //		cbGroupe.setValue(service.trouverGroupe(0);
 	}
-	
+
 	void modifVisibilite(Boolean b){
 		textFax.setVisible(b);
 		btnValide.setVisible(b);
@@ -101,18 +101,18 @@ public class ControllerAjoutContact {
 		cbGroupe.setVisible(b);
 		dpDateNaissance.setVisible(b);
 	}
-	
+
 	@FXML
 	void textNom_onKeyReleased(KeyEvent event){
 		if (!textNom.getText().equals(null)){
 			if (!textNom.getText().equals("")){
 				modifVisibilite(true);
-			}else 
+			}else
 				modifVisibilite(false);
 		}else
 			modifVisibilite(false);
 	}
-	
+
 	@FXML
 	void btnAjoutAdresse_onAction(ActionEvent event) {
 
@@ -128,7 +128,7 @@ public class ControllerAjoutContact {
 
 	}
 
-	
+
 	void ajouterContact() throws Exception{
 		Contact c = new Contact();
 		c.setNom(textNom.getText());
@@ -137,16 +137,16 @@ public class ControllerAjoutContact {
 //		Contact c = new Contact("test","test",new java.sql.Date(new Date().getTime()),"fax",2,istreamImage, false);
 //		c.setIdGroupe(cbGroupe.getValue().getIdGroupe());
 //		c.setFax(textFax.getText());
-		
+
 		LocalDate localDate = dpDateNaissance.getValue();
 		Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
 		Date date = Date.from(instant);
 		System.out.println(localDate + "\n" + instant + "\n" + date);
 		c.setDdn(date);
-		
+
 		File monImage = new File(avatar.getImage().impl_getUrl());
 		FileInputStream istreamImage = new FileInputStream(monImage);
-		
+
 		List<Adresse> adrPourC =  new LinkedList<Adresse>();
 		List<Mail> mailsPourC = new LinkedList<Mail>();
 		List<Telephone> telsPourC = new LinkedList<Telephone>();
@@ -157,7 +157,7 @@ public class ControllerAjoutContact {
 
 //		c.setPhoto(istreamImage);
 		c.setIdGroupe(3);
-		
+
 		adrPourC.add(new Adresse("adresse C", 1));
 		adrPourC.add(new Adresse("Adresse D", 1));
 		mailsPourC.add(new Mail("mail C", 1));
@@ -187,9 +187,15 @@ public class ControllerAjoutContact {
 		int result = fileChooser.showOpenDialog(null);
 		if (result == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = fileChooser.getSelectedFile();
-			System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+			// System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+			System.out.println(selectedFile.getName());
 			FileInputStream fileInputStream = new FileInputStream(selectedFile);
-			service.setPhoto(1, fileInputStream);
+			// service.setPhoto(1, fileInputStream);
+
+			// TEST
+			// service.ExporterContactsGroupe("nop");
+			service.ImporterContactsGroupe("nop");
+			// /TEST
 		}
 		// Il faudra vérifier le format (jpg, png...), la taille (pas trop lourde)
 		// Puis rendre l'image visible dans un petit cadre ?
