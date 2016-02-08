@@ -1,6 +1,11 @@
 package vue;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+
+import javax.swing.JFileChooser;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,12 +15,16 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import service.ServiceCarnetAdresse;
 
 public class ControllerImport {
-
+	static ServiceCarnetAdresse service = new ServiceCarnetAdresse();
 
 	@FXML
 	private Button btnImportDonnees;
+
+	@FXML
+	private Button btnImportDonneesBase;
 
 	@FXML
 	private Button btnExportTous;
@@ -30,23 +39,34 @@ public class ControllerImport {
 	private Button btnRetour;
 
 	@FXML
-	void btnExportFavoris_onAction(ActionEvent event) {
-
+	void btnExportFavoris_onAction(ActionEvent event) throws Exception {
+		service.ExporterFavoris();
 	}
 
 	@FXML
 	void btnExportGroupe_onAction(ActionEvent event) {
-
+		//service.ExporterContactsGroupe(nomGroupe);
 	}
 
 	@FXML
-	void btnExportTous_onAction(ActionEvent event) {
-
+	void btnExportTous_onAction(ActionEvent event) throws Exception {
+		service.ExporterBase();
 	}
 
 	@FXML
-	void btnImportDonnees_onAction(ActionEvent event) {
-		
+	void btnImportDonnees_onAction(ActionEvent event) throws Exception {
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+		int result = fileChooser.showOpenDialog(null);
+		if (result == JFileChooser.APPROVE_OPTION) {
+			File selectedFile = fileChooser.getSelectedFile();
+			service.ImporterFichier(selectedFile.getName());
+		}
+	}
+
+	@FXML
+	void btnImportDonneesBase_onAction(ActionEvent event) throws Exception {
+		service.ImporterBase();
 	}
 
 	@FXML
@@ -59,4 +79,3 @@ public class ControllerImport {
 	}
 
 }
-

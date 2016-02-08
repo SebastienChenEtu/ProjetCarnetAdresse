@@ -37,7 +37,7 @@ import service.ServiceCarnetAdresse;
 
 public class ControllerAjoutContact {
 
-	ServiceCarnetAdresse service = new ServiceCarnetAdresse();
+	static ServiceCarnetAdresse service = new ServiceCarnetAdresse();
 
 	@FXML
 	private TextField textNom;
@@ -191,12 +191,7 @@ public class ControllerAjoutContact {
 			System.out.println(selectedFile.getName());
 			FileInputStream fileInputStream = new FileInputStream(selectedFile);
 			// service.setPhoto(1, fileInputStream);
-
-			// TEST
-			//service.ExporterBase();
-			// service.ImporterBase();
-			//service.ImporterContactsGroupe(selectedFile.getName());
-			// /TEST
+			service.ImporterFichier(selectedFile.getName());
 		}
 		// Il faudra vérifier le format (jpg, png...), la taille (pas trop lourde)
 		// Puis rendre l'image visible dans un petit cadre ?
