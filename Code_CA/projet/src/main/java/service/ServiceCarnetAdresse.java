@@ -2,6 +2,7 @@ package service;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.sql.Date;
@@ -61,21 +62,21 @@ public class ServiceCarnetAdresse {
 	{
 		return this.dao.CreerGroupe(groupe);
 	}
-	
+
 	public Groupe TrouverGroupe(String nom) throws SQLException{
 		return this.dao.TrouverGroupe(nom);
 	}
-	
+
 	public Groupe ModifierGroupe(String nom,Groupe groupe) throws Exception
 	{
 		return this.dao.ModifierGroupe(nom, groupe);
 	}
-	
+
 	public Contact ModifierContact(int idContact,Contact contact) throws Exception
 	{
 		return this.dao.ModifierContact(idContact, contact);
 	}
-	
+
 	public Groupe setNomGroupe(String nomAncienGroupe, String nom) throws Exception
 	{
 		Groupe nouveauGroupe = this.dao.TrouverGroupe(nomAncienGroupe);
@@ -343,6 +344,7 @@ public class ServiceCarnetAdresse {
 		}
 	}
 
+	/*
 	public boolean ImporterFavoris() throws Exception
 	{
 		try
@@ -356,17 +358,22 @@ public class ServiceCarnetAdresse {
 			throw new Exception(e.toString());
 		}
 	}
+	*/
 
-	public boolean ImporterContactsGroupe(String nomGroupe) throws Exception
+	public boolean ImporterFichier(String nomFichier) throws Exception
 	{
 		try
 		{
 			System.getProperty("user.dir");
-			String nomFichierTxt = "import_" + nomGroupe + ".txt";
+			String nomFichierTxt = "import_" + nomFichier + ".txt";
 			FileWriter exportFile = new FileWriter(nomFichierTxt, true);
-			exportFile.write(".read contacts_" + nomGroupe + ".sql");
+			exportFile.write(".read " + nomFichier);
 			exportFile.close();
-			Runtime.getRuntime().exec("cmd.exe /c  sqlite3.exe Database.db < " + nomFichierTxt);
+			Thread.sleep(1000);
+			Process p = Runtime.getRuntime().exec("cmd.exe /c  sqlite3.exe Database.db < " + nomFichierTxt);
+			p.waitFor();
+			File fichierASupprimer = new File(nomFichierTxt);
+			fichierASupprimer.delete();
 			return true;
 		}
 		catch (Exception e)
@@ -449,12 +456,12 @@ public class ServiceCarnetAdresse {
 			}
 		}
 	}
-	
-	
+
+
 	public List<Contact> trouverTousContactsGroupe(String nomGroupe) throws NumberFormatException, Exception {
 		return this.dao.trouverTousContactsGroupe(nomGroupe);
 	}
-	
+
 		public Groupe TrouverGroupe(int idGroupe) throws SQLException
 	{
 		return this.dao.TrouverGroupe(idGroupe);
