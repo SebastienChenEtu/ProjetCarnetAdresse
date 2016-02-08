@@ -39,7 +39,11 @@ import service.ServiceCarnetAdresse;
 
 public class ControllerListeContact implements Initializable  {
 	
-	 public static Contact contact;
+	 private static Contact contact;
+	 
+	 public Contact getContact(){
+		 return contact;
+	 }
 	
 	 private static final String PRENOM = "prenom";
 	 private static final String NOM = "nom";

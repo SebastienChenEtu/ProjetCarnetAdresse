@@ -9,12 +9,20 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import modele.Contact;
+import modele.Groupe;
+import service.ServiceCarnetAdresse;
 
-public class ControllerDetailContact {
-	public static Contact contact;
+public class ControllerDetailContact{
+	
+	private ControllerListeContact controller=new ControllerListeContact();
+	
+	private static ServiceCarnetAdresse service = new ServiceCarnetAdresse();
+	
+	private Contact c = new Contact();
 
     @FXML
     private Button btnSupprimer;
@@ -27,6 +35,25 @@ public class ControllerDetailContact {
     
     @FXML
     private TextField textNom;
+    
+    @FXML
+    private TextField textPrenom;
+    
+    @FXML
+    private TextField textFax;
+    
+    @FXML
+    private TextField textGroupe;
+    
+    @FXML
+    private TextArea textlistTelephone;
+    
+    @FXML
+    private TextArea textlistAdresse;
+    
+    @FXML
+    private TextArea textlistEmail;
+    
 
     @FXML
     void btnModifier_onAction(ActionEvent event) {
@@ -34,7 +61,14 @@ public class ControllerDetailContact {
     
     @FXML
     void initialize(){
-    	textNom.setText(contact.getNom());
+    	c = controller.getContact();
+    	textNom.setText(c.getNom());
+    	textPrenom.setText(c.getPrenom());
+    	textFax.setText(c.getFax());
+    	Groupe g = new Groupe();
+    	g = service.
+    	textGroupe.setText();
+    	
     }
 
     @FXML
