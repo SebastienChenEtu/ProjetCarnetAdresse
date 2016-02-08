@@ -11,6 +11,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
@@ -29,6 +31,8 @@ public class ControllerDetailContact{
 	private static ServiceCarnetAdresse service = new ServiceCarnetAdresse();
 
 	private Contact c = new Contact();
+	
+	/*********************** Attributs ****************************/
 
     @FXML
     private Button btnSupprimer;
@@ -59,7 +63,54 @@ public class ControllerDetailContact{
 
     @FXML
     private TextArea textlistEmail;
+    
+    @FXML
+    private TableView<Adresse> tvAdresses;
 
+    @FXML
+    private TableColumn<Adresse, String> columnTypeAdresse;
+
+    @FXML
+    private TableColumn<Adresse, String> columnAdresse;
+
+    @FXML
+    private TableView<Telephone> tvTel;
+
+    @FXML
+    private TableColumn<Telephone, String> columnTypeTel;
+
+    @FXML
+    private TableColumn<Telephone, String> columnTel;
+
+    @FXML
+    private TableView<Mail> tvMail;
+
+    @FXML
+    private TableColumn<Mail, String> columnTypeMail;
+
+    @FXML
+    private TableColumn<Mail, String> columnMail;
+
+    @FXML
+    private Button btnAjoutAdresse;
+
+    @FXML
+    private Button btnSupprimerAdresse;
+
+    @FXML
+    private Button btnAjoutTel;
+
+    @FXML
+    private Button btnSupprimerTel;
+
+    @FXML
+    private Button btnAjoutMail;
+
+    @FXML
+    private Button btnSupprimerMail;
+    
+    
+    /*********************** fonctions ************************/
 
     @FXML
     void btnModifier_onAction(ActionEvent event) {
@@ -116,6 +167,37 @@ public class ControllerDetailContact{
     	Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();
     	app_stage.setScene(pageAjoutScene);
     	app_stage.show();
+    }
+    
+    
+    @FXML
+    void btnAjoutAdresse_onAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void btnAjoutMail_onAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void btnAjoutTel_onAction(ActionEvent event) {
+
+    }
+    
+    @FXML
+    void btnSupprimerAdresse_onAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void btnSupprimerMail_onAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void btnSupprimerTel_onAction(ActionEvent event) {
+
     }
 
 }
