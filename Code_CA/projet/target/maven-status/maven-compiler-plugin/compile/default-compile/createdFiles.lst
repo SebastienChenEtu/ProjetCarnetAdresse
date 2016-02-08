@@ -1,0 +1,11 @@
+service\ServiceCarnetAdresse.class
+modele\DAO.class
+vue\AppliFx.class
+modele\Groupe.class
+modele\Contact.class
+config\Application.class
+modele\Telephone.class
+config\SpringConfig.class
+modele\Adresse.class
+modele\Mail.class
+modele\Database.class

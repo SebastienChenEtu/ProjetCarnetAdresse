@@ -171,7 +171,8 @@ public class DAO{
 
 	public boolean SupprimerContact(int idContact) throws Exception {
 		if(TrouverContact(idContact) == null){
-			throw new Exception("Aucun Contact de ce nom n'existe !");
+			//throw new Exception("Aucun Contact de ce nom n'existe !");
+			return false;
 		}
 		try {
 			PreparedStatement ps = db.connexion.prepareStatement("DELETE FROM CONTACT WHERE idcontact = ?");
@@ -265,18 +266,19 @@ public Contact ModifierContact(int idContactAModifier, Contact contactSouhaite) 
 				ps.execute();
 			}
 
-			if(!isPhotoEqual(ancienContact.getPhoto(), contactSouhaite.getPhoto()))
-			{
-				ps = db.connexion.prepareStatement("UPDATE CONTACT SET PHOTO = ? WHERE IDCONTACT = ?");
-//				System.out.println(ancienContact.getPhoto());
-//				System.out.println(contactSouhaite.getPhoto());
-				ps.setBinaryStream(1, contactSouhaite.getPhoto(), 10000000);
-				ps.setInt(2, idContactAModifier);
-				ps.execute();
-				System.out.println("UPDATED!!");
-			}
+//			if(!isPhotoEqual(ancienContact.getPhoto(), contactSouhaite.getPhoto()))
+//			{
+//				ps = db.connexion.prepareStatement("UPDATE CONTACT SET PHOTO = ? WHERE IDCONTACT = ?");
+////				System.out.println(ancienContact.getPhoto());
+////				System.out.println(contactSouhaite.getPhoto());
+//				ps.setBinaryStream(1, contactSouhaite.getPhoto(), 10000000);
+//				ps.setInt(2, idContactAModifier);
+//				ps.execute();
+//				System.out.println("UPDATED!!");
+//			}
 
 			// Pour les adresses d'un contact
+			if(contactSouhaite.getAdresses() != null){
 			int differenceEntreListesAdresses = contactSouhaite.getAdresses().size() - ancienContact.getAdresses().size();
 
 			if(differenceEntreListesAdresses >= 0)
@@ -347,7 +349,7 @@ public Contact ModifierContact(int idContactAModifier, Contact contactSouhaite) 
 					ps.execute();
 				}
 			}
-
+			}
 
 			/*			// pour les adresses d'un contact
 			if(contactSouhaite.getAdresses() != null)
@@ -371,6 +373,7 @@ public Contact ModifierContact(int idContactAModifier, Contact contactSouhaite) 
 			// voir http://stackoverflow.com/questions/19155283/simple-way-to-compare-2-arraylists
 
 			// pour les mails d'un contact
+			if(contactSouhaite.getMails() != null){
 			int differenceEntreListesMails = contactSouhaite.getMails().size() - ancienContact.getMails().size();
 
 			if(differenceEntreListesMails >= 0)
@@ -441,7 +444,7 @@ public Contact ModifierContact(int idContactAModifier, Contact contactSouhaite) 
 					ps.execute();
 				}
 			}
-
+			}
 			/*
 			// pour les mails d'un contact
 			if(contactSouhaite.getMails() != null)
@@ -462,6 +465,7 @@ public Contact ModifierContact(int idContactAModifier, Contact contactSouhaite) 
 			}
 			 */
 			// pour les telephones d'un contact
+			if(contactSouhaite.getTelephones() != null){
 			int differenceEntreListesTelephones = contactSouhaite.getTelephones().size() - ancienContact.getTelephones().size();
 
 			if(differenceEntreListesTelephones >= 0)
@@ -532,7 +536,7 @@ public Contact ModifierContact(int idContactAModifier, Contact contactSouhaite) 
 					ps.execute();
 				}
 			}
-
+			}
 			/*
 			// pour les telephones d'un contact
 			if(contactSouhaite.getTelephones() != null)
@@ -618,7 +622,7 @@ public Contact ModifierContact(int idContactAModifier, Contact contactSouhaite) 
 	public boolean SupprimerGroupe(String nomGroupe) throws Exception {
 		Groupe groupeASupprimer;
 		if((groupeASupprimer = TrouverGroupe(nomGroupe)) == null){
-			throw new Exception("Aucun groupe de ce nom n'existe !");
+		return false;
 		}
 		try {
 			PreparedStatement ps = db.connexion.prepareStatement("DELETE FROM GROUPE WHERE idgroupe = ?");

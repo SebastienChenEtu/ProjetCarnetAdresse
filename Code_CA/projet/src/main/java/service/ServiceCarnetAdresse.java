@@ -62,6 +62,15 @@ public class ServiceCarnetAdresse {
 		return this.dao.CreerGroupe(groupe);
 	}
 	
+	public Groupe TrouverGroupe(String nom) throws SQLException{
+		return this.dao.TrouverGroupe(nom);
+	}
+	
+	public Groupe ModifierGroupe(String nom,Groupe groupe) throws Exception
+	{
+		return this.dao.ModifierGroupe(nom, groupe);
+	}
+	
 	public Contact ModifierContact(int idContact,Contact contact) throws Exception
 	{
 		return this.dao.ModifierContact(idContact, contact);
