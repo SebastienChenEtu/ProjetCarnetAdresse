@@ -11,6 +11,7 @@ import java.util.List;
 import org.junit.Test;
 
 import modele.Contact;
+import modele.Groupe;
 import service.ServiceCarnetAdresse;
 
 public class ContactTest {
@@ -22,9 +23,6 @@ public class ContactTest {
     //Test de la création de contact
 		File monImage = new File(".\\adrien.jpg");
 		FileInputStream istreamImage = new FileInputStream(monImage);
-//		List<Telephone> listTel = new LinkedList<Telephone>();
-//		Telephone tel = new Telephone();
-//		tel.setIdType(idType);
 		
         Contact c_exp = service.CreerContact(new Contact("tata","toto",new Date(1454844550), "123456", 2,istreamImage,false));
          assertEquals("tata", c_exp.getNom());
@@ -68,13 +66,23 @@ public class ContactTest {
         listeContact = service.trouverToutFavoris();
         assertNotNull(listeContact);
         
-     // test recherche contact nom
+     // test trouver tout contact groupe
         Contact rechercheContact = service.CreerContact(new Contact("tata","toto",new Date(1454844550), "123456", 2,istreamImage,false));
-        listeContact = service.trouverTousContactsGroupe(rechercheContact.getNom());
+        Groupe g = service.TrouverGroupe(rechercheContact.getIdGroupe());
+        listeContact = service.trouverTousContactsGroupe(g.getNom());
         rechercheContact = listeContact.get(0);
         assertEquals("t", rechercheContact.getNom());
+        rechercheContact = listeContact.get(1);
+        assertNotEquals("test2", rechercheContact.getNom());
+        assertEquals("tata", rechercheContact.getNom());
         
+     // recherche contact par nom
+        listeContact = service.rechercheContactNom(rechercheContact.getNom());
+        assertEquals("tata", listeContact.get(0).getNom());
         
+//		List<Telephone> listTel = new LinkedList<Telephone>();
+//		Telephone tel = new Telephone();
+//		tel.setIdType(idType);
 	}
 
 }

@@ -1,20 +1,12 @@
 package service;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.sql.Date;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 
 import org.springframework.stereotype.Service;
 
@@ -464,4 +456,10 @@ public class ServiceCarnetAdresse {
 	{
 		return this.dao.TrouverType(idType);
 	}
+	
+	public Type ModifierType(String nomTypeAModifier, Type typeSouhaite) throws Exception{
+		return this.dao.ModifierType( nomTypeAModifier, typeSouhaite);
+
+	}
+	
 }
