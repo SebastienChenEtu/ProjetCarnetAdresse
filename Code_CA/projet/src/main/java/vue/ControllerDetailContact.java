@@ -12,8 +12,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import modele.Adresse;
 import modele.Contact;
 import modele.Groupe;
+import modele.Mail;
+import modele.Telephone;
 import service.ServiceCarnetAdresse;
 
 public class ControllerDetailContact{
@@ -65,10 +68,24 @@ public class ControllerDetailContact{
     	textNom.setText(c.getNom());
     	textPrenom.setText(c.getPrenom());
     	textFax.setText(c.getFax());
-    	Groupe g = new Groupe();
-    	g = service.
-    	textGroupe.setText();
-    	
+//    	Groupe g = new Groupe();
+//    	g
+//    	textGroupe.setText();
+    	String s = "";
+    	for (Mail m : c.getMails()){
+    		s += (m.getMail() + "\n");
+    	}
+    	textlistEmail.setText(s);
+    	s = "";
+    	for (Telephone t : c.getTelephones()){
+    		s += (t.getTelephone() + "\n");
+    	}
+    	textlistTelephone.setText(s);
+    	s = "";
+    	for (Adresse a : c.getAdresses()){
+    		s += (a.getAdresse() + "\n");
+    	}
+    	textlistAdresse.setText(s);
     }
 
     @FXML
