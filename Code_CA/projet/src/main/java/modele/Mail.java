@@ -24,5 +24,4 @@ public class Mail {
 		this.Mail = mail;
 		this.idType = idType;
 	}
-
 }
