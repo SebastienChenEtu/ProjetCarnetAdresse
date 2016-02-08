@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
 
@@ -14,7 +16,9 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.stage.Stage;
+import modele.Groupe;
 import service.ServiceCarnetAdresse;
 
 public class ControllerImport {
@@ -37,6 +41,21 @@ public class ControllerImport {
 
 	@FXML
 	private Button btnRetour;
+	
+	@FXML
+	private ChoiceBox cbGroupe;
+	
+	@FXML
+	void initialize() throws SQLException{
+		cbGroupe.getItems().clear();
+		ArrayList<Groupe> groupe = new ArrayList<Groupe> (service.trouverToutGroupe());
+		ArrayList<String> nomGroupe = new ArrayList<String>();
+		for (Groupe g : groupe){
+				nomGroupe.add(g.getNom());
+		}
+
+		cbGroupe.getItems().addAll(nomGroupe);
+	}
 
 	@FXML
 	void btnExportFavoris_onAction(ActionEvent event) throws Exception {

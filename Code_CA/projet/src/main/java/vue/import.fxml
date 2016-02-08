@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="371.0" prefWidth="370.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vue.ControllerImport">
+   <children>
+      <Button fx:id="btnImportDonnees" layoutX="65.0" layoutY="51.0" mnemonicParsing="false" onAction="#btnImportDonnees_onAction" prefHeight="25.0" prefWidth="253.0" text="Importer les données" />
+      <Button fx:id="btnImportDonneesBase" layoutX="66.0" layoutY="85.0" mnemonicParsing="false" onAction="#btnImportDonneesBase_onAction" prefHeight="25.0" prefWidth="253.0" text="Importer une base" />
+      <Button fx:id="btnExportTous" layoutX="68.0" layoutY="186.0" mnemonicParsing="false" onAction="#btnExportTous_onAction" prefHeight="25.0" prefWidth="253.0" text="Exporter tous" />
+      <Button fx:id="btnExportFavoris" layoutX="68.0" layoutY="230.0" mnemonicParsing="false" onAction="#btnExportFavoris_onAction" prefHeight="25.0" prefWidth="253.0" text="Exporter favoris" />
+      <Button fx:id="btnExportGroupe" layoutX="202.0" layoutY="271.0" mnemonicParsing="false" onAction="#btnExportGroupe_onAction" prefHeight="25.0" prefWidth="139.0" text="Exporter groupe" />
+      <Separator layoutY="130.0" prefHeight="13.0" prefWidth="370.0" />
+      <Button fx:id="btnRetour" layoutX="166.0" layoutY="325.0" mnemonicParsing="false" onAction="#btnRetour_onAction" text="Retour" />
+      <Label layoutX="138.0" layoutY="21.0" text="Gestion des imports" />
+      <Label layoutX="140.0" layoutY="152.0" text="Gestion des exports" />
+      <ChoiceBox fx:id="cbGroupe" layoutX="37.0" layoutY="271.0" prefHeight="25.0" prefWidth="153.0" />
+   </children>
+</Pane>
