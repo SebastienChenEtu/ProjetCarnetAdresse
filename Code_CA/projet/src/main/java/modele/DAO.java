@@ -863,5 +863,35 @@ public Contact ModifierContact(int idContactAModifier, Contact contactSouhaite) 
 			i2.close();
 		}
 	}
+	
+		public Groupe TrouverGroupe(int idGroupe) throws SQLException
+	{
+		PreparedStatement ps = db.connexion.prepareStatement("select nom from groupe where idgroupe = ?");
+		ps.setInt(1, idGroupe);
+		ResultSet rs = ps.executeQuery();
+		if(!rs.next())
+		{
+			return null;
+		}
+		else
+		{
+			return TrouverGroupe(rs.getString("nom"));
+		}
+	}
+
+	public Type TrouverType(int idType) throws SQLException
+	{
+		PreparedStatement ps = db.connexion.prepareStatement("select libelletype from type where idtype = ?");
+		ps.setInt(1, idType);
+		ResultSet rs = ps.executeQuery();
+		if(!rs.next())
+		{
+			return null;
+		}
+		else
+		{
+			return TrouverType(rs.getString("libelletype"));
+		}
+	}
 
 }

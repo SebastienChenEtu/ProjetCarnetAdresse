@@ -28,6 +28,8 @@ public class ControllerGestionGroupe {
 
 	ServiceCarnetAdresse service= new ServiceCarnetAdresse();
 	
+	ArrayList<Groupe> groupe;
+	
     @FXML
     private ChoiceBox<String> cbSupprimerGroupe;
 
@@ -72,7 +74,7 @@ public class ControllerGestionGroupe {
 		cbFusionG1.getItems().clear();
 		cbSupprimerGroupe.getItems().clear();
 		
-		ArrayList<Groupe> groupe = new ArrayList<Groupe> (service.trouverToutGroupe());
+		groupe = new ArrayList<Groupe> (service.trouverToutGroupe());
 		ArrayList<String> nomGroupe = new ArrayList<String>();
 		for (Groupe g : groupe){
 			if (g.getIdGroupe()!= 0)
@@ -88,15 +90,28 @@ public class ControllerGestionGroupe {
     
     @FXML
     void btnAjouterGroupe_onAction(ActionEvent event) throws Exception {
+    	Boolean b = true;
     	Groupe g = new Groupe();
     	g.setNom(textAjoutGroupe.getText());
-    	service.CreerGroupe(g);
-    	this.initialize();
-    	textAjoutGroupe.clear();
-    	Alert alert = new Alert(AlertType.INFORMATION);
-    	alert.setTitle("Message d'information");
-    	alert.setHeaderText("Groupe créé avec succés");
-    	alert.showAndWait();
+    	for (Groupe gr : groupe){
+    		if (gr.getNom().equals(g.getNom())){
+    			b =false;
+    		}
+    	}
+    	if (b){
+    		service.CreerGroupe(g);
+    		this.initialize();
+    		textAjoutGroupe.clear();
+    		Alert alert = new Alert(AlertType.INFORMATION);
+    		alert.setTitle("Message d'information");
+    		alert.setHeaderText("Groupe créé avec succés");
+    		alert.showAndWait();
+    	}else {
+    		Alert alert = new Alert(AlertType.ERROR);
+    		alert.setTitle("Message d'erreur");
+    		alert.setHeaderText("Un groupe de ce nom existe déjà");
+    		alert.showAndWait();
+    	}
     	
     }
 

@@ -23,19 +23,19 @@
       <Label id="labelNom" layoutX="285.0" layoutY="24.0" prefHeight="17.0" prefWidth="40.0" text="Nom" />
       <TextField fx:id="textNom" disable="true" layoutX="325.0" layoutY="20.0" />
       <Label id="labelPrenom" layoutX="272.0" layoutY="67.0" prefHeight="17.0" prefWidth="47.0" text="Prénom" />
-      <TextField id="textPrenom" disable="true" layoutX="325.0" layoutY="63.0" />
+      <TextField fx:id="textPrenom" disable="true" layoutX="325.0" layoutY="63.0" />
       <Label id="labelGroupe" layoutX="199.0" layoutY="115.0" text="Choisissez un groupe" />
       <Label id="labelAdresse" layoutX="19.0" layoutY="174.0" text="Adresse" />
       <Label id="labelTelephone" layoutX="378.0" layoutY="174.0" text="N° Télephone" />
       <Label id="labelFax" layoutX="378.0" layoutY="353.0" text="Fax" />
-      <TextField id="textFax" disable="true" layoutX="415.0" layoutY="349.0" />
+      <TextField fx:id="textFax" disable="true" layoutX="415.0" layoutY="349.0" />
       <Label id="labelEmail" layoutX="23.0" layoutY="322.0" text="E-mail" />
       <Button id="btnSupprimer" fx:id="btnSupprimer" layoutX="334.0" layoutY="407.0" mnemonicParsing="false" onAction="#btnSupprimer_onAction" text="Supprimer" />
       <Button id="btnRetour" fx:id="btnRetour" layoutX="519.0" layoutY="407.0" mnemonicParsing="false" onAction="#btnRetour_onAction" text="Retour" />
-      <TextArea id="textlistAdresse" disable="true" layoutX="19.0" layoutY="193.0" prefHeight="105.0" prefWidth="268.0" />
-      <TextArea id="textlistTelephone" disable="true" layoutX="376.0" layoutY="191.0" prefHeight="105.0" prefWidth="200.0" />
-      <TextArea id="textlistEmail" disable="true" layoutX="23.0" layoutY="349.0" prefHeight="78.0" prefWidth="249.0" />
+      <TextArea fx:id="textlistAdresse" disable="true" layoutX="19.0" layoutY="193.0" prefHeight="105.0" prefWidth="268.0" />
+      <TextArea fx:id="textlistTelephone" disable="true" layoutX="376.0" layoutY="191.0" prefHeight="105.0" prefWidth="200.0" />
+      <TextArea fx:id="textlistEmail" disable="true" layoutX="23.0" layoutY="349.0" prefHeight="78.0" prefWidth="249.0" />
       <Button id="btnModifier" fx:id="btnModifier" layoutX="433.0" layoutY="407.0" mnemonicParsing="false" onAction="#btnModifier_onAction" prefHeight="25.0" prefWidth="66.0" text="Modifier" />
-      <TextField id="textGroupe" disable="true" layoutX="325.0" layoutY="111.0" />
+      <TextField fx:id="textGroupe" disable="true" layoutX="325.0" layoutY="111.0" />
    </children>
 </AnchorPane>

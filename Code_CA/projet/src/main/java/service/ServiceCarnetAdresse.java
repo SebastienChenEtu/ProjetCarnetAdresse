@@ -29,8 +29,8 @@ import modele.Type;
 
 @Service
 public class ServiceCarnetAdresse {
-	Database db;
-	DAO dao;
+	static Database db;
+	static DAO dao;
 	// Ne serait-ce pas plus optimal de faire des requêtes SQL simples pour chaque update qu'on souhaite
 	// plutôt qu'instancier un objet contact à chaque fois et utiliser une méthode "modifier" du DAO
 	// (même si c'est moins "facile" ?) - Ou alors optimer la méthode "modifier" en soi directement
@@ -129,28 +129,18 @@ public class ServiceCarnetAdresse {
 	public Contact setPhoto(int idContactAModifier, InputStream photo) throws Exception
 	{
 		Contact nouveauContact = TrouverContact(idContactAModifier);
-		//nouveauContact.setPhoto(photo);
-		//return this.dao.ModifierContact(idContactAModifier, nouveauContact);
+		nouveauContact.setPhoto(photo);
 
-		ResultSet rs = db.requete.executeQuery("select photo from contact where idcontact = 1");
-		byte[] imgData = null;
-		if (rs.next()) {
-            imgData = rs.getBytes("photo");//Here r1.getBytes() extract byte data from resultSet
-        }
-		ByteArrayInputStream stream = new ByteArrayInputStream(imgData);
-		System.out.println(stream);
-		BufferedImage image2 = ImageIO.read(stream);
+//		BufferedImage image2 = ImageIO.read(nouveauContact.getPhoto());
+//
+//        JLabel label2 = new JLabel(new ImageIcon(image2));
+//        JFrame f2 = new JFrame();
+//        f2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        f2.getContentPane().add(label2);
+//        f2.pack();
+//        f2.setLocation(200,200);
+//        f2.setVisible(true);
 
-        JLabel label2 = new JLabel(new ImageIcon(image2));
-        JFrame f2 = new JFrame();
-        f2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f2.getContentPane().add(label2);
-        f2.pack();
-        f2.setLocation(200,200);
-        f2.setVisible(true);
-
-
-		//nouveauContact.setPhoto(stream);
 		return this.dao.ModifierContact(idContactAModifier, nouveauContact);
 	}
 
@@ -463,5 +453,15 @@ public class ServiceCarnetAdresse {
 	
 	public List<Contact> trouverTousContactsGroupe(String nomGroupe) throws NumberFormatException, Exception {
 		return this.dao.trouverTousContactsGroupe(nomGroupe);
+	}
+	
+		public Groupe TrouverGroupe(int idGroupe) throws SQLException
+	{
+		return this.dao.TrouverGroupe(idGroupe);
+	}
+
+	public Type TrouverType(int idType) throws SQLException
+	{
+		return this.dao.TrouverType(idType);
 	}
 }

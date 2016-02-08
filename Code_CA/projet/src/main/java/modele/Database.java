@@ -23,6 +23,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import org.hamcrest.core.IsSame;
+
 import service.ServiceCarnetAdresse;
 
 
@@ -132,7 +134,7 @@ public class Database
 		String sqlCreationTableAdresse =  "CREATE TABLE IF NOT EXISTS ADRESSE " +
 				"(IDADRESSE INTEGER PRIMARY KEY  AUTOINCREMENT   NOT NULL," +
 				"IDCONTACT INTEGER,"
-				+ "IDTYPE INTEGER CONSTRAINT fk_telephonecontact_type references type(idtype),"
+				+ "IDTYPE INTEGER DEFAULT 0 CONSTRAINT fk_telephonecontact_type references type(idtype) ON DELETE SET DEFAULT,"
 				+ "ADRESSE           VARCHAR2(50) NOT NULL, " +
 				"FOREIGN KEY(IDCONTACT) REFERENCES CONTACT(IDCONTACT) on delete cascade)";
 		requete.executeUpdate(sqlCreationTableAdresse);
@@ -140,7 +142,7 @@ public class Database
 		String sqlCreationTableMail =  "CREATE TABLE IF NOT EXISTS MAIL " +
 				"(IDMAIL INTEGER PRIMARY KEY   AUTOINCREMENT  NOT NULL," +
 				"IDCONTACT INTEGER,"
-				+ "IDTYPE INTEGER CONSTRAINT fk_telephonecontact_type references type(idtype),"
+				+ "IDTYPE INTEGER DEFAULT 0 CONSTRAINT fk_telephonecontact_type references type(idtype) ON DELETE SET DEFAULT,"
 				+ "MAIL           VARCHAR2(50) NOT NULL,"+
 				"FOREIGN KEY(IDCONTACT) REFERENCES CONTACT(IDCONTACT) on delete cascade)";
 		// TODO transact pour vérifier que le mail est OK
@@ -149,7 +151,7 @@ public class Database
 		String sqlCreationTableTelephone =  "CREATE TABLE IF NOT EXISTS TELEPHONE " +
 				"(IDTELEPHONE INTEGER  PRIMARY KEY  AUTOINCREMENT NOT NULL," +
 				"IDCONTACT INTEGER,"
-				+ "IDTYPE INTEGER CONSTRAINT fk_telephonecontact_type references type(idtype),"
+				+ "IDTYPE INTEGER DEFAULT 0 CONSTRAINT fk_telephonecontact_type references type(idtype) ON DELETE SET DEFAULT,"
 				+ "TELEPHONE           VARCHAR2(50) NOT NULL,"+
 				"FOREIGN KEY(IDCONTACT) REFERENCES CONTACT(IDCONTACT) on delete cascade)";
 		requete.executeUpdate(sqlCreationTableTelephone);
@@ -183,8 +185,15 @@ public class Database
 	}
 	public void insertionValeursInitiales() throws SQLException
 	{
-		String sqlCreationGroupeDefaut = "insert into groupe (idgroupe, nom) values (0, 'Groupe par defaut')";
+		String sqlCreationGroupeDefaut = "insert into groupe (idgroupe, nom) values (0, 'Groupe par defaut');";
 		requete.executeUpdate(sqlCreationGroupeDefaut);
+
+		String sqlCreationTypeDefaut = "insert into type(idtype, libelletype) values (0, 'Aucun');";
+		sqlCreationTypeDefaut = sqlCreationTypeDefaut + "insert into type(idtype, libelletype) values (1, 'Bureau');";
+		sqlCreationTypeDefaut = sqlCreationTypeDefaut + "insert into type(idtype, libelletype) values (2, 'Domicile');";
+		sqlCreationTypeDefaut = sqlCreationTypeDefaut + "insert into type(idtype, libelletype) values (3, 'Fixe');";
+		sqlCreationTypeDefaut = sqlCreationTypeDefaut + "insert into type(idtype, libelletype) values (4, 'autre');";
+		requete.executeUpdate(sqlCreationTypeDefaut);
 	}
 
 
@@ -197,7 +206,6 @@ public class Database
 
 		File monImage2 = new File(".\\original.jpeg");
 		FileInputStream istreamImage2 = new FileInputStream(monImage2);
-
 
 		Groupe g1 = new Groupe();
 		g1.setNom("oui");
@@ -246,6 +254,9 @@ public class Database
 
 		System.out.println(service.TrouverContact(1));
 
+		System.out.println("groupe id = 2 : " + service.TrouverGroupe(2));
+		System.out.println("type id = 2 : " + service.TrouverType(2));
+
 		//		c = service.setPhoto(1, istreamImage2);
 		//		c = service.setPrenomContact(1, "nouveauPrenom");
 		//		c = service.setFavoris(1, false);
@@ -256,17 +267,21 @@ public class Database
 		//		System.out.println("SUPPRESSION : " + service.SupprimerContact(1));
 
 		telsPourC.removeAll(telsPourC);
-		telsPourC.add(new Telephone("nouvelle Adresse", 1));
+		telsPourC.add(new Telephone("nouvelle Adresse", 5));
 		telsPourC.add(new Telephone("nouvelle Adresse", 1));
 
 		System.out.println( " -------------------------------- ");
 		c = service.setTelephones(1, telsPourC);
+
+		service.SupprimerType("nouveauLibType");
 
 		System.out.println("********************");
 		List<Contact> listContacts = service.rechercheContactNom("te");
 		for (Contact contact : listContacts) {
 			System.out.println(contact.getIdContact() + " - " + contact.getNom());
 		}
+
+//		System.out.println(service.setPhoto(1, istreamImage2));
 
 
 //		BufferedImage image = ImageIO.read(c.getPhoto());
