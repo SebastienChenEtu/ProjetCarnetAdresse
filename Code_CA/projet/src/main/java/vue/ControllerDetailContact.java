@@ -3,6 +3,8 @@ package vue;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,12 +18,16 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TableColumn.CellEditEvent;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Stage;
 import modele.Adresse;
 import modele.Contact;
 import modele.Groupe;
 import modele.Mail;
 import modele.Telephone;
+import modele.Type;
 import service.ServiceCarnetAdresse;
 
 public class ControllerDetailContact{
@@ -31,6 +37,15 @@ public class ControllerDetailContact{
 	private static ServiceCarnetAdresse service = new ServiceCarnetAdresse();
 
 	private Contact c = new Contact();
+	
+	private static final String ADRESSE = "adresse";
+	 private static final String TYPE = "type";
+	 private static final String TELEPHONE = "telephone";
+	 private static final String MAIL = "mail";
+	 
+	 private static ObservableList<Adresse> adresses=FXCollections.observableArrayList();
+	 private static ObservableList<Telephone> telephones=FXCollections.observableArrayList();
+	 private static ObservableList<Mail> mails=FXCollections.observableArrayList();
 	
 	/*********************** Attributs ****************************/
 
@@ -54,15 +69,6 @@ public class ControllerDetailContact{
 
     @FXML
     private TextField textGroupe;
-
-    @FXML
-    private TextArea textlistTelephone;
-
-    @FXML
-    private TextArea textlistAdresse;
-
-    @FXML
-    private TextArea textlistEmail;
     
     @FXML
     private TableView<Adresse> tvAdresses;
@@ -127,26 +133,68 @@ public class ControllerDetailContact{
     	Groupe g = new Groupe();
     	g = service.TrouverGroupe(c.getIdGroupe());
     	textGroupe.setText(g.getNom());
-    	String s = "";
-    	for (Mail m : c.getMails()){
-    		s += (m.getMail() + "\n");
-    	}
-    	textlistEmail.setText(s);
-    	s = "";
-    	for (Telephone t : c.getTelephones()){
-    		s += (t.getTelephone() + "\n");
-    	}
-    	textlistTelephone.setText(s);
-    	s = "";
-    	for (Adresse a : c.getAdresses()){
-    		s += (a.getAdresse() + "\n");
-    	}
-    	textlistAdresse.setText(s);
-
+    	columnTypeMail.setCellValueFactory(new PropertyValueFactory<>(TYPE));
+    	columnTypeTel.setCellValueFactory(new PropertyValueFactory<>(TYPE));
+    	columnTypeAdresse.setCellValueFactory(new PropertyValueFactory<>(TYPE));
+    	columnTel.setCellValueFactory(new PropertyValueFactory<>(TELEPHONE));
+    	columnAdresse.setCellValueFactory(new PropertyValueFactory<>(ADRESSE));
+    	columnMail.setCellValueFactory(new PropertyValueFactory<>(MAIL));
+    	adresses.clear();
+    	telephones.clear();
+    	mails.clear();
+    	adresses.addAll(c.getAdresses());
+    	telephones.addAll(c.getTelephones());
+    	mails.addAll(c.getMails());
+    	creerColonnes();
 
     }
 
-    @FXML
+    private void creerColonnes() {
+    	tvAdresses.setItems(adresses);
+    	tvMail.setItems(mails);
+    	tvTel.setItems(telephones);
+    	columnMail();
+    	columnTel();
+    	columnAdresse();
+//    	columnTypeAdresse();
+//    	columnTypeMail();
+	}
+    
+    public void columnMail() {
+    	columnMail.setCellFactory(TextFieldTableCell.forTableColumn());
+    	columnMail.setOnEditCommit((CellEditEvent<Mail,String>cell) -> {
+            cell.getTableView().getItems().get(cell.getTablePosition().getRow()).setMail(cell.getNewValue());
+        });
+    }
+    
+    public void columnTel() {
+    	columnTel.setCellFactory(TextFieldTableCell.forTableColumn());
+    	columnTel.setOnEditCommit((CellEditEvent<Telephone,String>cell) -> {
+            cell.getTableView().getItems().get(cell.getTablePosition().getRow()).setTelephone(cell.getNewValue());
+        });
+    }
+    
+    public void columnAdresse() {
+    	columnAdresse.setCellFactory(TextFieldTableCell.forTableColumn());
+    	columnAdresse.setOnEditCommit((CellEditEvent<Adresse,String>cell) -> {
+            cell.getTableView().getItems().get(cell.getTablePosition().getRow()).setAdresse(cell.getNewValue());
+        });
+    }
+    
+//    public void columnTypeAdresse() {
+//    	columnTypeAdresse.setCellFactory(TextFieldTableCell.forTableColumn());
+//    	columnTypeAdresse.setOnEditCommit((CellEditEvent<Adresse,String>cell) -> {
+//            cell.getTableView().getItems().get(cell.getTablePosition().getRow()).setLibelleType(cell.getNewValue());
+//        });
+//    }
+//    public void columnTypeMail() {
+//    	columnTypeMail.setCellFactory(TextFieldTableCell.forTableColumn());
+//    	columnTypeMail.setOnEditCommit((CellEditEvent<Mail,String>cell) -> {
+//            cell.getTableView().getItems().get(cell.getTablePosition().getRow()).setLibelleType(cell.getNewValue());
+//        });
+//    }
+
+	@FXML
     void btnRetour_onAction(ActionEvent event) throws IOException {
     	Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("listeContact.fxml"));
     	Scene pageAjoutScene= new Scene(pageAjoutParent);

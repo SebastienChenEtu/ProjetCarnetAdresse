@@ -1,6 +1,13 @@
 package vue;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.swing.JFileChooser;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,13 +16,19 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.stage.Stage;
+import modele.Groupe;
+import service.ServiceCarnetAdresse;
 
 public class ControllerImport {
-
+	static ServiceCarnetAdresse service = new ServiceCarnetAdresse();
 
 	@FXML
 	private Button btnImportDonnees;
+
+	@FXML
+	private Button btnImportDonneesBase;
 
 	@FXML
 	private Button btnExportTous;
@@ -28,25 +41,51 @@ public class ControllerImport {
 
 	@FXML
 	private Button btnRetour;
+	
+	@FXML
+	private ChoiceBox cbGroupe;
+	
+	@FXML
+	void initialize() throws SQLException{
+		cbGroupe.getItems().clear();
+		ArrayList<Groupe> groupe = new ArrayList<Groupe> (service.trouverToutGroupe());
+		ArrayList<String> nomGroupe = new ArrayList<String>();
+		for (Groupe g : groupe){
+				nomGroupe.add(g.getNom());
+		}
+
+		cbGroupe.getItems().addAll(nomGroupe);
+	}
 
 	@FXML
-	void btnExportFavoris_onAction(ActionEvent event) {
-
+	void btnExportFavoris_onAction(ActionEvent event) throws Exception {
+		service.ExporterFavoris();
 	}
 
 	@FXML
 	void btnExportGroupe_onAction(ActionEvent event) {
-
+		//service.ExporterContactsGroupe(nomGroupe);
 	}
 
 	@FXML
-	void btnExportTous_onAction(ActionEvent event) {
-
+	void btnExportTous_onAction(ActionEvent event) throws Exception {
+		service.ExporterBase();
 	}
 
 	@FXML
-	void btnImportDonnees_onAction(ActionEvent event) {
-		
+	void btnImportDonnees_onAction(ActionEvent event) throws Exception {
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+		int result = fileChooser.showOpenDialog(null);
+		if (result == JFileChooser.APPROVE_OPTION) {
+			File selectedFile = fileChooser.getSelectedFile();
+			service.ImporterFichier(selectedFile.getName());
+		}
+	}
+
+	@FXML
+	void btnImportDonneesBase_onAction(ActionEvent event) throws Exception {
+		service.ImporterBase();
 	}
 
 	@FXML
@@ -59,4 +98,3 @@ public class ControllerImport {
 	}
 
 }
-

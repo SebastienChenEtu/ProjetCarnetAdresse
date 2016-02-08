@@ -712,6 +712,24 @@ public Contact ModifierContact(int idContactAModifier, Contact contactSouhaite) 
 		return listeGroupe;
 	}
 
+	public List<Type> trouverToutType() throws SQLException {
+		List<Type> listeType = new LinkedList<Type>();
+		PreparedStatement psType = db.connexion.prepareStatement("SELECT * FROM TYPE ORDER BY LIBELLETYPE");
+
+		ResultSet rsType = psType.executeQuery();
+		try {
+			while(rsType.next()){
+				Type typeRes = new Type();
+				typeRes.setIdType(Integer.parseInt(rsType.getString("idType")));
+				typeRes.setLibelleType(rsType.getString("libelletype"));
+				listeType.add(typeRes);
+			}
+		} catch (SQLException e) {
+			throw new SQLException(e.toString());
+		}
+		return listeType;
+	}
+
 	public List<Contact> trouverToutFavoris() throws SQLException {
 		List<Contact> listeTousLesContacts = new LinkedList<Contact>();
 		List<Contact> listeTousLesFavoris = new LinkedList<Contact>();
@@ -863,7 +881,7 @@ public Contact ModifierContact(int idContactAModifier, Contact contactSouhaite) 
 			i2.close();
 		}
 	}
-	
+
 		public Groupe TrouverGroupe(int idGroupe) throws SQLException
 	{
 		PreparedStatement ps = db.connexion.prepareStatement("select nom from groupe where idgroupe = ?");

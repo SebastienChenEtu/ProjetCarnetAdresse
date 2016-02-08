@@ -26,10 +26,10 @@ import service.ServiceCarnetAdresse;
 
 public class ControllerGestionGroupe {
 
-	ServiceCarnetAdresse service= new ServiceCarnetAdresse();
-	
+	static ServiceCarnetAdresse service= new ServiceCarnetAdresse();
+
 	ArrayList<Groupe> groupe;
-	
+
     @FXML
     private ChoiceBox<String> cbSupprimerGroupe;
 
@@ -68,26 +68,26 @@ public class ControllerGestionGroupe {
 
 	@FXML
     void initialize() throws SQLException{
-		
+
 		cbModifierGroupe.getItems().clear();
 		cbFusionG2.getItems().clear();
 		cbFusionG1.getItems().clear();
 		cbSupprimerGroupe.getItems().clear();
-		
+
 		groupe = new ArrayList<Groupe> (service.trouverToutGroupe());
 		ArrayList<String> nomGroupe = new ArrayList<String>();
 		for (Groupe g : groupe){
 			if (g.getIdGroupe()!= 0)
 				nomGroupe.add(g.getNom());
 		}
-		
+
     	cbModifierGroupe.getItems().addAll(nomGroupe);
 		cbFusionG2.getItems().addAll(nomGroupe);
 		cbFusionG1.getItems().addAll(nomGroupe);
 		cbSupprimerGroupe.getItems().addAll(nomGroupe);
-			
+
     }
-    
+
     @FXML
     void btnAjouterGroupe_onAction(ActionEvent event) throws Exception {
     	Boolean b = true;
@@ -120,7 +120,7 @@ public class ControllerGestionGroupe {
     		alert.setHeaderText("Aucun nom n'est entré pour le groupe");
     		alert.showAndWait();
     	}
-    	
+
     }
 
     @FXML
@@ -164,7 +164,7 @@ public class ControllerGestionGroupe {
     	}
     }
 
-  
+
 
     @FXML
     void btnSupprimer_onAction(ActionEvent event) throws Exception {
@@ -176,7 +176,7 @@ public class ControllerGestionGroupe {
     	alert.setHeaderText("Le groupe a été supprimé");
     	alert.showAndWait();
     }
-    
+
     @FXML
     void btnRetour_onAction(ActionEvent event) throws IOException {
     	Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("listeContact.fxml"));
