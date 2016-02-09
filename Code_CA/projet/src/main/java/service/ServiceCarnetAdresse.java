@@ -370,9 +370,11 @@ public class ServiceCarnetAdresse {
 			String cmd = "sqlite3.exe Database.db < " + nomFichierTxt;
 			fileBat.write(cmd);
 			fileBat.close();
-			//p.waitFor();
-			//File fichierASupprimer = new File(nomFichierTxt);
-			//fichierASupprimer.delete();
+			p.waitFor();
+			File fichierASupprimer = new File(nomFichierTxt);
+			fichierASupprimer.delete();
+			fichierASupprimer = new File(nomFichierBat);
+			fichierASupprimer.delete();
 			return true;
 		}
 		catch (Exception e)
