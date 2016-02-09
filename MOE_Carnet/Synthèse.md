@@ -41,9 +41,10 @@ L’outil GitHub nous a permis de poser des questions à l’équipe qui nous a 
 #### Difficultés rencontrées, solutions trouvées
 
 Nous avons rencontré diverses difficultés lors de l'élaboration du code auxquelles nous avons, également, trouvé des solutions telles que :
-+ les photos,
-+ le passage d'un controleur à un autre, la résolution a été d'utiliser un attribut et d'appeler le controleur dans un autre
-+ l'import/export,
++ les photos, la modification a été mise de côté, les problèmes rencontrés ont été le stockage dans le base de données, pour des améliorations futures et il ne faudra pas stocker directement les photos dans la base de données mais les copier dans un dossier sous-jacent du répertoire et stocker le chemin correspondant aux photos dans la base de données
++ la DAO, les difficultés ont été de gérer la grande quantité des cas d'échange entre les requêtes SQL et le programme en Java, pour une évolution nous pouvons envisager une programmation ORM via Hibernate
++ le passage d'un controleur à un autre, la résolution a été d'utiliser un attribut statique et d'appeler l'un des controleurs dans l'autre
++ l'import/export dû à un conflit au niveau des thread, pour pallier ce problème l'idée est d'importer les données en premier et de quitter l'application pour les exporter
 
 #### Tests unitaires  
 
@@ -52,19 +53,15 @@ Nous avons réalisé plusieurs tests unitaires afin de vérifier le fonctionneme
 
 #### Fonctionnalité bonus  
 
-La fonctionnalité bonus qui nous a été donnée est de permettre à l'utilisateur de définir plusieurs téléphones, adresses, mails, en ajoutant un libellé sur chaque élément.
-
-#### Visualisation de l'interface 
-
-[Images à insérer]
+La fonctionnalité bonus qui nous a été donnée est de permettre à l'utilisateur de définir plusieurs téléphones, adresses et mails, en ajoutant un libellé sur chaque élément.
 
 #### Points perfectibles, points à améliorer
 
-Certaines fonctionnalités n'ont pas pu être développées telles ques :
-+ Supprimer plusieurs contacts à la fois
-+ Créer un système de gestion de favoris
-
-L'objectif était d'intégrer un système de check-box pour une sélection intuitive et rapide mais l'interface que nous avons mise en place ne propose que la sélection de ligne et non celle de la check-box lors d'un clic de l'utilisateur, ce qui bloque l'avancement prévu de ces fonctionnalités. 
+Certaines fonctionnalités n'ont pas pu être développées :
++ La suppression de plusieurs contacts à la fois
++ L'affichage de la photo au moment de l'ajout d'un contact car l'interface n'est pas rafraîchit automatiquement mais elle est visble lors de la modification du contact
++ La photo est non modifiable, ni importable, ni exportable
++ L'ajout et la modification des types ne sont pas possibles, ils sont prédéfinis
 
 ### Retours personnels
 
@@ -78,8 +75,3 @@ Aussi, GitHub permet de voir l'historique des modifications de tous les document
 De plus, nous avons appris à utiliser le markdown qui est simple à mettre en place et intuitif. Cela évite d'importer un document texte à chaque changement.
 
 Enfin, nous avons assimiler les bases de JavaFX pour mettre en place les interfaces destinées à l'utilisation du Carnet d'adresses.
-
-### Conclusion
-
-En définitive, ce projet a pu être mené à bien malgré quelques problèmes qui ont pu être résolus.  
-
