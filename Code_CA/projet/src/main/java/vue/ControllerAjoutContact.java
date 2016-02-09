@@ -74,6 +74,10 @@ public class ControllerAjoutContact {
 		 return ajoutModif;
 	 }
 	 
+	 public void setAjoutModif(Boolean b){
+		 ajoutModif=b;
+	 }
+	 
 	 public void addTelephones(Telephone t){
 		 telephones.add(t);
 	 }
@@ -151,7 +155,8 @@ public class ControllerAjoutContact {
 
 	@FXML
 	void initialize() throws SQLException{
-		if(!nom.equals("")){
+		textNom.setText(nom);
+		if(!textNom.equals(null) && !textNom.equals("")){
 		modifVisibilite(false);
 		}
 		ajoutModif = true;
@@ -165,6 +170,7 @@ public class ControllerAjoutContact {
 		cbGroupe.getItems().addAll(nomGroupe);
 		cbGroupe.setValue(service.TrouverGroupe(0).getNom());
 		
+
 		columnTel.setCellValueFactory(new PropertyValueFactory<>(TELEPHONE));
     	columnAdresse.setCellValueFactory(new PropertyValueFactory<>(ADRESSE));
     	columnMail.setCellValueFactory(new PropertyValueFactory<>(MAIL));
@@ -260,6 +266,7 @@ public class ControllerAjoutContact {
 	    }
 
 	void ajouterContact() throws Exception{
+		ajoutModif = false;
 		Contact c = new Contact();
 		String nomContact = !textNom.getText().equals("") ? textNom.getText() : "";
 		String prenomContact = !textPrenom.getText().equals("") ? textPrenom.getText() : "";
@@ -292,10 +299,17 @@ public class ControllerAjoutContact {
 		contactACreer.setTelephones(telsPourC);
 
 		service.CreerContact(contactACreer);
+		mails.clear();
+		telephones.clear();
+		adresses.clear();
 	}
 
 	@FXML
 	void btnAnnuler_onAction(ActionEvent event) throws IOException {
+		ajoutModif = false;
+		mails.clear();
+		telephones.clear();
+		adresses.clear();
 		Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("listeContact.fxml"));
 		Scene pageAjoutScene= new Scene(pageAjoutParent);
 		Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();

@@ -27,7 +27,9 @@ import service.ServiceCarnetAdresse;
 
 public class ControllerAjoutAdresse {
 
-	private ControllerDetailContact controller = new ControllerDetailContact();
+	private ControllerDetailContact controllerModif = new ControllerDetailContact();
+
+	private ControllerAjoutContact controllerAjout = new ControllerAjoutContact();
 
 	private ServiceCarnetAdresse service = new ServiceCarnetAdresse();
 
@@ -35,6 +37,7 @@ public class ControllerAjoutAdresse {
 
 	private List<Adresse> adresses = new ArrayList<Adresse>();
 	private Type t = new Type();
+	private static boolean ajoutModif;
 
 
 	@FXML
@@ -51,8 +54,11 @@ public class ControllerAjoutAdresse {
 
 	@FXML
 	void initialize() throws SQLException{
-		c = controller.getContact();
-		adresses = c.getAdresses();
+		ajoutModif = controllerAjout.getAjoutModif();
+		if (!ajoutModif){
+			c = controllerModif.getContact();
+			adresses = c.getAdresses();
+		}
 		List<Type> t = new ArrayList<Type>(service.TrouverTousType());
 		ArrayList<String> libType = new ArrayList<String>();
 		for (Type type : t){
@@ -68,6 +74,14 @@ public class ControllerAjoutAdresse {
 			t.toString();
 			if (!txtAdresse.getText().equals(null) && !txtAdresse.getText().equals("")){
 				Adresse a = new Adresse(txtAdresse.getText(),t.getIdType());
+				if (ajoutModif){
+					controllerAjout.addAdresses(a);
+					Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("ajoutContact.fxml"));
+					Scene pageAjoutScene= new Scene(pageAjoutParent);
+					Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();
+					app_stage.setScene(pageAjoutScene); 
+					app_stage.show();
+				}else {
 				adresses.add(a);
 				service.setAdresses(c.getIdContact(), adresses);
 				Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("detailContact.fxml"));
@@ -75,6 +89,7 @@ public class ControllerAjoutAdresse {
 				Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();
 				app_stage.setScene(pageAjoutScene); 
 				app_stage.show();
+				}
 			}else{
 				Alert alert = new Alert(AlertType.INFORMATION);
 				alert.setTitle("Message d'information");
