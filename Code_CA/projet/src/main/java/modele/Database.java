@@ -247,12 +247,12 @@ public class Database
 		List<Mail> mailsPourC = new LinkedList<Mail>();
 		List<Telephone> telsPourC = new LinkedList<Telephone>();
 
-		adrPourC.add(new Adresse("adresse C", 1));
-		adrPourC.add(new Adresse("Adresse D", 1));
-		mailsPourC.add(new Mail("mail C", 1));
-		mailsPourC.add(new Mail("Mail D", 1));
-		telsPourC.add(new Telephone("Tel C", 1));
-		telsPourC.add(new Telephone("Tel D", 1));
+		adrPourC.add(new Adresse("38 place de clichy 75017 paris", 1));
+		adrPourC.add(new Adresse("55 rue de la paix 75015 paris", 1));
+		mailsPourC.add(new Mail("mail@yopmail.com", 1));
+		mailsPourC.add(new Mail("Mail2@yopmail.com", 1));
+		telsPourC.add(new Telephone("+33 08314314", 1));
+		telsPourC.add(new Telephone("+33 01456784", 1));
 		c.setAdresses(adrPourC);
 		c2.setMails(mailsPourC);
 		c3.setTelephones(telsPourC);
