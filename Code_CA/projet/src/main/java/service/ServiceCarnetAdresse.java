@@ -358,15 +358,21 @@ public class ServiceCarnetAdresse {
 		try
 		{
 			System.getProperty("user.dir");
-			String nomFichierTxt = "import_" + nomFichier + ".txt";
-			FileWriter exportFile = new FileWriter(nomFichierTxt, true);
-			exportFile.write(".read " + nomFichier);
-			exportFile.close();
-			Thread.sleep(3000);
-			Process p = Runtime.getRuntime().exec("cmd.exe /c  sqlite3.exe Database.db < " + nomFichierTxt);
-			p.waitFor();
-			File fichierASupprimer = new File(nomFichierTxt);
-			fichierASupprimer.delete();
+			//String nomFichierTxt = "import_" + nomFichier + ".txt";
+			String nomFichierBat = "import_" + nomFichier + ".bat";
+			//FileWriter exportFile = new FileWriter(nomFichierTxt, true);
+			//exportFile.write(".read " + nomFichier);
+			//exportFile.close();
+			//Thread.sleep(1000);
+			FileWriter fileBat = new FileWriter(nomFichierBat, true);
+			//Process p = Runtime.getRuntime().exec("cmd.exe /c  sqlite3.exe Database.db < " + nomFichierTxt);
+			String cmd = "sqlite3.exe Database.db < .read " + nomFichier;
+			fileBat.write(cmd);
+			fileBat.close();
+			// p.waitFor();
+			//Thread.sleep(500);
+			//File fichierASupprimer = new File(nomFichierTxt);
+			//fichierASupprimer.delete();
 			return true;
 		}
 		catch (Exception e)
