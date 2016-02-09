@@ -192,7 +192,9 @@ public class ControllerDetailContact{
 
 
 	@FXML
-    void btnRetour_onAction(ActionEvent event) throws IOException {
+    void btnRetour_onAction(ActionEvent event) throws Exception {
+		service.setFax(c.getIdContact(), textFax.getText());
+		service.setPrenomContact(c.getIdContact(), textPrenom.getText());
     	Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("listeContact.fxml"));
     	Scene pageAjoutScene= new Scene(pageAjoutParent);
     	Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();

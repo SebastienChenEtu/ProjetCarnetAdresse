@@ -53,6 +53,12 @@ public class ControllerAjoutAdresse {
 	private ComboBox<String> cbxType;
 
 	@FXML
+	private Button btnAjoutType;
+
+	@FXML
+	private Button btnSupType;
+
+	@FXML
 	void initialize() throws SQLException{
 		ajoutModif = controllerAjout.getAjoutModif();
 		if (!ajoutModif){
@@ -79,16 +85,16 @@ public class ControllerAjoutAdresse {
 					Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("ajoutContact.fxml"));
 					Scene pageAjoutScene= new Scene(pageAjoutParent);
 					Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();
-					app_stage.setScene(pageAjoutScene); 
+					app_stage.setScene(pageAjoutScene);
 					app_stage.show();
 				}else {
-				adresses.add(a);
-				service.setAdresses(c.getIdContact(), adresses);
-				Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("detailContact.fxml"));
-				Scene pageAjoutScene= new Scene(pageAjoutParent);
-				Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();
-				app_stage.setScene(pageAjoutScene); 
-				app_stage.show();
+					adresses.add(a);
+					service.setAdresses(c.getIdContact(), adresses);
+					Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("detailContact.fxml"));
+					Scene pageAjoutScene= new Scene(pageAjoutParent);
+					Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();
+					app_stage.setScene(pageAjoutScene);
+					app_stage.show();
 				}
 			}else{
 				Alert alert = new Alert(AlertType.INFORMATION);
@@ -109,8 +115,18 @@ public class ControllerAjoutAdresse {
 		Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("detailContact.fxml"));
 		Scene pageAjoutScene= new Scene(pageAjoutParent);
 		Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();
-		app_stage.setScene(pageAjoutScene); 
+		app_stage.setScene(pageAjoutScene);
 		app_stage.show();
+	}
+	@FXML
+	void btnAjoutType_onAction(ActionEvent event) throws IOException {
+		
+	}
+
+
+	@FXML
+	void btnSupType_onAction(ActionEvent event) throws IOException {
+
 	}
 
 }
