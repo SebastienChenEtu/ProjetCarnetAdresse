@@ -61,9 +61,14 @@ public class DAO{
 				contact.setFax(rsContactSimple.getString("fax"));
 				contact.setIdGroupe(rsContactSimple.getInt("idgroupe"));
 
-				byte[] imgData = rsContactSimple.getBytes("photo");
+				/*byte[] imgData = rsContactSimple.getBytes("photo");
+				String s = "";
+				for (byte b : imgData) {
+					s = s + b;
+				}
+				System.out.println("***" + s);
 				ByteArrayInputStream stream = new ByteArrayInputStream(imgData);
-				contact.setPhoto(stream);
+				contact.setPhoto(stream);*/
 
 				while(rsAdressesContact.next()){
 					adresses.add(new Adresse(rsAdressesContact.getInt("idadresse"),rsAdressesContact.getString("adresse"), rsAdressesContact.getInt("idtype")));

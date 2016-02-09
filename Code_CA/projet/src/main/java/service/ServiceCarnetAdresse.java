@@ -245,13 +245,13 @@ public class ServiceCarnetAdresse {
 	public boolean ExporterFavoris() throws Exception
 	{
 		List<Contact> contactFavoris = trouverToutFavoris();
-		String sqlInsertions = "create temp table _variables(last_rowid integer);" + '\n';
+		String sqlInsertions = "BEGIN TRANSACTION; create temp table _variables(last_rowid integer);" + '\n';
 
 		try {
 
 			for (Contact contact : contactFavoris) {
 
-				String sqlTpContactSimple = "insert into contact(idgroupe, nom,favoris, prenom, ddn, fax) "
+				String sqlTpContactSimple = "insert into contact(idgroupe, nom,favoris, prenom, ddn, photo, fax) "
 						+ "VALUES(";
 				//sqlTpContactSimple = sqlTpContactSimple + contact.getIdContact() + ", ";
 				//sqlTpContactSimple = sqlTpContactSimple + contact.getIdGroupe() + " , '";
@@ -259,7 +259,8 @@ public class ServiceCarnetAdresse {
 				sqlTpContactSimple = sqlTpContactSimple + contact.getNom() + "' ,";
 				sqlTpContactSimple = sqlTpContactSimple + "1, '";
 				sqlTpContactSimple = sqlTpContactSimple + contact.getPrenom() + "',";
-				sqlTpContactSimple = sqlTpContactSimple + contact.getDdn()+ " ,'";
+				sqlTpContactSimple = sqlTpContactSimple + contact.getDdn()+ " ,";
+				sqlTpContactSimple = sqlTpContactSimple + "null ,'";
 				sqlTpContactSimple = sqlTpContactSimple + contact.getFax()+ "' );";
 
 				sqlInsertions = sqlInsertions + '\n' +sqlTpContactSimple + '\n';
@@ -358,19 +359,18 @@ public class ServiceCarnetAdresse {
 		try
 		{
 			System.getProperty("user.dir");
-			//String nomFichierTxt = "import_" + nomFichier + ".txt";
+			String nomFichierTxt = "import_" + nomFichier + ".txt";
 			String nomFichierBat = "import_" + nomFichier + ".bat";
-			//FileWriter exportFile = new FileWriter(nomFichierTxt, true);
-			//exportFile.write(".read " + nomFichier);
-			//exportFile.close();
-			//Thread.sleep(1000);
+			FileWriter exportFile = new FileWriter(nomFichierTxt, true);
+			exportFile.write(".read " + nomFichier);
+			exportFile.close();
+			Thread.sleep(500);
 			FileWriter fileBat = new FileWriter(nomFichierBat, true);
-			//Process p = Runtime.getRuntime().exec("cmd.exe /c  sqlite3.exe Database.db < " + nomFichierTxt);
-			String cmd = "sqlite3.exe Database.db < .read " + nomFichier;
+			Process p = Runtime.getRuntime().exec("cmd.exe /c  sqlite3.exe Database.db < " + nomFichierTxt);
+			String cmd = "sqlite3.exe Database.db < " + nomFichierTxt;
 			fileBat.write(cmd);
 			fileBat.close();
-			// p.waitFor();
-			//Thread.sleep(500);
+			//p.waitFor();
 			//File fichierASupprimer = new File(nomFichierTxt);
 			//fichierASupprimer.delete();
 			return true;
@@ -393,7 +393,7 @@ public class ServiceCarnetAdresse {
 
 				for (Contact contact : contactGroupe) {
 
-					String sqlTpContactSimple = "insert into contact(idgroupe, nom,favoris, prenom, ddn, fax) "
+					String sqlTpContactSimple = "insert into contact(idgroupe, nom,favoris, prenom, ddn, photo,fax) "
 							+ "VALUES(";
 					//sqlTpContactSimple = sqlTpContactSimple + contact.getIdContact() + ", ";
 					//sqlTpContactSimple = sqlTpContactSimple + contact.getIdGroupe() + " , '";
@@ -401,7 +401,8 @@ public class ServiceCarnetAdresse {
 					sqlTpContactSimple = sqlTpContactSimple + contact.getNom() + "' ,";
 					sqlTpContactSimple = sqlTpContactSimple + "1, '";
 					sqlTpContactSimple = sqlTpContactSimple + contact.getPrenom() + "',";
-					sqlTpContactSimple = sqlTpContactSimple + contact.getDdn()+ " ,'";
+					sqlTpContactSimple = sqlTpContactSimple + contact.getDdn()+ " ,";
+					sqlTpContactSimple = sqlTpContactSimple + contact.getPhoto()+ ",'";
 					sqlTpContactSimple = sqlTpContactSimple + contact.getFax()+ "' );";
 
 					sqlInsertions = sqlInsertions + '\n' +sqlTpContactSimple + '\n';
