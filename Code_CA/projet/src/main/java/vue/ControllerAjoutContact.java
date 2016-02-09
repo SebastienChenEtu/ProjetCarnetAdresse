@@ -68,7 +68,7 @@ public class ControllerAjoutContact {
 	 
 	 private static String  nom="";
 	 private static String prenom="";
-	 private static String Fax="";
+	 private static String fax="";
 	 
 	 public boolean getAjoutModif(){
 		 return ajoutModif;
@@ -156,11 +156,12 @@ public class ControllerAjoutContact {
 	@FXML
 	void initialize() throws SQLException{
 		textNom.setText(nom);
-		if(!textNom.equals(null) && !textNom.equals("")){
+		if(nom.equals(null) || nom.equals("")){
 		modifVisibilite(false);
 		}
-		ajoutModif = true;
 		textPrenom.setText(prenom);
+		textFax.setText(fax);
+		ajoutModif = true;
 		cbGroupe.getItems().clear();
 		groupe = new ArrayList<Groupe> (service.trouverToutGroupe());
 		ArrayList<String> nomGroupe = new ArrayList<String>();
@@ -236,6 +237,17 @@ public class ControllerAjoutContact {
 				modifVisibilite(false);
 		}else
 			modifVisibilite(false);
+		nom = textNom.getText();
+	}
+	
+	@FXML
+	void textPrenom_onKeyReleased(KeyEvent event){
+		prenom = textPrenom.getText();
+	}
+	
+	@FXML
+	void textFax_onKeyReleased(KeyEvent event){
+		fax = textFax.getText();
 	}
 
 	  @FXML
@@ -271,13 +283,13 @@ public class ControllerAjoutContact {
 		String nomContact = !textNom.getText().equals("") ? textNom.getText() : "";
 		String prenomContact = !textPrenom.getText().equals("") ? textPrenom.getText() : "";
 
-		// int idGroupe = cbGroupe.getValue().getIdGroupe();
-		int idGroupe = 0; // en attendant
+		Groupe g = service.TrouverGroupe(cbGroupe.getValue());
+		//int idGroupe = 0; // en attendant
 		String fax = !textFax.getText().equals("") ? textFax.getText() : "";
 
-		List<Adresse> adrPourC =  new LinkedList<Adresse>();
-		List<Mail> mailsPourC = new LinkedList<Mail>();
-		List<Telephone> telsPourC = new LinkedList<Telephone>();
+//		List<Adresse> adrPourC =  new LinkedList<Adresse>();
+//		List<Mail> mailsPourC = new LinkedList<Mail>();
+//		List<Telephone> telsPourC = new LinkedList<Telephone>();
 
 		File monImage = new File(".\\Profil_par_defaut.jpeg");
 		FileInputStream inputStream = new FileInputStream(monImage);
@@ -286,17 +298,17 @@ public class ControllerAjoutContact {
 			inputStream = this.fileInputStream;
 		}
 
-		Contact contactACreer = new Contact(nomContact,prenomContact,new java.sql.Date(new Date().getTime()),fax,idGroupe,inputStream, true);
+		Contact contactACreer = new Contact(nomContact,prenomContact,new java.sql.Date(new Date().getTime()),fax,g.getIdGroupe(),inputStream, true);
 
-		adrPourC.add(new Adresse("adresse C", 1));
-		adrPourC.add(new Adresse("Adresse D", 1));
-		mailsPourC.add(new Mail("mail C", 1));
-		mailsPourC.add(new Mail("Mail D", 1));
-		telsPourC.add(new Telephone("Tel C", 1));
-		telsPourC.add(new Telephone("Tel D", 1));
-		contactACreer.setAdresses(adrPourC);
-		contactACreer.setMails(mailsPourC);
-		contactACreer.setTelephones(telsPourC);
+//		adrPourC.add(new Adresse("adresse C", 1));
+//		adrPourC.add(new Adresse("Adresse D", 1));
+//		mailsPourC.add(new Mail("mail C", 1));
+//		mailsPourC.add(new Mail("Mail D", 1));
+//		telsPourC.add(new Telephone("Tel C", 1));
+//		telsPourC.add(new Telephone("Tel D", 1));
+		contactACreer.setAdresses(adresses);
+		contactACreer.setMails(mails);
+		contactACreer.setTelephones(telephones);
 
 		service.CreerContact(contactACreer);
 		mails.clear();

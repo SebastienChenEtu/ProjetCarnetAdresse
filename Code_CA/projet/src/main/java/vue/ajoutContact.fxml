@@ -16,11 +16,11 @@
       <Label id="labelNom" layoutX="268.0" layoutY="34.0" prefHeight="17.0" prefWidth="42.0" text="Nom" />
       <TextField id="textNom" fx:id="textNom" layoutX="310.0" layoutY="30.0" onKeyReleased="#textNom_onKeyReleased" />
       <Label id="labelPrenom" layoutX="530.0" layoutY="34.0" prefHeight="17.0" prefWidth="47.0" text="Prénom" />
-      <TextField id="textPrenom" fx:id="textPrenom" layoutX="596.0" layoutY="30.0" />
+      <TextField id="textPrenom" fx:id="textPrenom" layoutX="596.0" layoutY="30.0" onKeyReleased="#textPrenom_onKeyReleased" />
       <ChoiceBox id="cbGroupe" fx:id="cbGroupe" layoutX="314.0" layoutY="92.0" prefWidth="150.0" />
       <Label id="labelGroupe" layoutX="196.0" layoutY="96.0" text="Choisissez un groupe" />
       <Label id="labelFax" layoutX="550.0" layoutY="96.0" text="Fax" />
-      <TextField id="textFax" fx:id="textFax" layoutX="596.0" layoutY="92.0" />
+      <TextField id="textFax" fx:id="textFax" layoutX="596.0" layoutY="92.0" onKeyReleased="#textFax_onKeyReleased" />
       <Button id="btnValider" fx:id="btnValide" layoutX="196.0" layoutY="366.0" mnemonicParsing="false" onAction="#btnValide_onAction" prefHeight="56.0" prefWidth="124.0" text="Valider" />
       <Button id="btnAnnuler" fx:id="btnAnnuler" layoutX="464.0" layoutY="366.0" mnemonicParsing="false" onAction="#btnAnnuler_onAction" prefHeight="56.0" prefWidth="124.0" text="Annuler" />
       <Button id="btnAvatar" fx:id="btnAvatar" layoutX="43.0" layoutY="113.0" mnemonicParsing="false" onAction="#btnAvatar_onAction" prefHeight="25.0" prefWidth="124.0" text="Avatar" />
