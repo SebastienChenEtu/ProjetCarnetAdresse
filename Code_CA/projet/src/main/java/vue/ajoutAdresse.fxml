@@ -6,7 +6,6 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 
-
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="163.0" prefWidth="467.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vue.ControllerAjoutAdresse">
    <children>
       <Button fx:id="btnAnnuler" layoutX="264.0" layoutY="117.0" mnemonicParsing="false" onAction="#btnAnnuler_onAction" text="Annuler" />
@@ -15,5 +14,7 @@
       <TextField fx:id="txtAdresse" layoutX="169.0" layoutY="77.0" />
       <Label layoutX="69.0" layoutY="43.0" text="Choisir type" />
       <ComboBox fx:id="cbxType" layoutX="168.0" layoutY="39.0" prefWidth="150.0" />
+      <Button fx:id="btnAjoutType" layoutX="334.0" layoutY="39.0" mnemonicParsing="false" onAction="#btnAjoutType_onAction" prefHeight="25.0" prefWidth="30.0" text="+" />
+      <Button fx:id="btnSupType" layoutX="381.0" layoutY="39.0" mnemonicParsing="false" onAction="#btnSupType_onAction" prefHeight="25.0" prefWidth="30.0" text="-" />
    </children>
 </Pane>
