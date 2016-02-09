@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -63,6 +65,7 @@ public class ControllerAjoutMail {
 			libType.add(type.getLibelleType());
 		}
 		cbxType.getItems().addAll(libType);
+		cbxType.setValue(service.TrouverType(0).getLibelleType());
 	}
 
 	@FXML
@@ -71,25 +74,25 @@ public class ControllerAjoutMail {
 			t = service.TrouverType(cbxType.getValue());
 			t.toString();
 			if (!txtMail.getText().equals(null) && !txtMail.getText().equals("")){
-				Mail m = new Mail();
-				m.setIdType(t.getIdType());
-				m.setMail(txtMail.getText());
-				if (ajoutModif){
-					controllerAjout.addMails(m);
-					Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("ajoutContact.fxml"));
-					Scene pageAjoutScene= new Scene(pageAjoutParent);
-					Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();
-					app_stage.setScene(pageAjoutScene); 
-					app_stage.show();
-				}else {
-					mails.add(m);
-					service.setMails(c.getIdContact(), mails);
-					Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("detailContact.fxml"));
-					Scene pageAjoutScene= new Scene(pageAjoutParent);
-					Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();
-					app_stage.setScene(pageAjoutScene); 
-					app_stage.show();
-				}
+					Mail m = new Mail();
+					m.setIdType(t.getIdType());
+					m.setMail(txtMail.getText());
+					if (ajoutModif){
+						controllerAjout.addMails(m);
+						Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("ajoutContact.fxml"));
+						Scene pageAjoutScene= new Scene(pageAjoutParent);
+						Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();
+						app_stage.setScene(pageAjoutScene); 
+						app_stage.show();
+					}else {
+						mails.add(m);
+						service.setMails(c.getIdContact(), mails);
+						Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("detailContact.fxml"));
+						Scene pageAjoutScene= new Scene(pageAjoutParent);
+						Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();
+						app_stage.setScene(pageAjoutScene); 
+						app_stage.show();
+					}
 			}else {
 				Alert alert = new Alert(AlertType.INFORMATION);
 				alert.setTitle("Message d'information");

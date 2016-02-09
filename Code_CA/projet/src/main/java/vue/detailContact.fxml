@@ -22,7 +22,7 @@
       <TextField fx:id="textNom" layoutX="325.0" layoutY="20.0" />
       <Label id="labelPrenom" layoutX="528.0" layoutY="24.0" prefHeight="17.0" prefWidth="47.0" text="Prénom" />
       <TextField fx:id="textPrenom" layoutX="592.0" layoutY="20.0" />
-      <Label id="labelGroupe" layoutX="199.0" layoutY="82.0" text="Choisissez un groupe" />
+      <Label id="labelGroupe" layoutX="199.0" layoutY="82.0" prefHeight="17.0" prefWidth="113.0" text="Choisissez un groupe" />
       <Label id="labelAdresse" layoutX="19.0" layoutY="183.0" text="Adresse" />
       <Label id="labelTelephone" layoutX="294.0" layoutY="183.0" text="N° Télephone" />
       <Label id="labelFax" layoutX="557.0" layoutY="82.0" text="Fax" />
