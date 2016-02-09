@@ -38,13 +38,12 @@ En plus de comprendre les fonctionnalités basiques d’un carnet d’adresses t
 
 L’outil GitHub nous a permis de poser des questions à l’équipe qui nous a fourni le cahier des charges du projet afin de lever toutes ambiguïtés sur leur besoin.
 
-#### Diagramme de classes  
-
-![Diag_classe]()
-
 #### Difficultés rencontrées, solutions trouvées
 
-
+Nous avons rencontré diverses difficultés lors de l'élaboration du code auxquelles nous avons, également, trouvé des solutions telles que :
++ les photos,
++ le passage d'un controleur à un autre, la résolution a été d'utiliser un attribut et d'appeler le controleur dans un autre
++ l'import/export,
 
 #### Tests unitaires  
 
@@ -61,8 +60,11 @@ La fonctionnalité bonus qui nous a été donnée est de permettre à l'utilisat
 
 #### Points perfectibles, points à améliorer
 
-Les points qu'il nous reste à améliorer sont ....
+Certaines fonctionnalités n'ont pas pu être développées telles ques :
++ Supprimer plusieurs contacts à la fois
++ Créer un système de gestion de favoris
 
+L'objectif était d'intégrer un système de check-box pour une sélection intuitive et rapide mais l'interface que nous avons mise en place ne propose que la sélection de ligne et non celle de la check-box lors d'un clic de l'utilisateur, ce qui bloque l'avancement prévu de ces fonctionnalités. 
 
 ### Retours personnels
 
