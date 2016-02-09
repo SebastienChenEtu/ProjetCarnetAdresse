@@ -300,7 +300,7 @@ public class ServiceCarnetAdresse {
 				}
 			}
 
-			sqlInsertions = sqlInsertions + '\n' + "drop table _variables;";
+			sqlInsertions = sqlInsertions + '\n' + "drop table _variables;commit;";
 			FileWriter exportFile = new FileWriter("favoris.sql", true);
 			exportFile.write(sqlInsertions);
 			exportFile.close();
@@ -436,7 +436,7 @@ public class ServiceCarnetAdresse {
 					}
 				}
 
-				sqlInsertions = sqlInsertions + '\n' + "drop table _variables;";
+				sqlInsertions = sqlInsertions + '\n' + "drop table _variables;commit;";
 				FileWriter exportFile = new FileWriter("contacts_" + nomGroupe + ".sql", true);
 				exportFile.write(sqlInsertions);
 				exportFile.close();

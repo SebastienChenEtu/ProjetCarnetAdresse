@@ -53,7 +53,6 @@ public class ControllerImport {
 		for (Groupe g : groupe){
 				nomGroupe.add(g.getNom());
 		}
-
 		cbGroupe.getItems().addAll(nomGroupe);
 	}
 
@@ -63,8 +62,8 @@ public class ControllerImport {
 	}
 
 	@FXML
-	void btnExportGroupe_onAction(ActionEvent event) {
-		//service.ExporterContactsGroupe(nomGroupe);
+	void btnExportGroupe_onAction(ActionEvent event) throws Exception {
+		service.ExporterContactsGroupe(cbGroupe.getValue().toString());
 	}
 
 	@FXML

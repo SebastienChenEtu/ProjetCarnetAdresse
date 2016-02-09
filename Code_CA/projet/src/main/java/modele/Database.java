@@ -69,6 +69,7 @@ public class Database
 				creationTables();
 				requete.executeUpdate("PRAGMA synchronous = OFF;");
 				requete.executeUpdate("PRAGMA foreign_keys = ON;");
+				requete.executeUpdate("PRAGMA journal_mode=WAL;");
 				requete.setQueryTimeout(30);
 			}
 			return true;

@@ -41,6 +41,8 @@ public class ControllerAjoutContact {
 
 	ServiceCarnetAdresse service = new ServiceCarnetAdresse();
 
+	FileInputStream	fileInputStream = null;
+
 	@FXML
 	private TextField textNom;
 
@@ -80,63 +82,63 @@ public class ControllerAjoutContact {
 	private Button btnAvatar;
 
 
-    @FXML
-    private TableView<Adresse> tvAdresses;
+	@FXML
+	private TableView<Adresse> tvAdresses;
 
-    @FXML
-    private TableColumn<Adresse, String> columnAdresse;
+	@FXML
+	private TableColumn<Adresse, String> columnAdresse;
 
-    @FXML
-    private TableView<Telephone> tvTel;
+	@FXML
+	private TableView<Telephone> tvTel;
 
-    @FXML
-    private TableColumn<Telephone, String> columnTel;
+	@FXML
+	private TableColumn<Telephone, String> columnTel;
 
-    @FXML
-    private TableView<Mail> tvMail;
+	@FXML
+	private TableView<Mail> tvMail;
 
-    @FXML
-    private TableColumn<Mail, String> columnMail;
+	@FXML
+	private TableColumn<Mail, String> columnMail;
 
-    @FXML
-    private Button btnAjoutAdresse;
+	@FXML
+	private Button btnAjoutAdresse;
 
-    @FXML
-    private Button btnSupprimerAdresse;
+	@FXML
+	private Button btnSupprimerAdresse;
 
-    @FXML
-    private Button btnAjoutTel;
+	@FXML
+	private Button btnAjoutTel;
 
-    @FXML
-    private Button btnSupprimerTel;
+	@FXML
+	private Button btnSupprimerTel;
 
-    @FXML
-    private Button btnAjoutMail;
+	@FXML
+	private Button btnAjoutMail;
 
-    @FXML
-    private Button btnSupprimerMail;
+	@FXML
+	private Button btnSupprimerMail;
 
 
-    @FXML
-    void btnSupprimerAdresse_onAction(ActionEvent event) {
+	@FXML
+	void btnSupprimerAdresse_onAction(ActionEvent event) {
 
-    }
+	}
 
-    @FXML
-    void btnSupprimerMail_onAction(ActionEvent event) {
+	@FXML
+	void btnSupprimerMail_onAction(ActionEvent event) {
 
-    }
+	}
 
-    @FXML
-    void btnSupprimerTel_onAction(ActionEvent event) {
+	@FXML
+	void btnSupprimerTel_onAction(ActionEvent event) {
 
-    }
+	}
 
 	@FXML
 	void initialize(){
 		modifVisibilite(false);
 		textPrenom.setText("");
-//		cbGroupe.setValue(service.trouverGroupe(0);
+		//		cbGroupe.setValue(service.trouverGroupe(0);
 	}
 
 	void modifVisibilite(Boolean b){
@@ -178,33 +180,38 @@ public class ControllerAjoutContact {
 
 	}
 
-    @FXML
-    void btnAjoutTel_onAction(ActionEvent event) {
+	@FXML
+	void btnAjoutTel_onAction(ActionEvent event) {
 
-    }
+	}
 
 	void ajouterContact() throws Exception{
 		Contact c = new Contact();
-		c.setNom(textNom.getText());
-		c.setPrenom(textPrenom.getText());
-//		File monImage = new File(".\\adrien.jpg");
-//		Contact c = new Contact("test","test",new java.sql.Date(new Date().getTime()),"fax",2,istreamImage, false);
-//		c.setIdGroupe(cbGroupe.getValue().getIdGroupe());
-//		c.setFax(textFax.getText());
+		String nomContact = !textNom.getText().equals("") ? textNom.getText() : "";
+		String prenomContact = !textPrenom.getText().equals("") ? textPrenom.getText() : "";
 
-		File monImage = new File(avatar.getImage().impl_getUrl());
-		FileInputStream istreamImage = new FileInputStream(monImage);
+		// int idGroupe = cbGroupe.getValue().getIdGroupe();
+		int idGroupe = 0; // en attendant
+		String fax = !textFax.getText().equals("") ? textFax.getText() : "";
+
+		//LocalDate localDate = dpDateNaissance.getValue();
+		//Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
+		//Date date = Date.from(instant);
+		//System.out.println(localDate + "\n" + instant + "\n" + date);
+		//c.setDdn(date);
 
 		List<Adresse> adrPourC =  new LinkedList<Adresse>();
 		List<Mail> mailsPourC = new LinkedList<Mail>();
 		List<Telephone> telsPourC = new LinkedList<Telephone>();
-		//photo différent de null
-//		FileInputStream istreamImage = new FileInputStream(avatar.getImage().impl_getUrl());
-//		c.setPhoto(istreamImage);
 
+		File monImage = new File(".\\Profil_par_defaut.jpeg");
+		FileInputStream inputStream = new FileInputStream(monImage);
 
-//		c.setPhoto(istreamImage);
-		c.setIdGroupe(3);
+		if(this.fileInputStream != null){
+			inputStream = this.fileInputStream;
+		}
+
+		Contact contactACreer = new Contact(nomContact,prenomContact,new java.sql.Date(new Date().getTime()),fax,idGroupe,inputStream, true);
 
 		adrPourC.add(new Adresse("adresse C", 1));
 		adrPourC.add(new Adresse("Adresse D", 1));
@@ -212,11 +219,11 @@ public class ControllerAjoutContact {
 		mailsPourC.add(new Mail("Mail D", 1));
 		telsPourC.add(new Telephone("Tel C", 1));
 		telsPourC.add(new Telephone("Tel D", 1));
-		c.setAdresses(adrPourC);
-		c.setMails(mailsPourC);
-		c.setTelephones(telsPourC);
-		System.out.println(c.toString());
-		service.CreerContact(c);
+		contactACreer.setAdresses(adrPourC);
+		contactACreer.setMails(mailsPourC);
+		contactACreer.setTelephones(telsPourC);
+
+		service.CreerContact(contactACreer);
 	}
 
 	@FXML
@@ -235,11 +242,8 @@ public class ControllerAjoutContact {
 		int result = fileChooser.showOpenDialog(null);
 		if (result == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = fileChooser.getSelectedFile();
-			// System.out.println("Selected file: " + selectedFile.getAbsolutePath());
 			System.out.println(selectedFile.getName());
-			FileInputStream fileInputStream = new FileInputStream(selectedFile);
-			// service.setPhoto(1, fileInputStream);
-			service.ImporterFichier(selectedFile.getName());
+			this.fileInputStream = new FileInputStream(selectedFile);
 		}
 		// Il faudra vérifier le format (jpg, png...), la taille (pas trop lourde)
 		// Puis rendre l'image visible dans un petit cadre ?
@@ -249,11 +253,11 @@ public class ControllerAjoutContact {
 	@FXML
 	void btnValide_onAction(ActionEvent event) throws Exception {
 		ajouterContact();
-    	Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("ListeContact.fxml"));
-    	Scene pageAjoutScene= new Scene(pageAjoutParent);
-    	Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();
-    	app_stage.setScene(pageAjoutScene);
-    	app_stage.show();
+		Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("ListeContact.fxml"));
+		Scene pageAjoutScene= new Scene(pageAjoutParent);
+		Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();
+		app_stage.setScene(pageAjoutScene);
+		app_stage.show();
 	}
 
 	@FXML
