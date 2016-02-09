@@ -77,16 +77,18 @@ public class ControllerAjoutTel {
     			Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();
     			app_stage.setScene(pageAjoutScene); 
     			app_stage.show();
-    		}
+    		}else {
         	Alert alert = new Alert(AlertType.INFORMATION);
     		alert.setTitle("Message d'information");
     		alert.setHeaderText("Le champs texte est vide");
     		alert.showAndWait();
-    	}
+    		}
+    	}else{
     	Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Message d'information");
 		alert.setHeaderText("Aucun type choisi");
 		alert.showAndWait();
+    	}
     }
 
     @FXML
