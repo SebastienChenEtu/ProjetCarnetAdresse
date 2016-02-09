@@ -33,14 +33,17 @@ Tout d'abord, les classes suivantes représentent les objets ainsi que leurs att
 
 Ensuite, les méthodes principales nécessaires au bon fonctionnement de l'application ont été développées sous différentes classes :
 + **Database.java** : Cette classe fait l'interface avec la base de données et se compose des méthodes correspondantes telles que connexion(), deconnexion() mais encore getResultatRequete(String requete).
-+ **DAO.java** : Elle met en place les fonctionnalités de l'application demandées, par exemple, .
++ **DAO.java** : Elle met en place les fonctionnalités de l'application demandées, par exemple les création/modification/suppression des contatcs et de groupes.
 + **Import_Export.java** : La classe permet l'importation et l'exportation des contacts sous le format .sql.
-+ **ServiceCarnetAdresse.java** : Cettre dernière fait appel aux méthodes de la classe DAO.java. 
++ **ServiceCarnetAdresse.java** : Cette dernière classe recense les besoins utilisateurs.
 
 Enfin, pour déployer les services de l'application, les classes suivantes ont été développées :
-+ **AppliFx.java** : 
-+ **ControllerAjoutContact.java** : 
-+ **ControllerDetailContact.java** : 
-+ **ControllerGestionGroup.java** : 
-+ **ControllerImport.java** : 
-+ **ControllerListeContact.java** : 
++ **AppliFx.java** : deploiement de l'interface via les controleurs cités ci-dessous
++ **ControllerAjoutAdresse.java**
++ **ControllerAjoutContact.java**
++ **ControllerAjoutMail.java**
++ **ControllerAjoutTel.java**
++ **ControllerDetailContact.java**
++ **ControllerGestionGroupe.java**
++ **ControllerImport.java** 
++ **ControllerListeContact.java**
