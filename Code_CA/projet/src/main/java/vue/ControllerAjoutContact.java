@@ -37,7 +37,7 @@ import service.ServiceCarnetAdresse;
 
 public class ControllerAjoutContact {
 
-	static ServiceCarnetAdresse service = new ServiceCarnetAdresse();
+	ServiceCarnetAdresse service = new ServiceCarnetAdresse();
 
 	@FXML
 	private TextField textNom;

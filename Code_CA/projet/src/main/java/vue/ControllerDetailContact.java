@@ -34,9 +34,13 @@ public class ControllerDetailContact{
 
 	private ControllerListeContact controller=new ControllerListeContact();
 
-	private static ServiceCarnetAdresse service = new ServiceCarnetAdresse();
+	private ServiceCarnetAdresse service = new ServiceCarnetAdresse();
 
-	private Contact c = new Contact();
+	private static Contact c = new Contact();
+	
+	public Contact getContact(){
+		 return c;
+	 }
 	
 	private static final String ADRESSE = "adresse";
 	 private static final String TYPE = "type";
@@ -72,9 +76,9 @@ public class ControllerDetailContact{
     
     @FXML
     private TableView<Adresse> tvAdresses;
-
-    @FXML
-    private TableColumn<Adresse, String> columnTypeAdresse;
+//
+//    @FXML
+//    private TableColumn<Adresse, String> columnTypeAdresse;
 
     @FXML
     private TableColumn<Adresse, String> columnAdresse;
@@ -82,8 +86,8 @@ public class ControllerDetailContact{
     @FXML
     private TableView<Telephone> tvTel;
 
-    @FXML
-    private TableColumn<Telephone, String> columnTypeTel;
+//    @FXML
+//    private TableColumn<Telephone, String> columnTypeTel;
 
     @FXML
     private TableColumn<Telephone, String> columnTel;
@@ -91,8 +95,8 @@ public class ControllerDetailContact{
     @FXML
     private TableView<Mail> tvMail;
 
-    @FXML
-    private TableColumn<Mail, String> columnTypeMail;
+//    @FXML
+//    private TableColumn<Mail, String> columnTypeMail;
 
     @FXML
     private TableColumn<Mail, String> columnMail;
@@ -133,32 +137,37 @@ public class ControllerDetailContact{
     	Groupe g = new Groupe();
     	g = service.TrouverGroupe(c.getIdGroupe());
     	textGroupe.setText(g.getNom());
-    	columnTypeMail.setCellValueFactory(new PropertyValueFactory<>(TYPE));
-    	columnTypeTel.setCellValueFactory(new PropertyValueFactory<>(TYPE));
-    	columnTypeAdresse.setCellValueFactory(new PropertyValueFactory<>(TYPE));
+//    	columnTypeMail.setCellValueFactory(new PropertyValueFactory<>(TYPE));
+//    	columnTypeTel.setCellValueFactory(new PropertyValueFactory<>(TYPE));
+//    	columnTypeAdresse.setCellValueFactory(new PropertyValueFactory<>(TYPE));
     	columnTel.setCellValueFactory(new PropertyValueFactory<>(TELEPHONE));
     	columnAdresse.setCellValueFactory(new PropertyValueFactory<>(ADRESSE));
     	columnMail.setCellValueFactory(new PropertyValueFactory<>(MAIL));
     	adresses.clear();
-    	telephones.clear();
-    	mails.clear();
     	adresses.addAll(c.getAdresses());
+    	telephones.clear();
     	telephones.addAll(c.getTelephones());
+    	mails.clear();
     	mails.addAll(c.getMails());
-    	creerColonnes();
+    	creerAdresse();
+    	creerTel();
+    	creerMail();
 
     }
 
-    private void creerColonnes() {
+    private void creerAdresse(){
     	tvAdresses.setItems(adresses);
-    	tvMail.setItems(mails);
-    	tvTel.setItems(telephones);
-    	columnMail();
-    	columnTel();
     	columnAdresse();
-//    	columnTypeAdresse();
-//    	columnTypeMail();
+    }
+    private void creerTel() {
+    	tvTel.setItems(telephones);
+    	columnTel();
 	}
+    
+    private void creerMail(){
+    	tvMail.setItems(mails);
+    	columnMail();
+    }
     
     public void columnMail() {
     	columnMail.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -181,18 +190,7 @@ public class ControllerDetailContact{
         });
     }
     
-//    public void columnTypeAdresse() {
-//    	columnTypeAdresse.setCellFactory(TextFieldTableCell.forTableColumn());
-//    	columnTypeAdresse.setOnEditCommit((CellEditEvent<Adresse,String>cell) -> {
-//            cell.getTableView().getItems().get(cell.getTablePosition().getRow()).setLibelleType(cell.getNewValue());
-//        });
-//    }
-//    public void columnTypeMail() {
-//    	columnTypeMail.setCellFactory(TextFieldTableCell.forTableColumn());
-//    	columnTypeMail.setOnEditCommit((CellEditEvent<Mail,String>cell) -> {
-//            cell.getTableView().getItems().get(cell.getTablePosition().getRow()).setLibelleType(cell.getNewValue());
-//        });
-//    }
+
 
 	@FXML
     void btnRetour_onAction(ActionEvent event) throws IOException {
@@ -219,33 +217,60 @@ public class ControllerDetailContact{
     
     
     @FXML
-    void btnAjoutAdresse_onAction(ActionEvent event) {
-
+    void btnAjoutAdresse_onAction(ActionEvent event) throws IOException {
+    	Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("ajoutAdresse.fxml"));
+    	Scene pageAjoutScene= new Scene(pageAjoutParent);
+    	Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();
+    	app_stage.setScene(pageAjoutScene);
+    	app_stage.show();
     }
 
     @FXML
-    void btnAjoutMail_onAction(ActionEvent event) {
-
+    void btnAjoutMail_onAction(ActionEvent event) throws IOException {
+    	Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("ajoutMail.fxml"));
+    	Scene pageAjoutScene= new Scene(pageAjoutParent);
+    	Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();
+    	app_stage.setScene(pageAjoutScene);
+    	app_stage.show();
     }
 
     @FXML
-    void btnAjoutTel_onAction(ActionEvent event) {
-
+    void btnAjoutTel_onAction(ActionEvent event) throws IOException {
+    	Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("ajoutTel.fxml"));
+    	Scene pageAjoutScene= new Scene(pageAjoutParent);
+    	Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();
+    	app_stage.setScene(pageAjoutScene);
+    	app_stage.show();
     }
     
     @FXML
     void btnSupprimerAdresse_onAction(ActionEvent event) {
-
+    	adresses.remove(tvAdresses.getSelectionModel().getSelectedItem());
+    	c.setAdresses(adresses);
+    	Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Message d'information");
+		alert.setHeaderText("L'adresse sélectionné a été supprimé");
+		alert.showAndWait();
     }
 
     @FXML
     void btnSupprimerMail_onAction(ActionEvent event) {
-
+    	mails.remove(tvMail.getSelectionModel().getSelectedItem());
+    	c.setMails(mails);
+    	Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Message d'information");
+		alert.setHeaderText("Le mail sélectionné a été supprimé");
+		alert.showAndWait();
     }
 
     @FXML
     void btnSupprimerTel_onAction(ActionEvent event) {
-
+    	telephones.remove(tvTel.getSelectionModel().getSelectedItem());
+    	c.setTelephones(telephones);
+    	Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Message d'information");
+		alert.setHeaderText("Le téléphone sélectionné a été supprimé");
+		alert.showAndWait();
     }
 
 }

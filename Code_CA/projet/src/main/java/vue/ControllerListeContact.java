@@ -52,7 +52,7 @@ public class ControllerListeContact implements Initializable  {
 	 private static final String NOM = "nom";
 	 private static final String FAVORIS = "favoris";
 	 private static final String SELECTION = "selection";
-	 private static ServiceCarnetAdresse service = new ServiceCarnetAdresse();
+	 private ServiceCarnetAdresse service = new ServiceCarnetAdresse();
 	 
 	 private static ObservableList<Contact> contacts=FXCollections.observableArrayList();
 	 

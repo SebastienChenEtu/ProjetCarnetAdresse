@@ -22,7 +22,7 @@ import modele.Groupe;
 import service.ServiceCarnetAdresse;
 
 public class ControllerImport {
-	static ServiceCarnetAdresse service = new ServiceCarnetAdresse();
+	ServiceCarnetAdresse service = new ServiceCarnetAdresse();
 
 	@FXML
 	private Button btnImportDonnees;
