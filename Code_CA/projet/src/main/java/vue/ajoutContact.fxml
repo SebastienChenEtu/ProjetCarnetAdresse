@@ -24,10 +24,7 @@
       <Button id="btnValider" fx:id="btnValide" layoutX="196.0" layoutY="366.0" mnemonicParsing="false" onAction="#btnValide_onAction" prefHeight="56.0" prefWidth="124.0" text="Valider" />
       <Button id="btnAnnuler" fx:id="btnAnnuler" layoutX="464.0" layoutY="366.0" mnemonicParsing="false" onAction="#btnAnnuler_onAction" prefHeight="56.0" prefWidth="124.0" text="Annuler" />
       <Button id="btnAvatar" fx:id="btnAvatar" layoutX="43.0" layoutY="113.0" mnemonicParsing="false" onAction="#btnAvatar_onAction" prefHeight="25.0" prefWidth="124.0" text="Avatar" />
-      <ImageView id="imgAvatar" fx:id="avatar" fitHeight="95.0" fitWidth="124.0" layoutX="43.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../../../../../../../../Users/David/Desktop/ProfilParDefaut.jpeg" />
-         </image>
+      <ImageView id="imgAvatar" fx:id="imgAvatar" fitHeight="95.0" fitWidth="124.0" layoutX="43.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true">
       </ImageView>
       <Label id="labelAdresse" layoutX="12.0" layoutY="186.0" text="Adresse" />
       <Label id="labelTelephone" layoutX="287.0" layoutY="186.0" text="N° Télephone" />

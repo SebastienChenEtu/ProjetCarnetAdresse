@@ -70,6 +70,8 @@ public class ControllerAjoutContact {
 	 private static String prenom="";
 	 private static String fax="";
 	 
+	 File monImage = new File(".\\Profil_par_defaut.jpeg");
+	 
 	 public boolean getAjoutModif(){
 		 return ajoutModif;
 	 }
@@ -98,7 +100,7 @@ public class ControllerAjoutContact {
 	private TextField textPrenom;
 
 	@FXML
-	private ImageView avatar;
+	private ImageView imgAvatar;
 
 	@FXML
 	private ChoiceBox<String> cbGroupe;
@@ -178,6 +180,7 @@ public class ControllerAjoutContact {
     	creerAdresse();
     	creerTel();
     	creerMail();
+    	imgAvatar.setImage(monImage);
 	}
 	
     private void creerAdresse(){
@@ -291,12 +294,12 @@ public class ControllerAjoutContact {
 //		List<Mail> mailsPourC = new LinkedList<Mail>();
 //		List<Telephone> telsPourC = new LinkedList<Telephone>();
 
-		File monImage = new File(".\\Profil_par_defaut.jpeg");
 		FileInputStream inputStream = new FileInputStream(monImage);
 
 		if(this.fileInputStream != null){
 			inputStream = this.fileInputStream;
 		}
+		
 
 		Contact contactACreer = new Contact(nomContact,prenomContact,new java.sql.Date(new Date().getTime()),fax,g.getIdGroupe(),inputStream, true);
 
