@@ -480,4 +480,9 @@ public class ServiceCarnetAdresse {
 		return this.dao.trouverToutType();
 	}
 
+	public InputStream getPhotoContact(Contact contact) throws SQLException
+	{
+		return this.dao.getPhotoContact(contact);
+	}
+
 }

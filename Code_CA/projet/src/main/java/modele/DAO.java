@@ -917,4 +917,17 @@ public Contact ModifierContact(int idContactAModifier, Contact contactSouhaite) 
 		}
 	}
 
+	public InputStream getPhotoContact(Contact contact) throws SQLException
+	{
+		PreparedStatement ps = db.connexion.prepareStatement("select photo from contact where idcontact = ?");
+		ps.setInt(1, contact.getIdContact());
+		ResultSet rs = ps.executeQuery();
+		byte[] imgData = null;
+		if (rs.next()) {
+			imgData = rs.getBytes("photo");//Here r1.getBytes() extract byte data from resultSet
+		}
+		System.out.println(imgData);
+		return new ByteArrayInputStream(imgData);
+	}
+
 }

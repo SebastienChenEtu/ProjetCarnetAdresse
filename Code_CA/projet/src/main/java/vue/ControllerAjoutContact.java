@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.io.IOException;
 import java.time.Instant;
@@ -52,45 +54,45 @@ public class ControllerAjoutContact {
 
 	FileInputStream	fileInputStream = null;
 
-//	private static List<Mail>mails = new ArrayList<Mail>();
-//	private static List<Telephone>telephones = new ArrayList<Telephone>();
-//	private static List<Adresse>adresses = new ArrayList<Adresse>();
+	//	private static List<Mail>mails = new ArrayList<Mail>();
+	//	private static List<Telephone>telephones = new ArrayList<Telephone>();
+	//	private static List<Adresse>adresses = new ArrayList<Adresse>();
 
 	private static ObservableList<Adresse> adresses=FXCollections.observableArrayList();
-	 private static ObservableList<Telephone> telephones=FXCollections.observableArrayList();
-	 private static ObservableList<Mail> mails=FXCollections.observableArrayList();
+	private static ObservableList<Telephone> telephones=FXCollections.observableArrayList();
+	private static ObservableList<Mail> mails=FXCollections.observableArrayList();
 
-	 private static final String ADRESSE = "adresse";
-	 private static final String TYPE = "type";
-	 private static final String TELEPHONE = "telephone";
-	 private static final String MAIL = "mail";
-	 private static boolean ajoutModif;
+	private static final String ADRESSE = "adresse";
+	private static final String TYPE = "type";
+	private static final String TELEPHONE = "telephone";
+	private static final String MAIL = "mail";
+	private static boolean ajoutModif;
 
-	 private static String  nom="";
-	 private static String prenom="";
-	 private static String fax="";
+	private static String  nom="";
+	private static String prenom="";
+	private static String fax="";
 
-	 File monImage = new File(".\\Profil_par_defaut.jpeg");
+	File monImage = new File(".\\Profil_par_defaut.jpeg");
 
-	 public boolean getAjoutModif(){
-		 return ajoutModif;
-	 }
+	public boolean getAjoutModif(){
+		return ajoutModif;
+	}
 
-	 public void setAjoutModif(Boolean b){
-		 ajoutModif=b;
-	 }
+	public void setAjoutModif(Boolean b){
+		ajoutModif=b;
+	}
 
-	 public void addTelephones(Telephone t){
-		 telephones.add(t);
-	 }
-	 public void addMails(Mail m){
-		 mails.add(m);
-	 }
-	 public void addAdresses(Adresse a){
-		 adresses.add(a);
-	 }
+	public void addTelephones(Telephone t){
+		telephones.add(t);
+	}
+	public void addMails(Mail m){
+		mails.add(m);
+	}
+	public void addAdresses(Adresse a){
+		adresses.add(a);
+	}
 
-	 ArrayList<Groupe> groupe;
+	ArrayList<Groupe> groupe;
 
 
 	@FXML
@@ -159,7 +161,7 @@ public class ControllerAjoutContact {
 	void initialize() throws SQLException{
 		textNom.setText(nom);
 		if(nom.equals(null) || nom.equals("")){
-		modifVisibilite(false);
+			modifVisibilite(false);
 		}
 		textPrenom.setText(prenom);
 		textFax.setText(fax);
@@ -175,48 +177,48 @@ public class ControllerAjoutContact {
 
 
 		columnTel.setCellValueFactory(new PropertyValueFactory<>(TELEPHONE));
-    	columnAdresse.setCellValueFactory(new PropertyValueFactory<>(ADRESSE));
-    	columnMail.setCellValueFactory(new PropertyValueFactory<>(MAIL));
-    	creerAdresse();
-    	creerTel();
-    	creerMail();
-    	//imgAvatar.setImage(monImage);
+		columnAdresse.setCellValueFactory(new PropertyValueFactory<>(ADRESSE));
+		columnMail.setCellValueFactory(new PropertyValueFactory<>(MAIL));
+		creerAdresse();
+		creerTel();
+		creerMail();
+		//imgAvatar.setImage(monImage);
 	}
 
-    private void creerAdresse(){
-    	tvAdresses.setItems(adresses);
-    	columnAdresse();
-    }
-    private void creerTel() {
-    	tvTel.setItems(telephones);
-    	columnTel();
+	private void creerAdresse(){
+		tvAdresses.setItems(adresses);
+		columnAdresse();
+	}
+	private void creerTel() {
+		tvTel.setItems(telephones);
+		columnTel();
 	}
 
-    private void creerMail(){
-    	tvMail.setItems(mails);
-    	columnMail();
-    }
+	private void creerMail(){
+		tvMail.setItems(mails);
+		columnMail();
+	}
 
-    public void columnMail() {
-    	columnMail.setCellFactory(TextFieldTableCell.forTableColumn());
-    	columnMail.setOnEditCommit((CellEditEvent<Mail,String>cell) -> {
-            cell.getTableView().getItems().get(cell.getTablePosition().getRow()).setMail(cell.getNewValue());
-        });
-    }
+	public void columnMail() {
+		columnMail.setCellFactory(TextFieldTableCell.forTableColumn());
+		columnMail.setOnEditCommit((CellEditEvent<Mail,String>cell) -> {
+			cell.getTableView().getItems().get(cell.getTablePosition().getRow()).setMail(cell.getNewValue());
+		});
+	}
 
-    public void columnTel() {
-    	columnTel.setCellFactory(TextFieldTableCell.forTableColumn());
-    	columnTel.setOnEditCommit((CellEditEvent<Telephone,String>cell) -> {
-            cell.getTableView().getItems().get(cell.getTablePosition().getRow()).setTelephone(cell.getNewValue());
-        });
-    }
+	public void columnTel() {
+		columnTel.setCellFactory(TextFieldTableCell.forTableColumn());
+		columnTel.setOnEditCommit((CellEditEvent<Telephone,String>cell) -> {
+			cell.getTableView().getItems().get(cell.getTablePosition().getRow()).setTelephone(cell.getNewValue());
+		});
+	}
 
-    public void columnAdresse() {
-    	columnAdresse.setCellFactory(TextFieldTableCell.forTableColumn());
-    	columnAdresse.setOnEditCommit((CellEditEvent<Adresse,String>cell) -> {
-            cell.getTableView().getItems().get(cell.getTablePosition().getRow()).setAdresse(cell.getNewValue());
-        });
-    }
+	public void columnAdresse() {
+		columnAdresse.setCellFactory(TextFieldTableCell.forTableColumn());
+		columnAdresse.setOnEditCommit((CellEditEvent<Adresse,String>cell) -> {
+			cell.getTableView().getItems().get(cell.getTablePosition().getRow()).setAdresse(cell.getNewValue());
+		});
+	}
 
 	void modifVisibilite(Boolean b){
 		textFax.setVisible(b);
@@ -253,32 +255,32 @@ public class ControllerAjoutContact {
 		fax = textFax.getText();
 	}
 
-	  @FXML
-	    void btnAjoutAdresse_onAction(ActionEvent event) throws IOException {
-	    	Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("ajoutAdresse.fxml"));
-	    	Scene pageAjoutScene= new Scene(pageAjoutParent);
-	    	Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();
-	    	app_stage.setScene(pageAjoutScene);
-	    	app_stage.show();
-	    }
+	@FXML
+	void btnAjoutAdresse_onAction(ActionEvent event) throws IOException {
+		Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("ajoutAdresse.fxml"));
+		Scene pageAjoutScene= new Scene(pageAjoutParent);
+		Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();
+		app_stage.setScene(pageAjoutScene);
+		app_stage.show();
+	}
 
-	    @FXML
-	    void btnAjoutMail_onAction(ActionEvent event) throws IOException {
-	    	Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("ajoutMail.fxml"));
-	    	Scene pageAjoutScene= new Scene(pageAjoutParent);
-	    	Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();
-	    	app_stage.setScene(pageAjoutScene);
-	    	app_stage.show();
-	    }
+	@FXML
+	void btnAjoutMail_onAction(ActionEvent event) throws IOException {
+		Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("ajoutMail.fxml"));
+		Scene pageAjoutScene= new Scene(pageAjoutParent);
+		Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();
+		app_stage.setScene(pageAjoutScene);
+		app_stage.show();
+	}
 
-	    @FXML
-	    void btnAjoutTel_onAction(ActionEvent event) throws IOException {
-	    	Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("ajoutTel.fxml"));
-	    	Scene pageAjoutScene= new Scene(pageAjoutParent);
-	    	Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();
-	    	app_stage.setScene(pageAjoutScene);
-	    	app_stage.show();
-	    }
+	@FXML
+	void btnAjoutTel_onAction(ActionEvent event) throws IOException {
+		Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("ajoutTel.fxml"));
+		Scene pageAjoutScene= new Scene(pageAjoutParent);
+		Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();
+		app_stage.setScene(pageAjoutScene);
+		app_stage.show();
+	}
 
 	void ajouterContact() throws Exception{
 		ajoutModif = false;
@@ -290,9 +292,9 @@ public class ControllerAjoutContact {
 		//int idGroupe = 0; // en attendant
 		String fax = !textFax.getText().equals("") ? textFax.getText() : "";
 
-//		List<Adresse> adrPourC =  new LinkedList<Adresse>();
-//		List<Mail> mailsPourC = new LinkedList<Mail>();
-//		List<Telephone> telsPourC = new LinkedList<Telephone>();
+		//		List<Adresse> adrPourC =  new LinkedList<Adresse>();
+		//		List<Mail> mailsPourC = new LinkedList<Mail>();
+		//		List<Telephone> telsPourC = new LinkedList<Telephone>();
 
 		FileInputStream inputStream = new FileInputStream(monImage);
 
@@ -303,12 +305,12 @@ public class ControllerAjoutContact {
 
 		Contact contactACreer = new Contact(nomContact,prenomContact,new java.sql.Date(new Date().getTime()),fax,g.getIdGroupe(),inputStream, true);
 
-//		adrPourC.add(new Adresse("adresse C", 1));
-//		adrPourC.add(new Adresse("Adresse D", 1));
-//		mailsPourC.add(new Mail("mail C", 1));
-//		mailsPourC.add(new Mail("Mail D", 1));
-//		telsPourC.add(new Telephone("Tel C", 1));
-//		telsPourC.add(new Telephone("Tel D", 1));
+		//		adrPourC.add(new Adresse("adresse C", 1));
+		//		adrPourC.add(new Adresse("Adresse D", 1));
+		//		mailsPourC.add(new Mail("mail C", 1));
+		//		mailsPourC.add(new Mail("Mail D", 1));
+		//		telsPourC.add(new Telephone("Tel C", 1));
+		//		telsPourC.add(new Telephone("Tel D", 1));
 		contactACreer.setAdresses(adresses);
 		contactACreer.setMails(mails);
 		contactACreer.setTelephones(telephones);
@@ -358,31 +360,31 @@ public class ControllerAjoutContact {
 	}
 
 	@FXML
-    void btnSupprimerAdresse_onAction(ActionEvent event) throws Exception {
-    	adresses.remove(tvAdresses.getSelectionModel().getSelectedItem());
-    	Alert alert = new Alert(AlertType.INFORMATION);
+	void btnSupprimerAdresse_onAction(ActionEvent event) throws Exception {
+		adresses.remove(tvAdresses.getSelectionModel().getSelectedItem());
+		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Message d'information");
 		alert.setHeaderText("L'adresse sélectionné a été supprimé");
 		alert.showAndWait();
-    }
+	}
 
-    @FXML
-    void btnSupprimerMail_onAction(ActionEvent event) throws Exception {
-    	mails.remove(tvMail.getSelectionModel().getSelectedItem());
-    	Alert alert = new Alert(AlertType.INFORMATION);
+	@FXML
+	void btnSupprimerMail_onAction(ActionEvent event) throws Exception {
+		mails.remove(tvMail.getSelectionModel().getSelectedItem());
+		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Message d'information");
 		alert.setHeaderText("Le mail sélectionné a été supprimé");
 		alert.showAndWait();
-    }
+	}
 
-    @FXML
-    void btnSupprimerTel_onAction(ActionEvent event) throws Exception {
-    	telephones.remove(tvTel.getSelectionModel().getSelectedItem());
-    	Alert alert = new Alert(AlertType.INFORMATION);
+	@FXML
+	void btnSupprimerTel_onAction(ActionEvent event) throws Exception {
+		telephones.remove(tvTel.getSelectionModel().getSelectedItem());
+		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Message d'information");
 		alert.setHeaderText("Le téléphone sélectionné a été supprimé");
 		alert.showAndWait();
-    }
+	}
 
 }
 

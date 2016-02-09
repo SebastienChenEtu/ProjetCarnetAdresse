@@ -12,7 +12,7 @@
 
 <AnchorPane id="panetitleAjoutContact" minHeight="0.0" minWidth="0.0" prefHeight="454.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vue.ControllerDetailContact">
    <children>
-      <ImageView id="imgAvatar" fitHeight="95.0" fitWidth="130.0" layoutX="33.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imgAvatar" fitHeight="95.0" fitWidth="130.0" layoutX="33.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@test.jpg" />
          </image>

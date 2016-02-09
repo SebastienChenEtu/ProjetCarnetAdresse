@@ -1,7 +1,11 @@
 package vue;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.sql.SQLException;
+
+import javax.imageio.ImageIO;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,6 +25,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import modele.Adresse;
 import modele.Contact;
@@ -37,20 +42,20 @@ public class ControllerDetailContact{
 	private ServiceCarnetAdresse service = new ServiceCarnetAdresse();
 
 	private static Contact c = new Contact();
-	
+
 	public Contact getContact(){
 		 return c;
 	 }
-	
+
 	private static final String ADRESSE = "adresse";
 	 private static final String TYPE = "type";
 	 private static final String TELEPHONE = "telephone";
 	 private static final String MAIL = "mail";
-	 
+
 	 private static ObservableList<Adresse> adresses=FXCollections.observableArrayList();
 	 private static ObservableList<Telephone> telephones=FXCollections.observableArrayList();
 	 private static ObservableList<Mail> mails=FXCollections.observableArrayList();
-	
+
 	/*********************** Attributs ****************************/
 
     @FXML
@@ -73,7 +78,7 @@ public class ControllerDetailContact{
 
     @FXML
     private TextField textGroupe;
-    
+
     @FXML
     private TableView<Adresse> tvAdresses;
 //
@@ -118,8 +123,11 @@ public class ControllerDetailContact{
 
     @FXML
     private Button btnSupprimerMail;
-    
-    
+
+    @FXML
+	private ImageView imgAvatar;
+
+
     /*********************** fonctions ************************/
 
     @FXML
@@ -129,7 +137,7 @@ public class ControllerDetailContact{
     }
 
     @FXML
-    void initialize() throws SQLException{
+    void initialize() throws SQLException, IOException{
     	c = controller.getContact();
     	textNom.setText(c.getNom());
     	textPrenom.setText(c.getPrenom());
@@ -153,6 +161,9 @@ public class ControllerDetailContact{
     	creerTel();
     	creerMail();
 
+    	javafx.scene.image.Image image = new javafx.scene.image.Image(service.getPhotoContact(c));
+    	imgAvatar.setImage(image);
+
     }
 
     private void creerAdresse(){
@@ -163,33 +174,33 @@ public class ControllerDetailContact{
     	tvTel.setItems(telephones);
     	columnTel();
 	}
-    
+
     private void creerMail(){
     	tvMail.setItems(mails);
     	columnMail();
     }
-    
+
     public void columnMail() {
     	columnMail.setCellFactory(TextFieldTableCell.forTableColumn());
     	columnMail.setOnEditCommit((CellEditEvent<Mail,String>cell) -> {
             cell.getTableView().getItems().get(cell.getTablePosition().getRow()).setMail(cell.getNewValue());
         });
     }
-    
+
     public void columnTel() {
     	columnTel.setCellFactory(TextFieldTableCell.forTableColumn());
     	columnTel.setOnEditCommit((CellEditEvent<Telephone,String>cell) -> {
             cell.getTableView().getItems().get(cell.getTablePosition().getRow()).setTelephone(cell.getNewValue());
         });
     }
-    
+
     public void columnAdresse() {
     	columnAdresse.setCellFactory(TextFieldTableCell.forTableColumn());
     	columnAdresse.setOnEditCommit((CellEditEvent<Adresse,String>cell) -> {
             cell.getTableView().getItems().get(cell.getTablePosition().getRow()).setAdresse(cell.getNewValue());
         });
     }
-    
+
 
 
 	@FXML
@@ -214,8 +225,8 @@ public class ControllerDetailContact{
     	app_stage.setScene(pageAjoutScene);
     	app_stage.show();
     }
-    
-    
+
+
     @FXML
     void btnAjoutAdresse_onAction(ActionEvent event) throws IOException {
     	Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("ajoutAdresse.fxml"));
@@ -242,7 +253,7 @@ public class ControllerDetailContact{
     	app_stage.setScene(pageAjoutScene);
     	app_stage.show();
     }
-    
+
     @FXML
     void btnSupprimerAdresse_onAction(ActionEvent event) throws Exception {
     	adresses.remove(tvAdresses.getSelectionModel().getSelectedItem());
