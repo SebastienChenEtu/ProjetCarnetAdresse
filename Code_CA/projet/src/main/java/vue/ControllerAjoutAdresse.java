@@ -65,6 +65,7 @@ public class ControllerAjoutAdresse {
 			libType.add(type.getLibelleType());
 		}
 		cbxType.getItems().addAll(libType);
+		cbxType.setValue(service.TrouverType(0).getLibelleType());
 	}
 
 	@FXML

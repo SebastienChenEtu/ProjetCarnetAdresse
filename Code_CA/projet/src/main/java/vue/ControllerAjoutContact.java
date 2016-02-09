@@ -361,11 +361,11 @@ public class ControllerAjoutContact {
 
 	@FXML
 	void btnSupprimerAdresse_onAction(ActionEvent event) throws Exception {
-		adresses.remove(tvAdresses.getSelectionModel().getSelectedItem());
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Message d'information");
-		alert.setHeaderText("L'adresse sélectionné a été supprimé");
-		alert.showAndWait();
+			adresses.remove(tvAdresses.getSelectionModel().getSelectedItem());
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Message d'information");
+			alert.setHeaderText("L'adresse sélectionné a été supprimé");
+			alert.showAndWait();
 	}
 
 	@FXML
