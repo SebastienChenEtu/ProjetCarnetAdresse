@@ -210,31 +210,38 @@ public class Database
 		File monImage2 = new File(".\\original.jpeg");
 		FileInputStream istreamImage2 = new FileInputStream(monImage2);
 
+		File monImage3 = new File(".\\audelyne_photo.jpg");
+		FileInputStream istreamImage3 = new FileInputStream(monImage3);
+
+		File monImage4 = new File(".\\noemie_photo.jpg");
+		FileInputStream istreamImage4 = new FileInputStream(monImage4);
+
 		Groupe g1 = new Groupe();
-		g1.setNom("oui");
+		g1.setNom("Amis");
 
 		Groupe g2 = new Groupe();
-		g2.setNom("nop");
+		g2.setNom("Professionnel");
 
 		g1 = service.CreerGroupe(g1);
 		g2 = service.CreerGroupe(g2);
 
-		Type t1 = new Type();
-		t1.setLibelleType("Type1");
-
-		t1 = service.CreerType(t1);
-		System.out.println(service.TrouverType("Type1"));
-
-		t1 = service.setLibelleType("Type1", "nouveauLibType");
-		System.out.println(service.TrouverType("nouveauLibType"));
+//		Type t1 = new Type();
+//		t1.setLibelleType("Type1");
+//
+//		t1 = service.CreerType(t1);
+//		System.out.println(service.TrouverType("Type1"));
+//
+//		t1 = service.setLibelleType("Type1", "nouveauLibType");
+//		System.out.println(service.TrouverType("nouveauLibType"));
 
 
 		Contact c = new Contact("t","test",new java.sql.Date(new Date().getTime()),"fax",2,istreamImage, true);
 		java.sql.Date nouvelleDate = new java.sql.Date(new Date().getTime());
 
-		Contact c2 = new Contact("test2","test2",new java.sql.Date(new Date().getTime()),"fax",2,istreamImage, true);
-		Contact c3 = new Contact("test3","test3",new java.sql.Date(new Date().getTime()),"fax",2,istreamImage, false);
-		Contact c4 = new Contact("test4","test4",new java.sql.Date(new Date().getTime()),"fax",2,istreamImage, true);
+		Contact c2 = new Contact("LEROY","Noémie",new java.sql.Date(new Date().getTime()),"fax",1,istreamImage4, false);
+		Contact c3 = new Contact("NGO","Kévin",new java.sql.Date(new Date().getTime()),"fax",1,istreamImage2, true);
+		Contact c4 = new Contact("JEAN-CHARLES","Audelyne",new java.sql.Date(new Date().getTime()),"fax",2,istreamImage3, true);
+
 
 		List<Adresse> adrPourC =  new LinkedList<Adresse>();
 		List<Mail> mailsPourC = new LinkedList<Mail>();
@@ -255,10 +262,6 @@ public class Database
 		service.CreerContact(c3);
 		service.CreerContact(c4);
 
-		for(int i = 0; i < 20 ; i++)
-		{
-			service.CreerContact(c);
-		}
 	}
 }
 //
