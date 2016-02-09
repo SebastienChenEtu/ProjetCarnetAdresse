@@ -2,11 +2,15 @@ package vue;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+
+import org.hamcrest.core.IsSame;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -48,7 +52,7 @@ public class ControllerDetailContact{
 	public Contact getContact(){
 		 return c;
 	 }
-	
+
 	ArrayList<Groupe> groupe;
 
 	private static final String ADRESSE = "adresse";
@@ -59,6 +63,12 @@ public class ControllerDetailContact{
 	 private static ObservableList<Adresse> adresses=FXCollections.observableArrayList();
 	 private static ObservableList<Telephone> telephones=FXCollections.observableArrayList();
 	 private static ObservableList<Mail> mails=FXCollections.observableArrayList();
+
+	 private File ImageFavorisFalse = new File(".\\etoile_blanche.PNG");
+	 FileInputStream istreamImageFavorisFalse;
+
+	 private File ImageFavorisTrue = new File(".\\etoile_jaune.PNG");
+	 FileInputStream istreamImageFavorisTrue;
 
 	/*********************** Attributs ****************************/
 
@@ -109,7 +119,7 @@ public class ControllerDetailContact{
 
     @FXML
     private Button btnAjoutTel;
-    
+
     @FXML
     private ChoiceBox<String> cbGroupe;
 
@@ -124,7 +134,7 @@ public class ControllerDetailContact{
 
     @FXML
 	private ImageView imgAvatar;
-    
+
     @FXML
     private ImageView imgFavoris;
 
@@ -169,6 +179,19 @@ public class ControllerDetailContact{
     	javafx.scene.image.Image image = new javafx.scene.image.Image(service.getPhotoContact(c));
     	imgAvatar.setImage(image);
 
+    	if(!c.getFavoris())
+    	{
+    		this.istreamImageFavorisFalse = new FileInputStream(this.ImageFavorisFalse);
+    		javafx.scene.image.Image imageFavorisFalse = new javafx.scene.image.Image(istreamImageFavorisFalse);
+    		this.imgFavoris.setImage(imageFavorisFalse);
+    	}
+    	else
+    	{
+    		this.istreamImageFavorisTrue = new FileInputStream(this.ImageFavorisTrue);
+    		javafx.scene.image.Image imageFavorisTrue = new javafx.scene.image.Image(istreamImageFavorisTrue);
+    		this.imgFavoris.setImage(imageFavorisTrue);
+    	}
+
     }
 
     private void creerAdresse(){
@@ -212,6 +235,7 @@ public class ControllerDetailContact{
     void btnRetour_onAction(ActionEvent event) throws Exception {
 		service.setFax(c.getIdContact(), textFax.getText());
 		service.setPrenomContact(c.getIdContact(), textPrenom.getText());
+		service.setGroupe(c.getIdContact(), service.TrouverGroupe(cbGroupe.getValue()));
     	Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("listeContact.fxml"));
     	Scene pageAjoutScene= new Scene(pageAjoutParent);
     	Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -290,11 +314,25 @@ public class ControllerDetailContact{
 		alert.setHeaderText("Le téléphone sélectionné a été supprimé");
 		alert.showAndWait();
     }
-    
+
 
     @FXML
-    void btnFavoris_onAction(ActionEvent event) {
+    void btnFavoris_onAction(ActionEvent event) throws Exception {
+    	if(!c.getFavoris())
+    	{
+    		c = service.setFavoris(c.getIdContact(), true);
+    		this.istreamImageFavorisTrue = new FileInputStream(this.ImageFavorisTrue);
+    		javafx.scene.image.Image imageFavorisTrue = new javafx.scene.image.Image(istreamImageFavorisTrue);
+    		this.imgFavoris.setImage(imageFavorisTrue);
+    	}
+    	else
+    	{
+    		c = service.setFavoris(c.getIdContact(), false);
+    		this.istreamImageFavorisFalse = new FileInputStream(this.ImageFavorisFalse);
+    		javafx.scene.image.Image imageFavorisFalse = new javafx.scene.image.Image(istreamImageFavorisFalse);
+    		this.imgFavoris.setImage(imageFavorisFalse);
 
+    	}
     }
 
 }
