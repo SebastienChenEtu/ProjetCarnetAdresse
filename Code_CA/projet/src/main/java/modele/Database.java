@@ -36,9 +36,9 @@ import service.ServiceCarnetAdresse;
 public class Database
 
 {
-	private String      dbName;
-	public  Connection  connexion;
-	public Statement   requete;
+	static String      dbName;
+	static  Connection  connexion;
+	static Statement   requete;
 
 	/**
 	 * Constructeur de la classe Database
@@ -61,14 +61,16 @@ public class Database
 	 */
 	public boolean connexion (){
 		try{
-			// Etabli la connection
-			connexion = DriverManager.getConnection("jdbc:sqlite:"+this.dbName);
-			// DÃƒÂ©clare l'objet qui permet de faire les requÃƒÂªtes
-			requete = connexion.createStatement();
-			creationTables();
-			requete.executeUpdate("PRAGMA synchronous = OFF;");
-			requete.executeUpdate("PRAGMA foreign_keys = ON;");
-			requete.setQueryTimeout(30);
+			if(this.connexion == null){
+				// Etabli la connection
+				connexion = DriverManager.getConnection("jdbc:sqlite:"+this.dbName);
+				// DÃƒÂ©clare l'objet qui permet de faire les requÃƒÂªtes
+				requete = connexion.createStatement();
+				creationTables();
+				requete.executeUpdate("PRAGMA synchronous = OFF;");
+				requete.executeUpdate("PRAGMA foreign_keys = ON;");
+				requete.setQueryTimeout(30);
+			}
 			return true;
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -195,68 +197,69 @@ public class Database
 		sqlCreationTypeDefaut = sqlCreationTypeDefaut + "insert into type(idtype, libelletype) values (4, 'autre');";
 		requete.executeUpdate(sqlCreationTypeDefaut);
 	}
+
+
+
+	public static void main(String[] args) throws Exception {
+		ServiceCarnetAdresse service = new ServiceCarnetAdresse();
+
+		File monImage = new File(".\\adrien.jpg");
+		FileInputStream istreamImage = new FileInputStream(monImage);
+
+		File monImage2 = new File(".\\original.jpeg");
+		FileInputStream istreamImage2 = new FileInputStream(monImage2);
+
+		Groupe g1 = new Groupe();
+		g1.setNom("oui");
+
+		Groupe g2 = new Groupe();
+		g2.setNom("nop");
+
+		g1 = service.CreerGroupe(g1);
+		g2 = service.CreerGroupe(g2);
+
+		Type t1 = new Type();
+		t1.setLibelleType("Type1");
+
+		t1 = service.CreerType(t1);
+		System.out.println(service.TrouverType("Type1"));
+
+		t1 = service.setLibelleType("Type1", "nouveauLibType");
+		System.out.println(service.TrouverType("nouveauLibType"));
+
+
+		Contact c = new Contact("t","test",new java.sql.Date(new Date().getTime()),"fax",2,istreamImage, true);
+		java.sql.Date nouvelleDate = new java.sql.Date(new Date().getTime());
+
+		Contact c2 = new Contact("test2","test2",new java.sql.Date(new Date().getTime()),"fax",2,istreamImage, true);
+		Contact c3 = new Contact("test3","test3",new java.sql.Date(new Date().getTime()),"fax",2,istreamImage, false);
+		Contact c4 = new Contact("test4","test4",new java.sql.Date(new Date().getTime()),"fax",2,istreamImage, true);
+
+		List<Adresse> adrPourC =  new LinkedList<Adresse>();
+		List<Mail> mailsPourC = new LinkedList<Mail>();
+		List<Telephone> telsPourC = new LinkedList<Telephone>();
+
+		adrPourC.add(new Adresse("adresse C", 1));
+		adrPourC.add(new Adresse("Adresse D", 1));
+		mailsPourC.add(new Mail("mail C", 1));
+		mailsPourC.add(new Mail("Mail D", 1));
+		telsPourC.add(new Telephone("Tel C", 1));
+		telsPourC.add(new Telephone("Tel D", 1));
+		c.setAdresses(adrPourC);
+		c2.setMails(mailsPourC);
+		c3.setTelephones(telsPourC);
+
+		service.CreerContact(c);
+		service.CreerContact(c2);
+		service.CreerContact(c3);
+		service.CreerContact(c4);
+
+		for(int i = 0; i < 20 ; i++)
+		{
+			service.CreerContact(c);
+		}
+	}
 }
-
-
-//	public static void main(String[] args) throws Exception {
-//		ServiceCarnetAdresse service = new ServiceCarnetAdresse();
-//
-//
-//		File monImage = new File(".\\adrien.jpg");
-//		FileInputStream istreamImage = new FileInputStream(monImage);
-//
-//		File monImage2 = new File(".\\original.jpeg");
-//		FileInputStream istreamImage2 = new FileInputStream(monImage2);
-//
-//		Groupe g1 = new Groupe();
-//		g1.setNom("oui");
-//
-//		Groupe g2 = new Groupe();
-//		g2.setNom("nop");
-//
-//		g1 = service.CreerGroupe(g1);
-//		g2 = service.CreerGroupe(g2);
-//
-//		Type t1 = new Type();
-//		t1.setLibelleType("Type1");
-//
-//		t1 = service.CreerType(t1);
-//		System.out.println(service.TrouverType("Type1"));
-//
-//		t1 = service.setLibelleType("Type1", "nouveauLibType");
-//		System.out.println(service.TrouverType("nouveauLibType"));
-//
-//
-//		Contact c = new Contact("t","test",new java.sql.Date(new Date().getTime()),"fax",2,istreamImage, true);
-//		java.sql.Date nouvelleDate = new java.sql.Date(new Date().getTime());
-//
-//		Contact c2 = new Contact("test2","test2",new java.sql.Date(new Date().getTime()),"fax",2,istreamImage, true);
-//		Contact c3 = new Contact("test3","test3",new java.sql.Date(new Date().getTime()),"fax",2,istreamImage, false);
-//		Contact c4 = new Contact("test4","test4",new java.sql.Date(new Date().getTime()),"fax",2,istreamImage, true);
-//
-//		List<Adresse> adrPourC =  new LinkedList<Adresse>();
-//		List<Mail> mailsPourC = new LinkedList<Mail>();
-//		List<Telephone> telsPourC = new LinkedList<Telephone>();
-//
-//		adrPourC.add(new Adresse("adresse C", 1));
-//		adrPourC.add(new Adresse("Adresse D", 1));
-//		mailsPourC.add(new Mail("mail C", 1));
-//		mailsPourC.add(new Mail("Mail D", 1));
-//		telsPourC.add(new Telephone("Tel C", 1));
-//		telsPourC.add(new Telephone("Tel D", 1));
-//		c.setAdresses(adrPourC);
-//		c2.setMails(mailsPourC);
-//		c3.setTelephones(telsPourC);
-//
-//		service.CreerContact(c);
-//		service.CreerContact(c2);
-//		service.CreerContact(c3);
-//		service.CreerContact(c4);
-//
-//		for(int i = 0; i < 20 ; i++)
-//		{
-//			service.CreerContact(c);
-//		}
 //
 //		System.out.println(service.TrouverContact(1));
 //

@@ -78,7 +78,7 @@ public class ControllerAjoutContact {
 
 	@FXML
 	private Button btnAvatar;
-	
+
 
     @FXML
     private TableView<Adresse> tvAdresses;
@@ -115,7 +115,7 @@ public class ControllerAjoutContact {
 
     @FXML
     private Button btnSupprimerMail;
-    
+
 
     @FXML
     void btnSupprimerAdresse_onAction(ActionEvent event) {
@@ -231,7 +231,7 @@ public class ControllerAjoutContact {
 	@FXML
 	void btnAvatar_onAction(ActionEvent event)throws Exception {
 		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+		fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
 		int result = fileChooser.showOpenDialog(null);
 		if (result == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = fileChooser.getSelectedFile();

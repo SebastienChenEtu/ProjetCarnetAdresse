@@ -12,7 +12,7 @@ import service.ServiceCarnetAdresse;
 @Configuration
 @ComponentScan(value = "modele")
 public class SpringConfig {
-	
+
 	@Bean
 	public DAO getDAO(){
 		Database dt = new Database("Database.db");
@@ -20,6 +20,4 @@ public class SpringConfig {
 		DAO dao = new DAO(dt);
 		return dao;
 	}
-
-	
 }

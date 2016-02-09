@@ -31,22 +31,16 @@ import modele.Type;
 
 @Service
 public class ServiceCarnetAdresse {
-	static Database db;
+	//static Database db;
 	static DAO dao;
-	// Ne serait-ce pas plus optimal de faire des requêtes SQL simples pour chaque update qu'on souhaite
-	// plutôt qu'instancier un objet contact à chaque fois et utiliser une méthode "modifier" du DAO
-	// (même si c'est moins "facile" ?) - Ou alors optimer la méthode "modifier" en soi directement
-	// en faisant un update uniquement sur ce qui est différent entre contactAModifier et contactSouhaite
-
-	// Je pense qu'il faudrait optimiser la méthode "Modifier" vu comme c'est parti.
-	// Sinon le couple DAO/service a peu d'intérêt ?..
-
 
 	public ServiceCarnetAdresse()
 	{
-		ServiceCarnetAdresse.db = new Database("Database.db");
-		ServiceCarnetAdresse.db.connexion();
-		ServiceCarnetAdresse.dao = new DAO(db);
+		//ServiceCarnetAdresse.db = new Database("Database.db");
+		//ServiceCarnetAdresse.db.connexion();
+		if(dao == null){
+			ServiceCarnetAdresse.dao = new DAO(new Database("Database.db"));
+		}
 	}
 
 	public Contact CreerContact(Contact contact) throws Exception
@@ -133,15 +127,15 @@ public class ServiceCarnetAdresse {
 		Contact nouveauContact = TrouverContact(idContactAModifier);
 		nouveauContact.setPhoto(photo);
 
-//		BufferedImage image2 = ImageIO.read(nouveauContact.getPhoto());
-//
-//        JLabel label2 = new JLabel(new ImageIcon(image2));
-//        JFrame f2 = new JFrame();
-//        f2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        f2.getContentPane().add(label2);
-//        f2.pack();
-//        f2.setLocation(200,200);
-//        f2.setVisible(true);
+		//		BufferedImage image2 = ImageIO.read(nouveauContact.getPhoto());
+		//
+		//        JLabel label2 = new JLabel(new ImageIcon(image2));
+		//        JFrame f2 = new JFrame();
+		//        f2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//        f2.getContentPane().add(label2);
+		//        f2.pack();
+		//        f2.setLocation(200,200);
+		//        f2.setVisible(true);
 
 		return this.dao.ModifierContact(idContactAModifier, nouveauContact);
 	}
@@ -359,7 +353,7 @@ public class ServiceCarnetAdresse {
 		}
 	}
 
-public boolean ImporterFichier(String nomFichier) throws Exception
+	public boolean ImporterFichier(String nomFichier) throws Exception
 	{
 		try
 		{
@@ -460,7 +454,7 @@ public boolean ImporterFichier(String nomFichier) throws Exception
 		return this.dao.trouverTousContactsGroupe(nomGroupe);
 	}
 
-		public Groupe TrouverGroupe(int idGroupe) throws SQLException
+	public Groupe TrouverGroupe(int idGroupe) throws SQLException
 	{
 		return this.dao.TrouverGroupe(idGroupe);
 	}

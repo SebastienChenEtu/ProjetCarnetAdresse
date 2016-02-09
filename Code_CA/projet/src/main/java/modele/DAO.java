@@ -17,11 +17,11 @@ import service.ServiceCarnetAdresse;
 
 public class DAO{
 
-	Database db;
-	ServiceCarnetAdresse service;
+	static Database db;
 
 	public DAO(Database db){
-		this.db = db;
+		DAO.db = db;
+		db.connexion();
 	}
 
 	public Contact TrouverContact(int id) throws SQLException{

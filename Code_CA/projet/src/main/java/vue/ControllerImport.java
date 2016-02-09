@@ -41,10 +41,10 @@ public class ControllerImport {
 
 	@FXML
 	private Button btnRetour;
-	
+
 	@FXML
 	private ChoiceBox cbGroupe;
-	
+
 	@FXML
 	void initialize() throws SQLException{
 		cbGroupe.getItems().clear();
@@ -75,7 +75,7 @@ public class ControllerImport {
 	@FXML
 	void btnImportDonnees_onAction(ActionEvent event) throws Exception {
 		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+		fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
 		int result = fileChooser.showOpenDialog(null);
 		if (result == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = fileChooser.getSelectedFile();
