@@ -75,17 +75,23 @@ public class ControllerGestionGroupe {
 		cbSupprimerGroupe.getItems().clear();
 
 		groupe = new ArrayList<Groupe> (service.trouverToutGroupe());
-		ArrayList<String> nomGroupe = new ArrayList<String>();
+		ArrayList<String> nomGroupes = new ArrayList<String>();
 		for (Groupe g : groupe){
 			if (g.getIdGroupe()!= 0)
-				nomGroupe.add(g.getNom());
+				nomGroupes.add(g.getNom());
 		}
 
-		cbModifierGroupe.getItems().addAll(nomGroupe);
-		cbFusionG2.getItems().addAll(nomGroupe);
-		cbFusionG1.getItems().addAll(nomGroupe);
-		cbSupprimerGroupe.getItems().addAll(nomGroupe);
-
+		cbModifierGroupe.getItems().addAll(nomGroupes);
+		cbFusionG2.getItems().addAll(nomGroupes);
+		cbFusionG1.getItems().addAll(nomGroupes);
+		cbSupprimerGroupe.getItems().addAll(nomGroupes);
+	}
+	
+	void ajouterGroupe(String nomGroupe){
+		cbModifierGroupe.getItems().add(nomGroupe);
+		cbFusionG2.getItems().add(nomGroupe);
+		cbFusionG1.getItems().add(nomGroupe);
+		cbSupprimerGroupe.getItems().add(nomGroupe);
 	}
 
 	@FXML
@@ -101,7 +107,7 @@ public class ControllerGestionGroupe {
 			}
 			if (b){
 				service.CreerGroupe(g);
-				this.initialize();
+				ajouterGroupe(textAjoutGroupe.getText());
 				textAjoutGroupe.clear();
 				Alert alert = new Alert(AlertType.INFORMATION);
 				alert.setTitle("Message d'information");
