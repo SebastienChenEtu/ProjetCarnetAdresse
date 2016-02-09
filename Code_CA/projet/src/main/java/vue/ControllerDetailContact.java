@@ -76,9 +76,6 @@ public class ControllerDetailContact{
     
     @FXML
     private TableView<Adresse> tvAdresses;
-//
-//    @FXML
-//    private TableColumn<Adresse, String> columnTypeAdresse;
 
     @FXML
     private TableColumn<Adresse, String> columnAdresse;
@@ -86,17 +83,11 @@ public class ControllerDetailContact{
     @FXML
     private TableView<Telephone> tvTel;
 
-//    @FXML
-//    private TableColumn<Telephone, String> columnTypeTel;
-
     @FXML
     private TableColumn<Telephone, String> columnTel;
 
     @FXML
     private TableView<Mail> tvMail;
-
-//    @FXML
-//    private TableColumn<Mail, String> columnTypeMail;
 
     @FXML
     private TableColumn<Mail, String> columnMail;
@@ -137,9 +128,6 @@ public class ControllerDetailContact{
     	Groupe g = new Groupe();
     	g = service.TrouverGroupe(c.getIdGroupe());
     	textGroupe.setText(g.getNom());
-//    	columnTypeMail.setCellValueFactory(new PropertyValueFactory<>(TYPE));
-//    	columnTypeTel.setCellValueFactory(new PropertyValueFactory<>(TYPE));
-//    	columnTypeAdresse.setCellValueFactory(new PropertyValueFactory<>(TYPE));
     	columnTel.setCellValueFactory(new PropertyValueFactory<>(TELEPHONE));
     	columnAdresse.setCellValueFactory(new PropertyValueFactory<>(ADRESSE));
     	columnMail.setCellValueFactory(new PropertyValueFactory<>(MAIL));
