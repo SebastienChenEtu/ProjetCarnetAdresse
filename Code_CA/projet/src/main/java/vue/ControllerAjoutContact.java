@@ -23,6 +23,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -63,14 +65,10 @@ public class ControllerAjoutContact {
 	@FXML
 	private TextField textTelephone;
 
-	@FXML
-	private Button btnAjoutAdresse;
 
 	@FXML
 	private Button btnAjoutTelephone;
 
-	@FXML
-	private Button btnAjoutMail;
 
 	@FXML
 	private Button btnValide;
@@ -80,9 +78,59 @@ public class ControllerAjoutContact {
 
 	@FXML
 	private Button btnAvatar;
+	
 
-	@FXML
-	private DatePicker dpDateNaissance;
+    @FXML
+    private TableView<Adresse> tvAdresses;
+
+    @FXML
+    private TableColumn<Adresse, String> columnAdresse;
+
+    @FXML
+    private TableView<Telephone> tvTel;
+
+    @FXML
+    private TableColumn<Telephone, String> columnTel;
+
+    @FXML
+    private TableView<Mail> tvMail;
+
+    @FXML
+    private TableColumn<Mail, String> columnMail;
+
+    @FXML
+    private Button btnAjoutAdresse;
+
+    @FXML
+    private Button btnSupprimerAdresse;
+
+    @FXML
+    private Button btnAjoutTel;
+
+    @FXML
+    private Button btnSupprimerTel;
+
+    @FXML
+    private Button btnAjoutMail;
+
+    @FXML
+    private Button btnSupprimerMail;
+    
+
+    @FXML
+    void btnSupprimerAdresse_onAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void btnSupprimerMail_onAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void btnSupprimerTel_onAction(ActionEvent event) {
+
+    }
 
 	@FXML
 	void initialize(){
@@ -94,12 +142,14 @@ public class ControllerAjoutContact {
 	void modifVisibilite(Boolean b){
 		textFax.setVisible(b);
 		btnValide.setVisible(b);
-		textTelephone.setVisible(b);
-		textEmail.setVisible(b);
-		textAdresse.setVisible(b);
 		textPrenom.setVisible(b);
 		cbGroupe.setVisible(b);
-		dpDateNaissance.setVisible(b);
+		btnAjoutAdresse.setVisible(b);
+		btnSupprimerAdresse.setVisible(b);
+		btnAjoutTel.setVisible(b);
+		btnSupprimerTel.setVisible(b);
+		btnAjoutMail.setVisible(b);
+		btnSupprimerMail.setVisible(b);
 	}
 
 	@FXML
@@ -128,6 +178,10 @@ public class ControllerAjoutContact {
 
 	}
 
+    @FXML
+    void btnAjoutTel_onAction(ActionEvent event) {
+
+    }
 
 	void ajouterContact() throws Exception{
 		Contact c = new Contact();
@@ -137,12 +191,6 @@ public class ControllerAjoutContact {
 //		Contact c = new Contact("test","test",new java.sql.Date(new Date().getTime()),"fax",2,istreamImage, false);
 //		c.setIdGroupe(cbGroupe.getValue().getIdGroupe());
 //		c.setFax(textFax.getText());
-
-		LocalDate localDate = dpDateNaissance.getValue();
-		Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
-		Date date = Date.from(instant);
-		System.out.println(localDate + "\n" + instant + "\n" + date);
-		c.setDdn(date);
 
 		File monImage = new File(avatar.getImage().impl_getUrl());
 		FileInputStream istreamImage = new FileInputStream(monImage);

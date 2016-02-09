@@ -6,10 +6,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import service.ServiceCarnetAdresse;
 
 public class AppliFx extends Application{
 
-
+	private ServiceCarnetAdresse service = new ServiceCarnetAdresse();
 
 	public static void main(String[] args) {
 		launch(args);

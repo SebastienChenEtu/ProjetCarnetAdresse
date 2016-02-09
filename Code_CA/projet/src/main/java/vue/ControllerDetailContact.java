@@ -244,9 +244,9 @@ public class ControllerDetailContact{
     }
     
     @FXML
-    void btnSupprimerAdresse_onAction(ActionEvent event) {
+    void btnSupprimerAdresse_onAction(ActionEvent event) throws Exception {
     	adresses.remove(tvAdresses.getSelectionModel().getSelectedItem());
-    	c.setAdresses(adresses);
+    	service.setAdresses(c.getIdContact(),adresses);
     	Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Message d'information");
 		alert.setHeaderText("L'adresse sélectionné a été supprimé");
@@ -254,9 +254,9 @@ public class ControllerDetailContact{
     }
 
     @FXML
-    void btnSupprimerMail_onAction(ActionEvent event) {
+    void btnSupprimerMail_onAction(ActionEvent event) throws Exception {
     	mails.remove(tvMail.getSelectionModel().getSelectedItem());
-    	c.setMails(mails);
+    	service.setMails(c.getIdContact(),mails);
     	Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Message d'information");
 		alert.setHeaderText("Le mail sélectionné a été supprimé");
@@ -264,9 +264,9 @@ public class ControllerDetailContact{
     }
 
     @FXML
-    void btnSupprimerTel_onAction(ActionEvent event) {
+    void btnSupprimerTel_onAction(ActionEvent event) throws Exception {
     	telephones.remove(tvTel.getSelectionModel().getSelectedItem());
-    	c.setTelephones(telephones);
+    	service.setTelephones(c.getIdContact(),telephones);
     	Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Message d'information");
 		alert.setHeaderText("Le téléphone sélectionné a été supprimé");
