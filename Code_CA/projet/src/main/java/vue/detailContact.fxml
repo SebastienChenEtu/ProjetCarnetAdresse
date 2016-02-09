@@ -20,7 +20,7 @@
       <Label id="labelNom" layoutX="285.0" layoutY="24.0" prefHeight="17.0" prefWidth="40.0" text="Nom" />
       <TextField fx:id="textNom" layoutX="325.0" layoutY="20.0" />
       <Label id="labelPrenom" layoutX="528.0" layoutY="24.0" prefHeight="17.0" prefWidth="47.0" text="Prénom" />
-      <TextField fx:id="textPrenom"  layoutX="592.0" layoutY="20.0" />
+      <TextField fx:id="textPrenom" layoutX="592.0" layoutY="20.0" />
       <Label id="labelGroupe" layoutX="199.0" layoutY="82.0" text="Choisissez un groupe" />
       <Label id="labelAdresse" layoutX="19.0" layoutY="183.0" text="Adresse" />
       <Label id="labelTelephone" layoutX="294.0" layoutY="183.0" text="N° Télephone" />
@@ -33,19 +33,19 @@
       <TableView fx:id="tvAdresses" layoutX="15.0" layoutY="206.0" prefHeight="105.0" prefWidth="225.0">
         <columns>
           <!-- <TableColumn fx:id="columnTypeAdresse" prefWidth="75.0" text="Type" /> -->
-          <TableColumn fx:id="columnAdresse" prefWidth="148.0" text="Adresse" />
+          <TableColumn fx:id="columnAdresse" prefWidth="224.0" text="Adresse" />
         </columns>
       </TableView>
       <TableView fx:id="tvTel" layoutX="294.0" layoutY="206.0" prefHeight="105.0" prefWidth="212.0">
         <columns>
           <!-- <TableColumn fx:id="columnTypeTel" prefWidth="75.0" text="Type" /> -->
-          <TableColumn fx:id="columnTel" prefWidth="136.0" text="Télephone" />
+          <TableColumn fx:id="columnTel" prefWidth="211.0" text="Télephone" />
         </columns>
       </TableView>
       <TableView fx:id="tvMail" layoutX="567.0" layoutY="206.0" prefHeight="105.0" prefWidth="200.0">
         <columns>
           <!-- <TableColumn fx:id="columnTypeMail" prefWidth="75.0" text="Type" /> -->
-          <TableColumn fx:id="columnMail" prefWidth="124.0" text="E-mail" />
+          <TableColumn fx:id="columnMail" prefWidth="199.0" text="E-mail" />
         </columns>
       </TableView>
       <Separator layoutX="281.0" layoutY="185.0" orientation="VERTICAL" prefHeight="132.0" prefWidth="8.0" />

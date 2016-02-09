@@ -76,12 +76,6 @@ public class ControllerListeContact implements Initializable  {
     @FXML
     private TableColumn<Contact, String> columnPrenom;
     
-    @FXML
-    private TableColumn<Object,Boolean> columnSelection;
-    
-    @FXML
-    private TableColumn<Contact,Boolean> columnFavoris;
-    
     
     @FXML
     private Button btnSupprimerSelection;
@@ -117,8 +111,6 @@ public class ControllerListeContact implements Initializable  {
 	public void initialize(URL url, ResourceBundle rb) {
 		columnPrenom.setCellValueFactory(new PropertyValueFactory<>(PRENOM));
     	columnNom.setCellValueFactory(new PropertyValueFactory<>(NOM));
-    	columnFavoris.setCellValueFactory(new PropertyValueFactory<>(FAVORIS));
-    	columnSelection.setCellValueFactory(new PropertyValueFactory<>(SELECTION));
     	contacts.clear();
     	try {
 			contacts.addAll(service.trouverToutContact());
@@ -159,8 +151,6 @@ public class ControllerListeContact implements Initializable  {
     	tvListeContact.setItems(contacts);
     	ColonnePrenom();
     	ColonneNom();
-    	ColonneFavoris();
-    	ColonneSelection();
     }
     
     public void ColonnePrenom() {
@@ -168,16 +158,6 @@ public class ControllerListeContact implements Initializable  {
     	columnPrenom.setOnEditCommit((CellEditEvent<Contact,String>cell) -> {
             cell.getTableView().getItems().get(cell.getTablePosition().getRow()).setPrenom(cell.getNewValue());
         });
-    }
-    public void ColonneFavoris() {
-    	columnFavoris.setCellFactory(CheckBoxTableCell.forTableColumn(columnFavoris));
-    	columnFavoris.setOnEditCommit((CellEditEvent<Contact, Boolean> cell) -> {
-            cell.getTableView().getItems().get(cell.getTablePosition().getRow()).setFavoris(cell.getNewValue());
-        });
-    }
-    
-    public void ColonneSelection() {
-    	columnSelection.setCellFactory(CheckBoxTableCell.forTableColumn(columnSelection));
     }
 
     public void ColonneNom() {
