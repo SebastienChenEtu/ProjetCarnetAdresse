@@ -71,14 +71,14 @@ public class ContactTest {
         Groupe g = service.TrouverGroupe(rechercheContact.getIdGroupe());
         listeContact = service.trouverTousContactsGroupe(g.getNom());
         rechercheContact = listeContact.get(0);
-        assertEquals("t", rechercheContact.getNom());
+        assertEquals("JEAN-CHARLES", rechercheContact.getNom());
         rechercheContact = listeContact.get(1);
         assertNotEquals("test2", rechercheContact.getNom());
-        assertEquals("tata", rechercheContact.getNom());
+        assertEquals("JEAN-CHARLES", rechercheContact.getNom());
         
      // recherche contact par nom
         listeContact = service.rechercheContactNom(rechercheContact.getNom());
-        assertEquals("tata", listeContact.get(0).getNom());
+        assertEquals("JEAN-CHARLES", listeContact.get(0).getNom());
         
 //		List<Telephone> listTel = new LinkedList<Telephone>();
 //		Telephone tel = new Telephone();

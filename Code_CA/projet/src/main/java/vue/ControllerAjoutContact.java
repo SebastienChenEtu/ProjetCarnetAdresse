@@ -303,7 +303,7 @@ public class ControllerAjoutContact {
 		}
 
 
-		Contact contactACreer = new Contact(nomContact,prenomContact,new java.sql.Date(new Date().getTime()),fax,g.getIdGroupe(),inputStream, true);
+		Contact contactACreer = new Contact(nomContact,prenomContact,new java.sql.Date(new Date().getTime()),fax,g.getIdGroupe(),inputStream, false);
 
 		//		adrPourC.add(new Adresse("adresse C", 1));
 		//		adrPourC.add(new Adresse("Adresse D", 1));
