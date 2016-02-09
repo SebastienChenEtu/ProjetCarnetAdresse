@@ -14,7 +14,5 @@
       <TextField fx:id="txtMail" layoutX="169.0" layoutY="77.0" />
       <Label layoutX="69.0" layoutY="43.0" text="Choisir type" />
       <ComboBox fx:id="cbxType" layoutX="168.0" layoutY="39.0" prefWidth="150.0" />
-      <Button fx:id="btnAjoutType" layoutX="345.0" layoutY="39.0" mnemonicParsing="false" onAction="#btnAjoutType_onAction" prefHeight="25.0" prefWidth="30.0" text="+" />
-      <Button fx:id="btnSupType" layoutX="392.0" layoutY="39.0" mnemonicParsing="false" onAction="#btnSupType_onAction" prefHeight="25.0" prefWidth="30.0" text="-" />
    </children>
 </Pane>

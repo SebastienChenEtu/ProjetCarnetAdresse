@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
@@ -29,7 +30,6 @@
       <Label id="labelEmail" layoutX="567.0" layoutY="183.0" text="E-mail" />
       <Button id="btnSupprimer" fx:id="btnSupprimer" layoutX="238.0" layoutY="396.0" mnemonicParsing="false" onAction="#btnSupprimer_onAction" prefHeight="36.0" prefWidth="113.0" text="Supprimer" />
       <Button id="btnRetour" fx:id="btnRetour" layoutX="430.0" layoutY="396.0" mnemonicParsing="false" onAction="#btnRetour_onAction" prefHeight="36.0" prefWidth="113.0" text="Retour" />
-      <TextField fx:id="textGroupe" disable="true" layoutX="325.0" layoutY="78.0" />
       <TableView fx:id="tvAdresses" layoutX="15.0" layoutY="206.0" prefHeight="105.0" prefWidth="225.0">
         <columns>
           <!-- <TableColumn fx:id="columnTypeAdresse" prefWidth="75.0" text="Type" /> -->
@@ -56,5 +56,8 @@
       <Button fx:id="btnSupprimerTel" layoutX="400.0" layoutY="317.0" mnemonicParsing="false" onAction="#btnSupprimerTel_onAction" prefHeight="25.0" prefWidth="25.0" text="-" />
       <Button fx:id="btnAjoutMail" layoutX="642.0" layoutY="317.0" mnemonicParsing="false" onAction="#btnAjoutMail_onAction" text="+" />
       <Button fx:id="btnSupprimerMail" layoutX="678.0" layoutY="317.0" mnemonicParsing="false" onAction="#btnSupprimerMail_onAction" prefHeight="25.0" prefWidth="25.0" text="-" />
+      <ChoiceBox fx:id="cbGroupe" layoutX="325.0" layoutY="78.0" prefWidth="150.0" />
+      <ImageView fx:id="imgFavoris" fitHeight="36.0" fitWidth="40.0" layoutX="671.0" layoutY="130.0" pickOnBounds="true" preserveRatio="true" />
+      <Button fx:id="btnFavoris" layoutX="724.0" layoutY="136.0" mnemonicParsing="false" onAction="#btnFavoris_onAction" prefHeight="25.0" prefWidth="34.0" text="+/-" />
    </children>
 </AnchorPane>

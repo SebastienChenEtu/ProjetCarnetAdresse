@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -17,6 +18,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -46,6 +48,8 @@ public class ControllerDetailContact{
 	public Contact getContact(){
 		 return c;
 	 }
+	
+	ArrayList<Groupe> groupe;
 
 	private static final String ADRESSE = "adresse";
 	 private static final String TYPE = "type";
@@ -105,6 +109,9 @@ public class ControllerDetailContact{
 
     @FXML
     private Button btnAjoutTel;
+    
+    @FXML
+    private ChoiceBox<String> cbGroupe;
 
     @FXML
     private Button btnSupprimerTel;
@@ -117,6 +124,12 @@ public class ControllerDetailContact{
 
     @FXML
 	private ImageView imgAvatar;
+    
+    @FXML
+    private ImageView imgFavoris;
+
+    @FXML
+    private Button btnFavoris;
 
 
     /*********************** fonctions ************************/
@@ -133,9 +146,13 @@ public class ControllerDetailContact{
     	textNom.setText(c.getNom());
     	textPrenom.setText(c.getPrenom());
     	textFax.setText(c.getFax());
-    	Groupe g = new Groupe();
-    	g = service.TrouverGroupe(c.getIdGroupe());
-    	textGroupe.setText(g.getNom());
+    	groupe = new ArrayList<Groupe> (service.trouverToutGroupe());
+		ArrayList<String> nomGroupe = new ArrayList<String>();
+		for (Groupe g : groupe){
+			nomGroupe.add(g.getNom());
+		}
+		cbGroupe.getItems().addAll(nomGroupe);
+		cbGroupe.setValue(service.TrouverGroupe(c.getIdGroupe()).getNom());
     	columnTel.setCellValueFactory(new PropertyValueFactory<>(TELEPHONE));
     	columnAdresse.setCellValueFactory(new PropertyValueFactory<>(ADRESSE));
     	columnMail.setCellValueFactory(new PropertyValueFactory<>(MAIL));
@@ -272,6 +289,12 @@ public class ControllerDetailContact{
 		alert.setTitle("Message d'information");
 		alert.setHeaderText("Le téléphone sélectionné a été supprimé");
 		alert.showAndWait();
+    }
+    
+
+    @FXML
+    void btnFavoris_onAction(ActionEvent event) {
+
     }
 
 }

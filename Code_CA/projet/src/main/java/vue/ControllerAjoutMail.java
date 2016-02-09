@@ -106,11 +106,19 @@ public class ControllerAjoutMail {
 
 	@FXML
 	void btnAnnuler_onAction(ActionEvent event) throws IOException {
-		Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("detailContact.fxml"));
-		Scene pageAjoutScene= new Scene(pageAjoutParent);
-		Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();
-		app_stage.setScene(pageAjoutScene); 
-		app_stage.show();
+		if (ajoutModif){
+			Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("ajoutContact.fxml"));
+			Scene pageAjoutScene= new Scene(pageAjoutParent);
+			Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();
+			app_stage.setScene(pageAjoutScene); 
+			app_stage.show();
+		}else{
+			Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("detailContact.fxml"));
+			Scene pageAjoutScene= new Scene(pageAjoutParent);
+			Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();
+			app_stage.setScene(pageAjoutScene); 
+			app_stage.show();
+		}
 	}
 
 }

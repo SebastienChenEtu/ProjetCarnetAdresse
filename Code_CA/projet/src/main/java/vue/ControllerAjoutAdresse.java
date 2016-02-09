@@ -53,12 +53,6 @@ public class ControllerAjoutAdresse {
 	private ComboBox<String> cbxType;
 
 	@FXML
-	private Button btnAjoutType;
-
-	@FXML
-	private Button btnSupType;
-
-	@FXML
 	void initialize() throws SQLException{
 		ajoutModif = controllerAjout.getAjoutModif();
 		if (!ajoutModif){
@@ -112,21 +106,20 @@ public class ControllerAjoutAdresse {
 
 	@FXML
 	void btnAnnuler_onAction(ActionEvent event) throws IOException {
-		Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("detailContact.fxml"));
-		Scene pageAjoutScene= new Scene(pageAjoutParent);
-		Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();
-		app_stage.setScene(pageAjoutScene);
-		app_stage.show();
-	}
-	@FXML
-	void btnAjoutType_onAction(ActionEvent event) throws IOException {
-		
+		if (ajoutModif){
+			Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("ajoutContact.fxml"));
+			Scene pageAjoutScene= new Scene(pageAjoutParent);
+			Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();
+			app_stage.setScene(pageAjoutScene); 
+			app_stage.show();
+		}else{
+			Parent pageAjoutParent = FXMLLoader.load(getClass().getResource("detailContact.fxml"));
+			Scene pageAjoutScene= new Scene(pageAjoutParent);
+			Stage app_stage =  (Stage) ((Node) event.getSource()).getScene().getWindow();
+			app_stage.setScene(pageAjoutScene);
+			app_stage.show();
+		}
 	}
 
-
-	@FXML
-	void btnSupType_onAction(ActionEvent event) throws IOException {
-
-	}
 
 }
